@@ -270,7 +270,8 @@ if submitted:
     st.warning(t["no_topic"])
   else:
     try:
-      client = genai.client(api_key=st.secrets["codo"])
+      api_key = st.secrets["GEMINI_API_KEY"]
+      client = genai.Client(api_key=api_key)
       model_choice = "gemini-3.5-flash"
 
       if complexity == "Easy":
