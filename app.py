@@ -1,4 +1,9 @@
 import streamlit as st
+from google import genai
+
+# This securely grabs your key from Streamlit Secrets
+api_key = st.secrets["GEMINI_API_KEY"]
+client = genai.Client(api_key=api_key)
 import time
 from google import genai
 from google.genai.errors import APIError
