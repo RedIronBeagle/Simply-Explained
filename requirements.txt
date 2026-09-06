@@ -1,2 +1,5 @@
 streamlit
 google-genai
+fpdf2
+beautifulsoup4
+requests
