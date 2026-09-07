@@ -1609,242 +1609,242 @@ with tab1:
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
   # ==============================================================================
 with tab2:
-st.markdown(
-    f'<div class="fine-print-title">{texts["fine_print_title"]}</div>',
-    unsafe_allow_html=True,
-)
-st.markdown(
-    f'<div class="app-subtitle">{texts["fine_print_subtitle"]}</div>',
-    unsafe_allow_html=True,
-)
-st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
+	st.markdown(
+	    f'<div class="fine-print-title">{texts["fine_print_title"]}</div>',
+	    unsafe_allow_html=True,
+	)
+	st.markdown(
+	    f'<div class="app-subtitle">{texts["fine_print_subtitle"]}</div>',
+	    unsafe_allow_html=True,
+	)
+	st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
+	
+	mode_options = texts["input_modes"]
+	selected_mode_label = st.radio(
+	    texts["choose_input_mode"], mode_options, key="fp_input_mode", horizontal=True
+	)
 
-mode_options = texts["input_modes"]
-selected_mode_label = st.radio(
-    texts["choose_input_mode"], mode_options, key="fp_input_mode", horizontal=True
-)
-
-fine_print_content = None
-uploaded_media_part = None
-
-if selected_mode_label == mode_options[0]:
-  fine_print_content = st.text_area(
-      texts["paste_label"], key="fp_text", height=200
-  )
-elif selected_mode_label == mode_options[1]:
-  fine_print_url = st.text_input(
-      texts["url_label"],
-      placeholder="https://example.com/terms",
-      key="fp_url",
-  )
-  if fine_print_url and st.button("Fetch URL Content"):
-    with st.spinner(texts["simplifying_spinner"]):
-      try:
-        st.session_state["fetched_fp_text"] = fetch_url_text(
-            fine_print_url
-        )[:15000]
-        st.success("Successfully fetched webpage text!")
-      except Exception as e:
-        st.error(f"Could not fetch URL content: {str(e)}")
-  fine_print_content = st.session_state.get("fetched_fp_text", "")
-  if fine_print_content:
-    st.text_area(
-        "Fetched Text Preview:",
-        fine_print_content,
-        height=150,
-        disabled=True,
-    )
-elif selected_mode_label == mode_options[2]:
-  uploaded_file = st.file_uploader(
-      texts["upload_label"], type=["png", "jpg", "jpeg", "webp"]
-  )
-  if uploaded_file:
-    st.image(
-        uploaded_file, caption="Uploaded Image Preview", use_container_width=True
-    )
-    uploaded_media_part = prepare_media_part(uploaded_file)
-elif selected_mode_label == mode_options[3]:
-  uploaded_file = st.file_uploader(
-      texts["upload_pdf_label"], type=["pdf"]
-  )
-  if uploaded_file:
-    st.info(
-        f"📄 PDF Uploaded: **{uploaded_file.name}**"
-        f" ({round(uploaded_file.size / 1024, 1)} KB)"
-    )
-    uploaded_media_part = prepare_media_part(uploaded_file)
-
-if st.button(texts["decode_button"], key="fine_print_btn"):
-  if not api_key:
-    st.error(texts["no_api"])
-  elif (
-      selected_mode_label in [mode_options[0], mode_options[1]]
-      and not fine_print_content
-  ):
-    st.warning("Please provide valid text or a URL before decoding.")
-  elif (
-      selected_mode_label in [mode_options[2], mode_options[3]]
-      and not uploaded_media_part
-  ):
-    st.warning("Please upload a file before decoding.")
-  else:
-    with st.spinner(texts["simplifying_spinner"]):
-      try:
-        client = genai.Client(api_key=api_key)
-        system_instruction = (
-            f"You are a skilled legal analyst. Respond entirely and"
-            f" strictly in: {selected_lang}. Structure your analysis"
-            f" using these exact headers: 1)"
-            f" {texts['fine_print_headers'][0]}, 2)"
-            f" {texts['fine_print_headers'][1]}, 3)"
-            f" {texts['fine_print_headers'][2]}, 4)"
-            f" {texts['fine_print_headers'][3]}, 5)"
-            f" {texts['fine_print_headers'][4]}, 6)"
-            f" {texts['fine_print_headers'][5]}, and 7)"
-            f" {texts['fine_print_headers'][6]}."
-        )
-
-        contents = (
-            [
-                uploaded_media_part,
-                (
-                    "Please analyze and decode the provided document in"
-                    f" {selected_lang}."
-                ),
-            ]
-            if uploaded_media_part
-            else [
-                (
-                    "Please analyze and decode the following document text"
-                    f" in {selected_lang}:\n\n{fine_print_content}"
-                )
-            ]
-        )
-
-        response = client.models.generate_content(
-            model=MODEL_ID,
-            contents=contents,
-            config=types.GenerateContentConfig(
-                system_instruction=system_instruction, temperature=0.3
-            ),
-        )
-
-        output_text = response.text + f"\n\n{texts['footer_text']}"
-        st.success(
-            texts["ready"].get(depth_level, "Your response is ready")
-        )
-
-        output_lower = output_text.lower()
-        if any(
-            kw in output_lower
-            for kw in [
-                "high risk",
-                "severe",
-                "penalty",
-                "red",
-                "alto riesgo",
-                "severo",
-            ]
-        ):
-          risk_level = "High"
-        elif any(
-            kw in output_lower
-            for kw in [
-                "medium risk",
-                "caution",
-                "moderate",
-                "yellow",
-                "riesgo medio",
-            ]
-        ):
-          risk_level = "Medium"
-        else:
-          risk_level = "Low"
-
-        st.markdown("---")
-        st.markdown("### 🚦 Document Risk Summary Stoplight")
-        if risk_level == "High":
-          st.markdown(
-              '<div style="padding: 12px; border-radius: 6px;'
-              " background-color: rgba(255, 0, 0, 0.1); border: 1px solid"
-              ' red; font-weight: 600;">🔴 High Risk: Severe penalties or'
-              " heavy exit barriers identified!</div>",
-              unsafe_allow_html=True,
-          )
-        elif risk_level == "Medium":
-          st.markdown(
-              '<div style="padding: 12px; border-radius: 6px;'
-              " background-color: rgba(255, 255, 0, 0.1); border: 1px"
-              ' solid orange; font-weight: 600;">🟡 Medium Risk: Proceed'
-              " with caution. Notice periods or restrictive clauses"
-              " detected.</div>",
-              unsafe_allow_html=True,
-          )
-        else:
-          st.markdown(
-              '<div style="padding: 12px; border-radius: 6px;'
-              " background-color: rgba(0, 255, 0, 0.1); border: 1px solid"
-              ' green; font-weight: 600;">🟢 Low Risk: Document terms'
-              " appear standard.</div>",
-              unsafe_allow_html=True,
-          )
-
-        st.markdown("---")
-        st.markdown(output_text)
-
-        st.session_state["history_log"].insert(
-            0,
-            {
-                "timestamp": datetime.datetime.now().strftime(
-                    "%Y-%m-%d %H:%M:%S"
-                ),
-                "type": "Document Decode",
-                "title": "Document / Contract Analysis",
-                "content": output_text,
-            },
-        )
-
-        pdf_data = generate_pdf_bytes(
-            "Document / Contract Analysis",
-            output_text,
-            texts["footer_text"],
-        )
-        st.download_button(
-            label="📥 Download Legal Decoding PDF",
-            data=pdf_data,
-            file_name="Document_Decoding_Report.pdf",
-            mime="application/pdf",
-            key="download_doc_pdf",
-        )
-
-        if enable_audio_speech:
-          st.markdown("---")
-          st.markdown("### 🔊 Audio Accessibility Feed")
-          try:
-            from gtts import gTTS
-
-            clean_text_for_speech = output_text
-            clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-            clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
-
-            tts = gTTS(
-                text=clean_text_for_speech,
-                lang=TTS_LANG_MAP.get(selected_lang, "en"),
-                slow=False,
-            )
-            audio_bytes = io.BytesIO()
-            tts.write_to_fp(audio_bytes)
-            audio_bytes.seek(0)
-            st.audio(audio_bytes, format="audio/mp3")
-          except Exception as tts_err:
-            st.warning(
-                f"Could not generate audio stream: {str(tts_err)}"
-            )
-
-      except APIError as e:
-        st.error(f"API Error: {e.message}")
-      except Exception as e:
-        st.error(f"An unexpected error occurred: {str(e)}")
+	fine_print_content = None
+	uploaded_media_part = None
+	
+	if selected_mode_label == mode_options[0]:
+	  fine_print_content = st.text_area(
+	      texts["paste_label"], key="fp_text", height=200
+	  )
+	elif selected_mode_label == mode_options[1]:
+	  fine_print_url = st.text_input(
+	      texts["url_label"],
+	      placeholder="https://example.com/terms",
+	      key="fp_url",
+	  )
+	  if fine_print_url and st.button("Fetch URL Content"):
+	    with st.spinner(texts["simplifying_spinner"]):
+	      try:
+	        st.session_state["fetched_fp_text"] = fetch_url_text(
+	            fine_print_url
+	        )[:15000]
+	        st.success("Successfully fetched webpage text!")
+	      except Exception as e:
+	        st.error(f"Could not fetch URL content: {str(e)}")
+	  fine_print_content = st.session_state.get("fetched_fp_text", "")
+	  if fine_print_content:
+	    st.text_area(
+	        "Fetched Text Preview:",
+	        fine_print_content,
+	        height=150,
+	        disabled=True,
+	    )
+	elif selected_mode_label == mode_options[2]:
+	  uploaded_file = st.file_uploader(
+	      texts["upload_label"], type=["png", "jpg", "jpeg", "webp"]
+	  )
+	  if uploaded_file:
+	    st.image(
+	        uploaded_file, caption="Uploaded Image Preview", use_container_width=True
+	    )
+	    uploaded_media_part = prepare_media_part(uploaded_file)
+	elif selected_mode_label == mode_options[3]:
+	  uploaded_file = st.file_uploader(
+	      texts["upload_pdf_label"], type=["pdf"]
+	  )
+	  if uploaded_file:
+	    st.info(
+	        f"📄 PDF Uploaded: **{uploaded_file.name}**"
+	        f" ({round(uploaded_file.size / 1024, 1)} KB)"
+	    )
+	    uploaded_media_part = prepare_media_part(uploaded_file)
+	
+	if st.button(texts["decode_button"], key="fine_print_btn"):
+	  if not api_key:
+	    st.error(texts["no_api"])
+	  elif (
+	      selected_mode_label in [mode_options[0], mode_options[1]]
+	      and not fine_print_content
+	  ):
+	    st.warning("Please provide valid text or a URL before decoding.")
+	  elif (
+	      selected_mode_label in [mode_options[2], mode_options[3]]
+	      and not uploaded_media_part
+	  ):
+	    st.warning("Please upload a file before decoding.")
+	  else:
+	    with st.spinner(texts["simplifying_spinner"]):
+	      try:
+	        client = genai.Client(api_key=api_key)
+	        system_instruction = (
+	            f"You are a skilled legal analyst. Respond entirely and"
+	            f" strictly in: {selected_lang}. Structure your analysis"
+	            f" using these exact headers: 1)"
+	            f" {texts['fine_print_headers'][0]}, 2)"
+	            f" {texts['fine_print_headers'][1]}, 3)"
+	            f" {texts['fine_print_headers'][2]}, 4)"
+	            f" {texts['fine_print_headers'][3]}, 5)"
+	            f" {texts['fine_print_headers'][4]}, 6)"
+	            f" {texts['fine_print_headers'][5]}, and 7)"
+	            f" {texts['fine_print_headers'][6]}."
+	        )
+	
+	        contents = (
+	            [
+	                uploaded_media_part,
+	                (
+	                    "Please analyze and decode the provided document in"
+	                    f" {selected_lang}."
+	                ),
+	            ]
+	            if uploaded_media_part
+	            else [
+	                (
+	                    "Please analyze and decode the following document text"
+	                    f" in {selected_lang}:\n\n{fine_print_content}"
+	                )
+	            ]
+	        )
+	
+	        response = client.models.generate_content(
+	            model=MODEL_ID,
+	            contents=contents,
+	            config=types.GenerateContentConfig(
+	                system_instruction=system_instruction, temperature=0.3
+	            ),
+	        )
+	
+	        output_text = response.text + f"\n\n{texts['footer_text']}"
+	        st.success(
+	            texts["ready"].get(depth_level, "Your response is ready")
+	        )
+	
+	        output_lower = output_text.lower()
+	        if any(
+	            kw in output_lower
+	            for kw in [
+	                "high risk",
+	                "severe",
+	                "penalty",
+	                "red",
+	                "alto riesgo",
+	                "severo",
+	            ]
+	        ):
+	          risk_level = "High"
+	        elif any(
+	            kw in output_lower
+	            for kw in [
+	                "medium risk",
+	                "caution",
+	                "moderate",
+	                "yellow",
+	                "riesgo medio",
+	            ]
+	        ):
+	          risk_level = "Medium"
+	        else:
+	          risk_level = "Low"
+	
+	        st.markdown("---")
+	        st.markdown("### 🚦 Document Risk Summary Stoplight")
+	        if risk_level == "High":
+	          st.markdown(
+	              '<div style="padding: 12px; border-radius: 6px;'
+	              " background-color: rgba(255, 0, 0, 0.1); border: 1px solid"
+	              ' red; font-weight: 600;">🔴 High Risk: Severe penalties or'
+	              " heavy exit barriers identified!</div>",
+	              unsafe_allow_html=True,
+	          )
+	        elif risk_level == "Medium":
+	          st.markdown(
+	              '<div style="padding: 12px; border-radius: 6px;'
+	              " background-color: rgba(255, 255, 0, 0.1); border: 1px"
+	              ' solid orange; font-weight: 600;">🟡 Medium Risk: Proceed'
+	              " with caution. Notice periods or restrictive clauses"
+	              " detected.</div>",
+	              unsafe_allow_html=True,
+	          )
+	        else:
+	          st.markdown(
+	              '<div style="padding: 12px; border-radius: 6px;'
+	              " background-color: rgba(0, 255, 0, 0.1); border: 1px solid"
+	              ' green; font-weight: 600;">🟢 Low Risk: Document terms'
+	              " appear standard.</div>",
+	              unsafe_allow_html=True,
+	          )
+	
+	        st.markdown("---")
+	        st.markdown(output_text)
+	
+	        st.session_state["history_log"].insert(
+	            0,
+	            {
+	                "timestamp": datetime.datetime.now().strftime(
+	                    "%Y-%m-%d %H:%M:%S"
+	                ),
+	                "type": "Document Decode",
+	                "title": "Document / Contract Analysis",
+	                "content": output_text,
+	            },
+	        )
+	
+	        pdf_data = generate_pdf_bytes(
+	            "Document / Contract Analysis",
+	            output_text,
+	            texts["footer_text"],
+	        )
+	        st.download_button(
+	            label="📥 Download Legal Decoding PDF",
+	            data=pdf_data,
+	            file_name="Document_Decoding_Report.pdf",
+	            mime="application/pdf",
+	            key="download_doc_pdf",
+	        )
+	
+	        if enable_audio_speech:
+	          st.markdown("---")
+	          st.markdown("### 🔊 Audio Accessibility Feed")
+	          try:
+	            from gtts import gTTS
+	
+	            clean_text_for_speech = output_text
+	            clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+	            clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+	
+	            tts = gTTS(
+	                text=clean_text_for_speech,
+	                lang=TTS_LANG_MAP.get(selected_lang, "en"),
+	                slow=False,
+	            )
+	            audio_bytes = io.BytesIO()
+	            tts.write_to_fp(audio_bytes)
+	            audio_bytes.seek(0)
+	            st.audio(audio_bytes, format="audio/mp3")
+	          except Exception as tts_err:
+	            st.warning(
+	                f"Could not generate audio stream: {str(tts_err)}"
+	            )
+	
+	      except APIError as e:
+	        st.error(f"API Error: {e.message}")
+	      except Exception as e:
+	        st.error(f"An unexpected error occurred: {str(e)}")
 
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & COMPLETE)]
