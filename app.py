@@ -1443,168 +1443,168 @@ if is_streamlit:
       [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
   )
 
-      # ==============================================================================
-      # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
-      # ==============================================================================
-        with tab1:
-            st.markdown(
-              f'<div class="app-title">Simply Explained - What you need to know</div>', unsafe_allow_html=True
-          )
-          st.markdown(
-              f'<div class="app-subtitle">{texts["subtitle"]}</div>',
-              unsafe_allow_html=True,
-          )
-          st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
+  # ==============================================================================
+  # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
+  # ==============================================================================
+    with tab1:
+        st.markdown(
+          f'<div class="app-title">Simply Explained - What you need to know</div>', unsafe_allow_html=True
+      )
+      st.markdown(
+          f'<div class="app-subtitle">{texts["subtitle"]}</div>',
+          unsafe_allow_html=True,
+      )
+      st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
 
-          with st.form("explanation_form"):
-              topic = st.text_input(
-                  texts["topic_label"],
-                  placeholder=texts["topic_placeholder"],
-                  key="topic_input",
+      with st.form("explanation_form"):
+          topic = st.text_input(
+              texts["topic_label"],
+              placeholder=texts["topic_placeholder"],
+              key="topic_input",
+          )
+          
+          st.markdown("---")
+          st.markdown("### 🎙️ Voice Inquiry Dictation")
+          st.markdown("Click the microphone below to record your question, then hit submit.")
+          
+          audio_value = st.audio_input("Record your question", key="main_audio_recorder")
+          
+          submitted = st.form_submit_button(texts["button_label"], use_container_width=True)
+
+      if submitted:
+          if not api_key:
+              st.error(texts["no_api"])
+          elif not topic and audio_value is None:
+              st.error("Please enter a topic or record an audio inquiry.")
+          else:
+              spinner_text = texts["spinners"].get(
+                  depth_level, texts["simplifying_spinner"]
               )
-              
-              st.markdown("---")
-              st.markdown("### 🎙️ Voice Inquiry Dictation")
-              st.markdown("Click the microphone below to record your question, then hit submit.")
-              
-              audio_value = st.audio_input("Record your question", key="main_audio_recorder")
-              
-              submitted = st.form_submit_button(texts["button_label"], use_container_width=True)
+              with st.spinner(spinner_text):
+                  try:
+                      client = genai.Client(api_key=api_key)
 
-          if submitted:
-              if not api_key:
-                  st.error(texts["no_api"])
-              elif not topic and audio_value is None:
-                  st.error("Please enter a topic or record an audio inquiry.")
-              else:
-                  spinner_text = texts["spinners"].get(
-                      depth_level, texts["simplifying_spinner"]
-                  )
-                  with st.spinner(spinner_text):
-                      try:
-                          client = genai.Client(api_key=api_key)
-
-                          if depth_level in ["Easy", "Fácil", "Einfach", "Facile", "आसान", "简单", "簡単", "쉬움"]:
-                              depth_instruction = (
-                                  f"Complexity Tier: EASY. Explain using ultra-plain,"
-                                  f" crystal-clear everyday language in {selected_lang} for ages 16 and below."
-                              )
-                          elif depth_level in ["Balanced", "Equilibrado", "Ausgewogen", "Équilibré", "संतुलित", "平衡", "バランス", "균형"]:
-                              depth_instruction = (
-                                  f"Complexity Tier: BALANCED. Provide a balanced, professional"
-                                  f" overview in {selected_lang}."
-                              )
-                          else:
-                              depth_instruction = (
-                                  f"Complexity Tier: HARD. Provide an advanced, academically"
-                                  f" rigorous, deeply technical breakdown in {selected_lang}. You MUST use Google Search grounding (tools=[types.Tool(google_search=types.GoogleSearch())]) to query live authoritative references and official documentation matching the topic. In the 8th pillar ('Where Do We Find It (Verification & Sources)'), explicitly list these grounding sources as clickable markdown links."
-                              )
-
-                          if audio_value is not None:
-                              input_payload = [
-                                  f"Listen to this audio inquiry and explain the topic in {selected_lang} at the {depth_level} tier, following all system instructions:",
-                                  types.Part.from_bytes(data=audio_value.getvalue(), mime_type="audio/wav")
-                              ]
-                              display_title = "Voice Inquiry Audio"
-                          else:
-                              input_payload = (
-                                  f"Explain or simplify this topic in {selected_lang} at"
-                                  f" the {depth_level} tier: {topic}"
-                              )
-                              display_title = topic
-
-                          system_instruction = (
-                              f"You are an expert educator. Respond entirely and strictly"
-                              f" in: {selected_lang}. Adopt tone: {tone_level}."
-                              f" {depth_instruction} Start with a title formatted as: #"
-                              f" Simply Explained ({depth_level}): {display_title}. Structure your"
-                              f" response using these exact pillars: 1)"
-                              f" {texts['pillar_headers'][0]}, 2)"
-                              f" {texts['pillar_headers'][1]}, 3)"
-                              f" {texts['pillar_headers'][2]}, 4)"
-                              f" {texts['pillar_headers'][3]}, 5)"
-                              f" {texts['pillar_headers'][4]}, 6)"
-                              f" {texts['pillar_headers'][5]}, 7)"
-                              f" {texts['pillar_headers'][6]}, and 8)"
-                              f" {texts['pillar_headers'][7]}. End with: ##"
-                              f" {texts['bottom_line']}."
+                      if depth_level in ["Easy", "Fácil", "Einfach", "Facile", "आसान", "简单", "簡単", "쉬움"]:
+                          depth_instruction = (
+                              f"Complexity Tier: EASY. Explain using ultra-plain,"
+                              f" crystal-clear everyday language in {selected_lang} for ages 16 and below."
+                          )
+                      elif depth_level in ["Balanced", "Equilibrado", "Ausgewogen", "Équilibré", "संतुलित", "平衡", "バランス", "균형"]:
+                          depth_instruction = (
+                              f"Complexity Tier: BALANCED. Provide a balanced, professional"
+                              f" overview in {selected_lang}."
+                          )
+                      else:
+                          depth_instruction = (
+                              f"Complexity Tier: HARD. Provide an advanced, academically"
+                              f" rigorous, deeply technical breakdown in {selected_lang}. You MUST use Google Search grounding (tools=[types.Tool(google_search=types.GoogleSearch())]) to query live authoritative references and official documentation matching the topic. In the 8th pillar ('Where Do We Find It (Verification & Sources)'), explicitly list these grounding sources as clickable markdown links."
                           )
 
-                          gen_config_kwargs = {
-                              "system_instruction": system_instruction,
-                              "temperature": 0.7
-                          }
-                          if depth_level in ["Hard", "Difícil", "Schwierig", "Difficile", "कठिन", "困难", "高難度", "어려움"]:
-                              gen_config_kwargs["tools"] = [types.Tool(google_search=types.GoogleSearch())]
+                      if audio_value is not None:
+                          input_payload = [
+                              f"Listen to this audio inquiry and explain the topic in {selected_lang} at the {depth_level} tier, following all system instructions:",
+                              types.Part.from_bytes(data=audio_value.getvalue(), mime_type="audio/wav")
+                          ]
+                          display_title = "Voice Inquiry Audio"
+                      else:
+                          input_payload = (
+                              f"Explain or simplify this topic in {selected_lang} at"
+                              f" the {depth_level} tier: {topic}"
+                          )
+                          display_title = topic
 
-                          response = client.models.generate_content(
-                              model=MODEL_ID,
-                              contents=input_payload,
-                              config=types.GenerateContentConfig(**gen_config_kwargs),
-                          )
+                      system_instruction = (
+                          f"You are an expert educator. Respond entirely and strictly"
+                          f" in: {selected_lang}. Adopt tone: {tone_level}."
+                          f" {depth_instruction} Start with a title formatted as: #"
+                          f" Simply Explained ({depth_level}): {display_title}. Structure your"
+                          f" response using these exact pillars: 1)"
+                          f" {texts['pillar_headers'][0]}, 2)"
+                          f" {texts['pillar_headers'][1]}, 3)"
+                          f" {texts['pillar_headers'][2]}, 4)"
+                          f" {texts['pillar_headers'][3]}, 5)"
+                          f" {texts['pillar_headers'][4]}, 6)"
+                          f" {texts['pillar_headers'][5]}, 7)"
+                          f" {texts['pillar_headers'][6]}, and 8)"
+                          f" {texts['pillar_headers'][7]}. End with: ##"
+                          f" {texts['bottom_line']}."
+                      )
 
-                          output_text = response.text + f"\n\n{texts['footer_text']}"
-                          st.success(
-                              texts["ready"].get(depth_level, "Your response is ready")
-                          )
-                          st.markdown("---")
-                          st.markdown(output_text)
-                          
-                          st.session_state["history_log"].insert(
-                              0,
-                              {
-                                  "timestamp": datetime.datetime.now().strftime(
-                                      "%Y-%m-%d %H:%M:%S"
-                                  ),
-                                  "type": f"Topic Explanation ({depth_level})",
-                                  "title": display_title,
-                                  "content": output_text,
-                              },
-                          )
+                      gen_config_kwargs = {
+                          "system_instruction": system_instruction,
+                          "temperature": 0.7
+                      }
+                      if depth_level in ["Hard", "Difícil", "Schwierig", "Difficile", "कठिन", "困难", "高難度", "어려움"]:
+                          gen_config_kwargs["tools"] = [types.Tool(google_search=types.GoogleSearch())]
 
-                          pdf_data = generate_pdf_bytes(
-                              f"Topic ({depth_level}): {display_title}",
-                              output_text,
-                              texts["footer_text"],
-                          )
-                          st.download_button(
-                              label="📥 Download PDF Report",
-                              data=pdf_data,
-                              file_name=(
-                                  f"Simply_Explained_{depth_level}_{display_title.replace(' ', '_')}.pdf"
+                      response = client.models.generate_content(
+                          model=MODEL_ID,
+                          contents=input_payload,
+                          config=types.GenerateContentConfig(**gen_config_kwargs),
+                      )
+
+                      output_text = response.text + f"\n\n{texts['footer_text']}"
+                      st.success(
+                          texts["ready"].get(depth_level, "Your response is ready")
+                      )
+                      st.markdown("---")
+                      st.markdown(output_text)
+                      
+                      st.session_state["history_log"].insert(
+                          0,
+                          {
+                              "timestamp": datetime.datetime.now().strftime(
+                                  "%Y-%m-%d %H:%M:%S"
                               ),
-                              mime="application/pdf",
-                              key="download_topic_pdf",
-                          )
+                              "type": f"Topic Explanation ({depth_level})",
+                              "title": display_title,
+                              "content": output_text,
+                          },
+                      )
 
-                          if enable_audio_speech:
-                              st.markdown("---")
-                              st.markdown("### 🔊 Audio Accessibility Feed")
-                              try:
-                                  from gtts import gTTS
+                      pdf_data = generate_pdf_bytes(
+                          f"Topic ({depth_level}): {display_title}",
+                          output_text,
+                          texts["footer_text"],
+                      )
+                      st.download_button(
+                          label="📥 Download PDF Report",
+                          data=pdf_data,
+                          file_name=(
+                              f"Simply_Explained_{depth_level}_{display_title.replace(' ', '_')}.pdf"
+                          ),
+                          mime="application/pdf",
+                          key="download_topic_pdf",
+                      )
 
-                                  clean_text_for_speech = output_text
-                                  clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-                                  clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+                      if enable_audio_speech:
+                          st.markdown("---")
+                          st.markdown("### 🔊 Audio Accessibility Feed")
+                          try:
+                              from gtts import gTTS
 
-                                  tts = gTTS(
-                                      text=clean_text_for_speech,
-                                      lang=TTS_LANG_MAP.get(selected_lang, "en"),
-                                      slow=False,
-                                  )
-                                  audio_bytes_obj = io.BytesIO()
-                                  tts.write_to_fp(audio_bytes_obj)
-                                  audio_bytes_obj.seek(0)
-                                  st.audio(audio_bytes_obj, format="audio/mp3")
-                              except Exception as tts_err:
-                                  st.warning(
-                                      f"Could not generate audio stream: {str(tts_err)}"
-                                  )
+                              clean_text_for_speech = output_text
+                              clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+                              clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
 
-                      except APIError as e:
-                          st.error(f"API Error: {e.message}")
-                      except Exception as e:
-                          st.error(f"An unexpected error occurred: {str(e)}")
+                              tts = gTTS(
+                                  text=clean_text_for_speech,
+                                  lang=TTS_LANG_MAP.get(selected_lang, "en"),
+                                  slow=False,
+                              )
+                              audio_bytes_obj = io.BytesIO()
+                              tts.write_to_fp(audio_bytes_obj)
+                              audio_bytes_obj.seek(0)
+                              st.audio(audio_bytes_obj, format="audio/mp3")
+                          except Exception as tts_err:
+                              st.warning(
+                                  f"Could not generate audio stream: {str(tts_err)}"
+                              )
+
+                  except APIError as e:
+                      st.error(f"API Error: {e.message}")
+                  except Exception as e:
+                      st.error(f"An unexpected error occurred: {str(e)}")
     
   # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
