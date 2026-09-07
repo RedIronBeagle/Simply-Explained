@@ -1443,11 +1443,11 @@ if is_streamlit:
       [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
   )
 
-    # ==============================================================================
+      # ==============================================================================
       # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
       # ==============================================================================
         with tab1:
-          st.markdown(
+            st.markdown(
               f'<div class="app-title">Simply Explained - What you need to know</div>', unsafe_allow_html=True
           )
           st.markdown(
