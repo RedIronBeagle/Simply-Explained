@@ -21,6 +21,14 @@ from google import genai
 from google.genai import types
 from google.genai.errors import APIError
 import requests
+import streamlit as st
+from google import genai
+
+# This securely grabs the key you saved in Streamlit Cloud
+api_key = st.secrets["GEMINI_API_KEY"]
+
+# This starts your Gemini connection
+client = genai.Client(api_key=api_key)
 
 MODEL_ID = "gemini-3.6-flash"
 
