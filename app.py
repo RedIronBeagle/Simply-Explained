@@ -1570,16 +1570,12 @@ elif audio_value is not None:
 if query_to_process and st.button("Generate Explanation"):
     with st.spinner("Processing..."):
         try:
-            except Exception as e:
-                
             response = client.models.generate_content(
                 model=MODEL_ID,
                 contents=query_to_process
             )
-            st.markdown(response.text)
-            except Exception as e:
-            st.error(f"Error: {e}")
-
+            output_text = response.text
+            st.markdown(output_text)
         
             st.session_state["history_log"].insert(
                 0,
@@ -1609,32 +1605,32 @@ if query_to_process and st.button("Generate Explanation"):
             )
 
             if enable_audio_speech:
-              st.markdown("---")
-              st.markdown("### 🔊 Audio Accessibility Feed")
-              try:
-                from gtts import gTTS
+                st.markdown("---")
+                st.markdown("### 🔊 Audio Accessibility Feed")
+                try:
+                    from gtts import gTTS
 
-                clean_text_for_speech = output_text
-                clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-                clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+                    clean_text_for_speech = output_text
+                    clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+                    clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
 
-                tts = gTTS(
-                    text=clean_text_for_speech,
-                    lang=TTS_LANG_MAP.get(selected_lang, "en"),
-                    slow=False,
-                )
-                audio_bytes = io.BytesIO()
-                tts.write_to_fp(audio_bytes)
-                audio_bytes.seek(0)
-                st.audio(audio_bytes, format="audio/mp3")
-              except Exception as tts_err:
-                st.warning(
-                    f"Could not generate audio stream: {str(tts_err)}"
-                )
+                    tts = gTTS(
+                        text=clean_text_for_speech,
+                        lang=TTS_LANG_MAP.get(selected_lang, "en"),
+                        slow=False,
+                    )
+                    audio_bytes = io.BytesIO()
+                    tts.write_to_fp(audio_bytes)
+                    audio_bytes.seek(0)
+                    st.audio(audio_bytes, format="audio/mp3")
+                except Exception as tts_err:
+                    st.warning(
+                        f"Could not generate audio stream: {str(tts_err)}"
+                    )
 
-          except APIError as e:
+        except APIError as e:
             st.error(f"API Error: {e.message}")
-          except Exception as e:
+        except Exception as e:
             st.error(f"An unexpected error occurred: {str(e)}")
 
 
