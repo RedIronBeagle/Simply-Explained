@@ -21,14 +21,6 @@ from google import genai
 from google.genai import types
 from google.genai.errors import APIError
 import requests
-import streamlit as st
-from google import genai
-
-# This securely grabs the key you saved in Streamlit Cloud
-api_key = st.secrets["GEMINI_API_KEY"]
-
-# This starts your Gemini connection
-client = genai.Client(api_key=api_key)
 
 MODEL_ID = "gemini-3.6-flash"
 
@@ -880,7 +872,7 @@ UI_TEXT = {
             "Escape Hatch Locator": ("🎯 एस्केप हैच लोकेटर", "निकास के लिए सीधा रडार"),
             "7-Year-Old Playground Mindset": ("🖍️ 7 साल के बच्चे की मानसिकता", "शुद्ध, मासूम बचपन का अफ़सोस"),
             "Ruthless Barrister": ("⚖️ क्रूर वकील", "आक्रामक कानूनी लाभ"),
-            "Zen Negotiator": ("🧘 ज़ेन वार्ताकार", "शांत, शांतिपूर्ण और स्थिर मध्यस्थ"),
+            "Zen Negotiator": ("🔗 ज़ेन वार्ताकार", "शांत, शांतिपूर्ण और स्थिर मध्यस्थ"),
             "Corporate Shark": ("🦈 कॉर्पोरेट शार्क", "मुझे पहले कहाँ काटना चाहिए?"),
             "Bureaucracy Hacker": ("🕵️ नौकरशाही हैकर", "स्वचालित रोबोटों को बायपास करना"),
         },
@@ -1368,7 +1360,6 @@ if is_streamlit:
   if "history_log" not in st.session_state:
     st.session_state["history_log"] = []
 
-  # [MODIFICATION NOTE v5.0]: The language selection widget label is intentionally left fixed in English ("🌐 **Language**") as requested, while every other element in the sidebar, tabs 1-3, PDF exports, terms, and persona outputs adapts to the selected language.
   selected_lang = st.sidebar.selectbox(
       "🌐 **Language**",
       LANGUAGES,
@@ -1507,6 +1498,7 @@ if is_streamlit:
                 f" in: {selected_lang}. Adopt tone: {tone_level}."
                 f" {depth_instruction} Start with a title formatted as: #"
                 f" Simply Explained ({depth_level}): {topic}. Structure your"
+                f" explanation using the exact pillar headers provided."
                 f" response using these exact pillars: 1)"
                 f" {texts['pillar_headers'][0]}, 2)"
                 f" {texts['pillar_headers'][1]}, 3)"
@@ -1542,41 +1534,6 @@ if is_streamlit:
             st.markdown("---")
             st.markdown(output_text)
 
-# ==============================================================================
-# [SECTION: INPUT SECTION]
-# ==============================================================================
-
-# Option A: Your standard text input
-    user_text_query = st.text_input("What would you like explained?")
-
-# Option B: The new microphone recorder right underneath it
-    st.write("--- Or speak your inquiry ---")
-    audio_value = st.audio_input("Record your question")
-
-# Process whichever input the user provided
-    query_to_process = None
-
-if user_text_query:
-    query_to_process = user_text_query
-elif audio_value is not None:
-    st.audio(audio_value)
-    # Convert audio bytes so Gemini can read it
-    query_to_process = [
-        "Listen to this audio inquiry and provide a clear, simplified response:",
-        types.Part.from_bytes(data=audio_value.getvalue(), mime_type="audio/wav")
-    ]
-
-# If either a text query or audio query exists, run it through your Gemini client
-if query_to_process and st.button("Generate Explanation"):
-    with st.spinner("Processing..."):
-        try:
-            response = client.models.generate_content(
-                model=MODEL_ID,
-                contents=query_to_process
-            )
-            output_text = response.text
-            st.markdown(output_text)
-        
             st.session_state["history_log"].insert(
                 0,
                 {
@@ -1605,34 +1562,33 @@ if query_to_process and st.button("Generate Explanation"):
             )
 
             if enable_audio_speech:
-                st.markdown("---")
-                st.markdown("### 🔊 Audio Accessibility Feed")
-                try:
-                    from gtts import gTTS
+              st.markdown("---")
+              st.markdown("### 🔊 Audio Accessibility Feed")
+              try:
+                from gtts import gTTS
 
-                    clean_text_for_speech = output_text
-                    clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-                    clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+                clean_text_for_speech = output_text
+                clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+                clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
 
-                    tts = gTTS(
-                        text=clean_text_for_speech,
-                        lang=TTS_LANG_MAP.get(selected_lang, "en"),
-                        slow=False,
-                    )
-                    audio_bytes = io.BytesIO()
-                    tts.write_to_fp(audio_bytes)
-                    audio_bytes.seek(0)
-                    st.audio(audio_bytes, format="audio/mp3")
-                except Exception as tts_err:
-                    st.warning(
-                        f"Could not generate audio stream: {str(tts_err)}"
-                    )
+                tts = gTTS(
+                    text=clean_text_for_speech,
+                    lang=TTS_LANG_MAP.get(selected_lang, "en"),
+                    slow=False,
+                )
+                audio_bytes = io.BytesIO()
+                tts.write_to_fp(audio_bytes)
+                audio_bytes.seek(0)
+                st.audio(audio_bytes, format="audio/mp3")
+              except Exception as tts_err:
+                st.warning(
+                    f"Could not generate audio stream: {str(tts_err)}"
+                )
 
-        except APIError as e:
+          except APIError as e:
             st.error(f"API Error: {e.message}")
-        except Exception as e:
+          except Exception as e:
             st.error(f"An unexpected error occurred: {str(e)}")
-
 
   # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
