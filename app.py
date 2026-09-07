@@ -1454,6 +1454,33 @@ with tab1:
         f'<div class="app-subtitle">{texts["subtitle"]}</div>',
         unsafe_allow_html=True,
     )
+# Custom CSS to enlarge the audio recorder interface
+	st.markdown(
+	"""
+	<style>
+	/* Target Streamlit's audio input container and expand it */
+	[data-testid="stAudioInput"] {
+		width: 100% !important;
+		padding: 15px;
+		background-color: rgba(255, 255, 255, 0.03);
+		border: 2px dashed rgba(128, 128, 128, 0.4);
+		border-radius: 12px;
+		text-align: center;
+	}
+	
+	/* Scale up the internal recording button elements */
+	[data-testid="stAudioInput"] button {
+		transform: scale(1.3);
+		margin: 10px 0;
+	}
+	</style>
+	""",
+	unsafe_allow_html=True
+	)
+
+
+
+#***********
     st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
 
     with st.form("explanation_form"):
