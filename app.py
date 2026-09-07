@@ -1570,6 +1570,8 @@ elif audio_value is not None:
 if query_to_process and st.button("Generate Explanation"):
     with st.spinner("Processing..."):
         try:
+            except Exception as e:
+                
             response = client.models.generate_content(
                 model=MODEL_ID,
                 contents=query_to_process
@@ -1579,7 +1581,6 @@ if query_to_process and st.button("Generate Explanation"):
             st.error(f"An error occurred: {e}")
             #end of mic
         
-
             st.session_state["history_log"].insert(
                 0,
                 {
