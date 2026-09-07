@@ -1577,9 +1577,9 @@ if query_to_process and st.button("Generate Explanation"):
                 contents=query_to_process
             )
             st.markdown(response.text)
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
-            #end of mic
+            except Exception as e:
+            st.error(f"Error: {e}")
+
         
             st.session_state["history_log"].insert(
                 0,
