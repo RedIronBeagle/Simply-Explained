@@ -1456,27 +1456,27 @@ with tab1:
     )
 # Custom CSS to enlarge the audio recorder interface
 	st.markdown(
-	"""
-	<style>
-	/* Target Streamlit's audio input container and expand it */
-	[data-testid="stAudioInput"] {
-		width: 100% !important;
-		padding: 15px;
-		background-color: rgba(255, 255, 255, 0.03);
-		border: 2px dashed rgba(128, 128, 128, 0.4);
-		border-radius: 12px;
-		text-align: center;
-	}
-	
-	/* Scale up the internal recording button elements */
-	[data-testid="stAudioInput"] button {
-		transform: scale(1.3);
-		margin: 10px 0;
-	}
-	</style>
-	""",
-	unsafe_allow_html=True
-	)
+		"""
+		<style>
+		/* Target Streamlit's audio input container and expand it */
+		[data-testid="stAudioInput"] {
+			width: 100% !important;
+			padding: 15px;
+			background-color: rgba(255, 255, 255, 0.03);
+			border: 2px dashed rgba(128, 128, 128, 0.4);
+			border-radius: 12px;
+			text-align: center;
+		}
+		
+		/* Scale up the internal recording button elements */
+		[data-testid="stAudioInput"] button {
+			transform: scale(1.3);
+			margin: 10px 0;
+		}
+		</style>
+		""",
+		unsafe_allow_html=True
+		)
 
 
 
