@@ -1547,14 +1547,14 @@ if is_streamlit:
 # ==============================================================================
 
 # Option A: Your standard text input
-user_text_query = st.text_input("What would you like explained?")
+    user_text_query = st.text_input("What would you like explained?")
 
 # Option B: The new microphone recorder right underneath it
-st.write("--- Or speak your inquiry ---")
-audio_value = st.audio_input("Record your question")
+    st.write("--- Or speak your inquiry ---")
+    audio_value = st.audio_input("Record your question")
 
 # Process whichever input the user provided
-query_to_process = None
+    query_to_process = None
 
 if user_text_query:
     query_to_process = user_text_query
