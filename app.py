@@ -1542,6 +1542,39 @@ if is_streamlit:
             st.markdown("---")
             st.markdown(output_text)
 
+# ==============================================================================
+# INPUT SECTION (Put this where you normally take user input)
+# ==============================================================================
+
+# Option A: Your standard text input
+user_text_query = st.text_input("What would you like explained?")
+
+# Option B: The new microphone recorder right underneath it
+st.write("--- Or speak your inquiry ---")
+audio_value = st.audio_input("Record your question")
+
+# Process whichever input the user provided
+query_to_process = None
+
+if user_text_query:
+    query_to_process = user_text_query
+elif audio_value is not None:
+    st.audio(audio_value)
+    # Convert audio bytes so Gemini can read it
+    query_to_process = [
+        "Listen to this audio inquiry and provide a clear, simplified response:",
+        types.Part.from_bytes(data=audio_value.getvalue(), mime_type="audio/wav")
+    ]
+
+# If either a text query or audio query exists, run it through your Gemini client
+if query_to_process and st.button("Generate Explanation"):
+    with st.spinner("Processing..."):
+        response = client.models.generate_content(
+            model=MODEL_ID,
+            contents=query_to_process
+        )
+        st.markdown(response.text)
+              
             st.session_state["history_log"].insert(
                 0,
                 {
