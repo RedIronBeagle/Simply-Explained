@@ -1543,7 +1543,7 @@ if is_streamlit:
             st.markdown(output_text)
 
 # ==============================================================================
-# INPUT SECTION (Put this where you normally take user input)
+# [SECTION: INPUT SECTION]
 # ==============================================================================
 
 # Option A: Your standard text input
@@ -1569,12 +1569,17 @@ elif audio_value is not None:
 # If either a text query or audio query exists, run it through your Gemini client
 if query_to_process and st.button("Generate Explanation"):
     with st.spinner("Processing..."):
-        response = client.models.generate_content(
-            model=MODEL_ID,
-            contents=query_to_process
-        )
-        st.markdown(response.text)
-              
+        try:
+            response = client.models.generate_content(
+                model=MODEL_ID,
+                contents=query_to_process
+            )
+            st.markdown(response.text)
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
+            #end of mic
+        
+
             st.session_state["history_log"].insert(
                 0,
                 {
@@ -1630,6 +1635,7 @@ if query_to_process and st.button("Generate Explanation"):
             st.error(f"API Error: {e.message}")
           except Exception as e:
             st.error(f"An unexpected error occurred: {str(e)}")
+
 
   # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
