@@ -1455,8 +1455,8 @@ with tab1:
         unsafe_allow_html=True,
     )
 # Custom CSS to enlarge the audio recorder interface
-	st.markdown(
-		"""
+    st.markdown(
+        """
 		<style>
 		/* Target Streamlit's audio input container and expand it */
 		[data-testid="stAudioInput"] {
