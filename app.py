@@ -1877,7 +1877,7 @@ with tab3:
     if "escape_text_area" not in st.session_state:
         st.session_state["escape_text_area"] = st.session_state.get("fetched_fp_text", "")
     
-escape_text_input = st.text_area(
+    escape_text_input = st.text_area(
         texts["escape_text_label"],
         value="",
         placeholder=texts["escape_text_placeholder"],
