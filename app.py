@@ -1889,12 +1889,13 @@ with tab3:
     
     # 2 - Tactical Focus & Nuances
     st.markdown(f'<div class="section-card-thin">', unsafe_allow_html=True)
-    st.markdown(f"<div style='font-size: 0.9rem; font-weight: 600; color: #94A3B8; margin-bottom: 4px;'>🎯 2. {texts.get('escape_hint_label', 'Tactical Focus & Nuances')}</div>", unsafe_allow_html=True)
-    extra_hint_input = st.text_input(
+    st.markdown(f"<div style='font-size: 0.9rem; font-weight: 600; color: #94A3B8; margin-bottom: 4px;'>🎯 2. {texts.get('escape_hint_label', 'Tactical Focus & Nuances')}</div>", unsafe_allow_html=True) 
+    
+	extra_hint_input = st.text_input(
         texts["escape_hint_label"],
         placeholder=texts["escape_hint_placeholder"],
-        key="escape_extra_hint_tab3_unique",
-        label_visibility="collapsed"
+        label_visibility="collapsed",
+        key="escape_extra_hint_input_unique"
     )
     st.markdown('</div>', unsafe_allow_html=True)
 
