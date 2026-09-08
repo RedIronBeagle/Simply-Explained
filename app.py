@@ -2006,7 +2006,7 @@ with tab3:
         col_idx = i % 2
         lbl, desc = p_dict[key]
         with p_rows[row_idx][col_idx]:
-            if st.button(f"{lbl}\n*{desc}*", key=f"persona_tab3_{key}_{i}", use_container_width=True):
+            if st.button(end_btn_label, key="btn_end_my_suffering_tab3_unique", use_container_width=True):
                 st.session_state["integrated_persona_select"] = key
 
     st.markdown("<br>", unsafe_allow_html=True)
