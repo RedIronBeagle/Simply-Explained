@@ -1456,74 +1456,35 @@ with tab1:
     )
     st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
 
-    # 👈 Place your dynamic help expander right here
+    # Compact, localized help expander
     with st.expander(texts.get("help_title_tab1", "💡 Quick Guide: How to Use Tab 1")):
-        st.markdown(texts.get("help_body_tab1", ""))
+        st.markdown(texts.get("help_body_tab1", """
+        * **Type or Speak:** Enter your topic via keyboard or tap the large voice recorder below.
+        * **Choose Depth:** Select Easy, Balanced, or Hard in the sidebar.
+        * **Generate:** Click submit to unlock your 8-pillar breakdown, audio speech, or PDF export.
+        """))
 
-    with st.form("explanation_form"):
-        topic = st.text_input(
-            texts["topic_label"],
-            placeholder=texts["topic_placeholder"],
-            key="topic_input",
-        )
-        # ... rest of your form
-	
-        st.markdown(
-        f'<div class="app-title">Simply Explained - What you need to know</div>', unsafe_allow_html=True
+    # Inputs handled cleanly outside of a restrictive form wrapper
+    topic = st.text_input(
+        texts["topic_label"],
+        placeholder=texts["topic_placeholder"],
+        key="main_topic_input_field",
     )
-    st.markdown(
-        f'<div class="app-subtitle">{texts["subtitle"]}</div>',
-        unsafe_allow_html=True,
-    )
-# Custom CSS to enlarge the audio recorder interface
-    st.markdown(
-        """
-		<style>
-		/* Target Streamlit's audio input container and expand it */
-		[data-testid="stAudioInput"] {
-			width: 100% !important;
-			padding: 15px;
-			background-color: rgba(255, 255, 255, 0.03);
-			border: 2px dashed rgba(128, 128, 128, 0.4);
-			border-radius: 12px;
-			text-align: center;
-		}
-		
-		/* Scale up the internal recording button elements */
-		[data-testid="stAudioInput"] button {
-			transform: scale(1.3);
-			margin: 10px 0;
-		}
-		</style>
-		""",
-		unsafe_allow_html=True
-		)
-
-
-
-#***********
-    st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
-
-    with st.form("explanation_form"):
-        topic = st.text_input(
-            texts["topic_label"],
-            placeholder=texts["topic_placeholder"],
-            key="topic_input",
-        )
-        
-        st.markdown("---")
-        st.markdown("### 🎙️ Voice Inquiry Dictation")
-        st.markdown("Click the microphone below to record your question, then hit submit.")
-        
-        audio_value = st.audio_input("Record your question", key="main_audio_recorder")
-        
-        submitted = st.form_submit_button(texts["button_label"], use_container_width=True)
+    
+    st.markdown("---")
+    st.markdown(f"### 🎙️ {texts.get('voice_header', 'Voice Inquiry Dictation')}")
+    st.markdown(texts.get('voice_instructions', 'Click the microphone below to record your question, then hit submit.'))
+    
+    audio_value = st.audio_input("Record your question", key="main_audio_recorder_field")
+    
+    st.markdown("")
+    submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
 
     if submitted:
         if not api_key:
             st.error(texts["no_api"])
         elif not topic and audio_value is None:
-            st.error("Please enter a topic or record an audio inquiry.")
+            st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
         else:
             spinner_text = texts["spinners"].get(
                 depth_level, texts["simplifying_spinner"]
@@ -1616,7 +1577,7 @@ with tab1:
                         texts["footer_text"],
                     )
                     st.download_button(
-                        label="📥 Download PDF Report",
+                        label=texts.get("pdf_button", "📥 Download PDF Report"),
                         data=pdf_data,
                         file_name=(
                             f"Simply_Explained_{depth_level}_{display_title.replace(' ', '_')}.pdf"
@@ -1627,7 +1588,7 @@ with tab1:
 
                     if enable_audio_speech:
                         st.markdown("---")
-                        st.markdown("### 🔊 Audio Accessibility Feed")
+                        st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
                         try:
                             from gtts import gTTS
 
@@ -1646,13 +1607,13 @@ with tab1:
                             st.audio(audio_bytes_obj, format="audio/mp3")
                         except Exception as tts_err:
                             st.warning(
-                                f"Could not generate audio stream: {str(tts_err)}"
+                                f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
                             )
 
                 except APIError as e:
                     st.error(f"API Error: {e.message}")
                 except Exception as e:
-                    st.error(f"An unexpected error occurred: {str(e)}")    
+                    st.error(f"An unexpected error occurred: {str(e)}")
   # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
   # ==============================================================================
