@@ -1584,8 +1584,8 @@ with tab3:
         "Select BS Level",
         options=bs_options,
         value=bs_options[2],
-        key="bs_meter_slider_tab3",
-        label_visibility="collapsed"
+        label_visibility="collapsed",
+        key="escape_bs_level_slider_unique"
     )
     
     current_bs_index = bs_options.index(bs_level) + 1
