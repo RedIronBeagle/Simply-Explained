@@ -1468,7 +1468,7 @@ with tab1:
         )
         # ... rest of your form
 	
-	st.markdown(
+        st.markdown(
         f'<div class="app-title">Simply Explained - What you need to know</div>', unsafe_allow_html=True
     )
     st.markdown(
