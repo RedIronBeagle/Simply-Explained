@@ -1446,23 +1446,43 @@ if is_streamlit:
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
 # ==============================================================================
-with tab1:
-    st.markdown(
-        f'<div class="app-title">Simply Explained - What you need to know</div>', unsafe_allow_html=True
-    )
-    st.markdown(
-        f'<div class="app-subtitle">{texts["subtitle"]}</div>',
-        unsafe_allow_html=True,
-    )
-    st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
+    with tab1:
+        st.markdown(
+            f'<div class="app-title">{texts.get("app_main_title", "Simply Explained - What you need to know")}</div>', unsafe_allow_html=True
+        )
+        st.markdown(
+            f'<div class="app-subtitle">{texts["subtitle"]}</div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
 
-    # Compact, localized help expander
-    with st.expander(texts.get("help_title_tab1", "💡 Quick Guide: How to Use Tab 1")):
-        st.markdown(texts.get("help_body_tab1", """
-        * **Type or Speak:** Enter your topic via keyboard or tap the large voice recorder below.
-        * **Choose Depth:** Select Easy, Balanced, or Hard in the sidebar.
-        * **Generate:** Click submit to unlock your 8-pillar breakdown, audio speech, or PDF export.
-        """))
+        # Fully language-dynamic help expander
+        with st.expander(texts.get("help_title_tab1", "💡 Quick Guide: How to Use Tab 1")):
+            st.markdown(texts.get("help_body_tab1", ""))
+
+        topic = st.text_input(
+            texts["topic_label"],
+            placeholder=texts["topic_placeholder"],
+            key="main_topic_input_field",
+        )
+        
+        st.markdown("---")
+        st.markdown(f"### 🎙️ {texts.get('voice_header', 'Voice Inquiry Dictation')}")
+        st.markdown(texts.get('voice_instructions', 'Click the microphone below to record your question, then hit submit.'))
+        
+        audio_value = st.audio_input("Record your question", key="main_audio_recorder_field")
+        
+        st.markdown("")
+        submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
+
+        if submitted:
+            if not api_key:
+                st.error(texts["no_api"])
+            elif not topic and audio_value is None:
+                st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
+            else:
+            # [Generation logic continues...]
+            # ... rest of your form  
 
     # Inputs handled cleanly outside of a restrictive form wrapper
     topic = st.text_input(
