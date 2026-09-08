@@ -1454,6 +1454,27 @@ with tab1:
         f'<div class="app-subtitle">{texts["subtitle"]}</div>',
         unsafe_allow_html=True,
     )
+    st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
+
+    # 👈 Place your dynamic help expander right here
+    with st.expander(texts.get("help_title_tab1", "💡 Quick Guide: How to Use Tab 1")):
+        st.markdown(texts.get("help_body_tab1", ""))
+
+    with st.form("explanation_form"):
+        topic = st.text_input(
+            texts["topic_label"],
+            placeholder=texts["topic_placeholder"],
+            key="topic_input",
+        )
+        # ... rest of your form
+	
+	st.markdown(
+        f'<div class="app-title">Simply Explained - What you need to know</div>', unsafe_allow_html=True
+    )
+    st.markdown(
+        f'<div class="app-subtitle">{texts["subtitle"]}</div>',
+        unsafe_allow_html=True,
+    )
 # Custom CSS to enlarge the audio recorder interface
     st.markdown(
         """
