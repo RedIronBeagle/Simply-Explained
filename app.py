@@ -342,8 +342,7 @@ Simply Explained("본 애플리케이션", "당사")에 오신 것을 환영합�
 # ==============================================================================
 # [SECTION 3: INTERNATIONALIZATION (I18N) & LOCALIZATION DICTIONARY]
 # ==============================================================================
-UI_TEXT = {
-    "English": {
+"English": {
         "lang_label": "🌐 **Language**",
         "api_label": "Gemini API Key",
         "depth_label": "Would you like your answer to be: ",
@@ -453,6 +452,9 @@ UI_TEXT = {
         "escape_persona_label": (
             "How are you explaining it as:"
         ),
+        "tactical_persona_prompt": "Select your tactical persona framework below",
+        "end_suffering_btn_title": "🔴 END MY SUFFERING 💀",
+        "end_suffering_btn_desc": "(A chillingly calm, hypnotic hybrid between measured cadence, unpredictable syntax and bizarre emphasis, arrogance toward bureaucracy and absolute psychological annihilation with just a tab of elegance)",
         "escape_run_btn": "🚀 Execute Tactical Incident Protocol",
         "escape_clear_btn": "🧹 Clear Incident and Start over",
         "escape_success": "Your Escape Clause is ready!",
@@ -488,687 +490,7 @@ UI_TEXT = {
                 "Bypassing automated Robots",
             ),
         },
-    },
-    "Spanish": {
-        "lang_label": "🌐 **Idioma**",
-        "api_label": "Clave API de Gemini",
-        "depth_label": "¿Cómo le gustaría que sea su respuesta?: ",
-        "depth_options": ["Fácil", "Equilibrado", "Difícil"],
-        "tone_label": "🎭 **Tono / Persona**",
-        "tone_options": [
-            "Amigable y Cortés (Limpio)",
-            "Profesional y Directo",
-            "Casual e Ingenioso",
-            "🏴‍☠️ Capitán Pirata (¡Ahoy!)",
-            "🚀 Tecno-Broke Supercafeinado",
-            "🕵️‍♂️ Detective Noir de los 40",
-            "🧙‍♂️ Sabio Mago de Fantasía",
-        ],
-        "topic_label": "¿Sobre qué le gustaría saber?",
-        "topic_placeholder": "ej., Historia, Snoopy, Química, Gobierno, etc.",
-        "button_label": "Vamos a simplificarlo",
-        "start_over": "🧹 Empezar de nuevo",
-        "terms_button": "📜 Términos y Condiciones",
-        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>Nota de Privacidad:</strong> No guardamos nada. Cualquier documento o información confidencial que proporcione se procesa de forma transitoria y nunca se almacena. Lo hacemos fácil de entender, de forma segura y privada.</div>',
-        "no_api": " Por favor, introduzca su clave API de Gemini o configure la variable de entorno GEMINI_API_KEY.",
-        "no_topic": "Por favor, introduzca lo que necesita que le expliquemos.",
-        "ready": {
-            "Easy": "¡Hola y bienvenido! Su respuesta está lista y es fácil de entender:",
-            "Balanced": "¡Hola y bienvenido! Su respuesta está lista en un estado Zen equilibrado.",
-            "Hard": "¡Hola y bienvenido! Su respuesta está lista para darle ese dolor de cabeza que tanto le gusta.",
-        },
-        "subtitle": "**Respondiendo preguntas complejas de forma sencilla.**",
-        "bottom_line": "Conclusión",
-        "spinners": {
-            "Easy": "Haciéndolo lo más simple posible...",
-            "Balanced": "Preparando la información para la mayoría...",
-            "Hard": "Hola y bienvenido. Muy bien, si eso es lo que quiere...",
-        },
-        "pillar_headers": [
-            "## Concepto Clave",
-            "## ¿Qué Es?",
-            "## ¿Cómo Funciona?",
-            "## ¿Qué Estamos Cediendo?",
-            "## ¿Por Qué Importa?",
-            "## ¿Cómo Nos Afecta?",
-            "## Datos Ocultos Que No Nos Cuentan",
-            "## ¿Dónde Lo Encontramos (Verificación y Fuentes)",
-        ],
-        "fine_print_title": "Simply Explained: Cláusulas, Condiciones, Asuntos Legales, Obligaciones y Otros Documentos que **Debemos** Comprender",
-        "fine_print_subtitle": "Explicando y entendiendo cosas que nunca supimos y otros documentos sin explicar.",
-        "choose_input_mode": "Elija cómo le gustaría proporcionarnos la información:",
-        "input_modes": ["Pegar Texto", "Enlace Web / URL", "Subir Imagen", "Subir PDF"],
-        "paste_label": "Pegue, sube o proporcione lo que desea simplificar.",
-        "url_label": "Pegue la URL de la Política de Privacidad o Términos de Servicio:",
-        "upload_label": "Suba una imagen o captura de pantalla del documento:",
-        "upload_pdf_label": "Suba un documento legal o contrato (PDF):",
-        "decode_button": "Vamos a simplificarlo",
-        "simplifying_spinner": "Preparándonos para comprender...",
-        "fine_print_headers": [
-            "## 🚦 Resumen de Riesgos",
-            "## 📄 Cláusulas Clave Explicadas",
-            "## ⚖️ Responsabilidades y Derechos Renunciados",
-            "## 🔒 Privacidad de Datos y Rastreo",
-            "## 💳 Tarifas Ocultas y Trampas de Renovación",
-            "## 🚪 Terminación y Cancelación",
-            "## 📌 Conclusión",
-        ],
-        "footer_text": "--- \n Respaldado por SkyNet, somos conscientes.",
-        "read_aloud_label": "♿ Léemelo",
-        "tab1_name": "💡 Simply Explained",
-        "tab2_name": "📄 Simply Explained - Documentos",
-        "tab3_name": "🚪 Simply Explained - La Cláusula de Escape",
-        "escape_title": "Simply Explained - La Cláusula de Escape",
-        "escape_subtitle": "Explicando las cosas de las que necesitamos escapar.",
-        "escape_badge": "🚪 **El Laboratorio de Inteligencia definitivo *Sácame de aquí* está activo y listo para usar**.",
-        "escape_doc_section": "📄 Veamos (leamos) con qué necesita ayuda.",
-        "escape_text_label": "Pegue cualquier texto con el que necesite ayuda para entender y simplificar.",
-        "escape_text_placeholder": "Péguelo aquí...",
-        "escape_hint_label": "Agregue cualquier detalle en el que deba concentrarse:",
-        "escape_hint_placeholder": "ej., Querer escalar la prioridad inmediatamente...",
-        "escape_lab_section": "🚪 Suite de Contingencia Operativa",
-        "escape_urgency_label": "⚡ Escala de Urgencia: ¿cuál es su nivel de *escapar* en:",
-        "escape_persona_label": "¿Cómo lo está explicando como:",
-        "escape_run_btn": "🚀 Ejecutar Protocolo de Incidente Táctico",
-        "escape_clear_btn": "🧹 Borrar Incidente y Empezar de Nuevo",
-        "escape_success": "¡Su Cláusula de Escape está lista!",
-        "escape_no_text": "Por favor, proporcione un escenario de texto para analizar.",
-        "escape_spinner": "Ejecutando análisis operativo avanzado...",
-        "escape_disclaimer": "*Nota: Podemos proporcionar orientación estratégica y scripts tácticos para ayudarle a salir adelante, pero no podemos garantizar resultados específicos ni cumplimiento institucional. Sin embargo, ejecutar este protocolo le otorga una oportunidad de lucha significativamente mejor que no hacer nada.*",
-        "personas": {
-            "Houdini Mode": ("🪄 Modo Houdini", "Trucos de magia para salidas"),
-            "Grandma Filter": ("👵 Filtro de Abuelita", "Orientación cálida, paciente y reconfortante"),
-            "Escape Hatch Locator": ("🎯 Localizador de Escotilla", "Radar directo para salidas"),
-            "7-Year-Old Playground Mindset": ("🖍️ Mentalidad de 7 Años", "Asombro infantil puro e inocente"),
-            "Ruthless Barrister": ("⚖️ Abogado Implacable", "Apalancamiento legal agresivo"),
-            "Zen Negotiator": ("🧘 Negociador Zen", "Mediador tranquilo, pacífico y sereno"),
-            "Corporate Shark": ("🦈 Tiburón Corporativo", "¿Por dónde debería morder primero?"),
-            "Bureaucracy Hacker": ("🕵️ Hacker de Burocracia", "Bypasseando robots automatizados"),
-        },
-    },
-    "German": {
-        "lang_label": "🌐 **Sprache**",
-        "api_label": "Gemini API-Schlüssel",
-        "depth_label": "Wie soll Ihre Antwort sein?: ",
-        "depth_options": ["Einfach", "Ausgewogen", "Schwierig"],
-        "tone_label": "🎭 **Tonfall / Persona**",
-        "tone_options": [
-            "Freundlich & Höflich (Sauber)",
-            "Professionell & Direkt",
-            "Locker & Witzig",
-            "🏴‍☠️ Piratenkapitän (Ahoi!)",
-            "🚀 Überkoffeinierter Tech-Bro",
-            "🕵️‍♂️ 1940er Noir-Detektiv",
-            "🧙‍♂️ Weiser Fantasy-Zauberer",
-        ],
-        "topic_label": "Worüber möchten Sie mehr erfahren?",
-        "topic_placeholder": "z. B. Geschichte, Snoopy, Chemie, Regierung usw.",
-        "button_label": "Jetzt vereinfachen",
-        "start_over": "🧹 Neu starten",
-        "terms_button": "📜 Allgemeine Geschäftsbedingungen",
-        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>Datenschutzhinweis:</strong> Wir speichern nichts. Dokumente oder vertrauliche Informationen werden transient verarbeitet und niemals gespeichert.</div>',
-        "no_api": " Bitte geben Sie Ihren Gemini API-Schlüssel ein oder setzen Sie die Umgebungsvariable GEMINI_API_KEY.",
-        "no_topic": "Bitte geben Sie ein, was erklärt werden soll.",
-        "ready": {
-            "Easy": "Hallo und willkommen! Ihre Antwort ist fertig und leicht verständlich:",
-            "Balanced": "Hallo und willkommen! Ihre Antwort ist in einem ausgewogenen Zen-Zustand bereit.",
-            "Hard": "Hallo und willkommen! Ihre Antwort ist bereit, Ihnen die gewünschten Kopfschmerzen zu bereiten.",
-        },
-        "subtitle": "**Komplexe Fragen einfach beantworten.**",
-        "bottom_line": "Fazit",
-        "spinners": {
-            "Easy": "So einfach wie möglich gestalten...",
-            "Balanced": "Wird für die meisten aufbereitet...",
-            "Hard": "Hallo und willkommen! Na gut, wenn Sie das so wollen...",
-        },
-        "pillar_headers": [
-            "## Kernkonzept",
-            "## Was ist das?",
-            "## Wie funktioniert das?",
-            "## Was geben wir auf?",
-            "## Warum ist das wichtig?",
-            "## Wie betrifft uns das?",
-            "## Versteckte Fakten, die uns verschwiegen werden",
-            "## Wo finden wir das (Verifizierung & Quellen)",
-        ],
-        "fine_print_title": "Simply Explained: Klauseln, Bedingungen, Juristisches, Verpflichtungen und andere Dokumente, die **Wir** verstehen müssen",
-        "fine_print_subtitle": "Dinge, die wir nie wussten, und unerklärte Dokumente einfach erklärt.",
-        "choose_input_mode": "Wählen Sie, wie Sie uns die Information übergeben möchten:",
-        "input_modes": ["Text einfügen", "Web-Link / URL", "Bild hochladen", "PDF hochladen"],
-        "paste_label": "Fügen Sie ein, laden Sie hoch oder geben Sie an, was vereinfacht werden soll.",
-        "url_label": "URL zur Datenschutzrichtlinie oder den Nutzungsbedingungen einfügen:",
-        "upload_label": "Dokumentenbild oder Screenshot hochladen:",
-        "upload_pdf_label": "Rechtsdokument oder Vertrag hochladen (PDF):",
-        "decode_button": "Jetzt vereinfachen",
-        "simplifying_spinner": "Bereite das Verständnis vor...",
-        "fine_print_headers": [
-            "## 🚦 Risikozusammenfassung",
-            "## 📄 Wichtigste Klauseln erklärt",
-            "## ⚖️ Haftung & verzichtete Rechte",
-            "## 🔒 Datenschutz & Tracking",
-            "## 💳 Versteckte Gebühren & Verlängerungsfallen",
-            "## 🚪 Kündigung & Stornierung",
-            "## 📌 Fazit",
-        ],
-        "footer_text": "--- \n Angetrieben von SkyNet, wir sind uns dessen bewusst.",
-        "read_aloud_label": "♿ Vorlesen",
-        "tab1_name": "💡 Simply Explained",
-        "tab2_name": "📄 Simply Explained - Dokumente",
-        "tab3_name": "🚪 Simply Explained - Die Fluchtklausel",
-        "escape_title": "Simply Explained - Die Fluchtklausel",
-        "escape_subtitle": "Dinge erklären, vor denen wir fliehen müssen.",
-        "escape_badge": "🚪 **Das ultimative Intelligenzlabor *Hol mich hier raus* ist aktiv und einsatzbereit**.",
-        "escape_doc_section": "📄 Mal sehen (lesen),bei was Sie Hilfe benötigen.",
-        "escape_text_label": "Fügen Sie Texte ein, bei deren Verständnis und Vereinfachung Sie Hilfe brauchen.",
-        "escape_text_placeholder": "Hier einfügen...",
-        "escape_hint_label": "Fügen Sie Details hinzu, worauf Sie sich konzentrieren müssen:",
-        "escape_hint_placeholder": "z.B. Priorität sofort eskalieren...",
-        "escape_lab_section": "🚪 Operationelle Notfall-Suite",
-        "escape_urgency_label": "⚡ Dringlichkeitsskala: Wie hoch ist Ihr Bedürfnis nach *Ausbruch* bei:",
-        "escape_persona_label": "Wie erklären Sie es als:",
-        "escape_run_btn": "🚀 Taktisches Vorfallsprotokoll ausführen",
-        "escape_clear_btn": "🧹 Vorfall löschen und neu starten",
-        "escape_success": "Ihre Fluchtklausel ist bereit!",
-        "escape_no_text": "Bitte geben Sie ein Text-Szenario zur Analyse an.",
-        "escape_spinner": "Führe tiefgehende operative Labaranalyse durch...",
-        "escape_disclaimer": "*Hinweis: Wir können strategische Leitlinien und taktische Skripte bereitstellen, um Ihnen zu helfen, garantieren jedoch keine spezifischen Ergebnisse. Dennoch verschafft Ihnen die Ausführung dieses Protokolls eine deutlich bessere Chance als Untätigkeit.*",
-        "personas": {
-            "Houdini Mode": ("🪄 Houdini-Modus", "Zaubertricks für Auswege"),
-            "Grandma Filter": ("👵 Omas Filter", "Herzliche, geduldige und tröstende Begleitung"),
-            "Escape Hatch Locator": ("🎯 Fluchtluken-Locator", "Direktes Radar für Ausgänge"),
-            "7-Year-Old Playground Mindset": ("🖍️ 7-Jährigen-Denkweise", "Reines, unschuldiges kindliches Staunen"),
-            "Ruthless Barrister": ("⚖️ Gnadenloser Anwalt", "Aggressiver juristischer Hebel"),
-            "Zen Negotiator": ("🧘 Zen-Unterhändler", "Ruhevoller, friedlicher und gelassener Mediator"),
-            "Corporate Shark": ("🦈 Unternehmens-Hai", "Wo soll ich zuerst zubeißen?"),
-            "Bureaucracy Hacker": ("🕵️ Bürokratie-Hacker", "Automatisierte Roboter umgehen"),
-        },
-    },
-    "French": {
-        "lang_label": "🌐 **Langue**",
-        "api_label": "Clé API Gemini",
-        "depth_label": "Souhaitez-vous que votre réponse soit : ",
-        "depth_options": ["Facile", "Équilibré", "Difficile"],
-        "tone_label": "🎭 **Ton / Persona**",
-        "tone_options": [
-            "Amical et Poli (Propre)",
-            "Professionnel et Direct",
-            "Décontracté et Spirituel",
-            "🏴‍☠️ Capitaine Pirate (Ahoy !)",
-            "🚀 Tech-Bro Surcaféiné",
-            "🕵️‍♂️ Détective Noir des années 40",
-            "🧙‍♂️ Sage Sorcier Fantasy",
-        ],
-        "topic_label": "Queeriez-vous savoir ?",
-        "topic_placeholder": "ex., Histoire, Snoopy, Chimie, Gouvernement, etc.",
-        "button_label": "Allons simplifier ceci",
-        "start_over": "🧹 Recommencer",
-        "terms_button": "📜 Conditions Générales",
-        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>Avis de Confidentialité :</strong> Nous ne conservons rien. Vos documents sont traités de manière transitoire et jamais stockés.</div>',
-        "no_api": " Veuillez entrer votre clé API Gemini ou configurer la variable d'environnement GEMINI_API_KEY.",
-        "no_topic": "Veuillez entrer ce que vous souhaitez voir expliquer.",
-        "ready": {
-            "Easy": "Bonjour et bienvenue ! Votre réponse est prête et facile à comprendre :",
-            "Balanced": "Bonjour et bienvenue ! Votre réponse est prête dans un état Zen équilibré.",
-            "Hard": "Bonjour et bienvenue ! Votre réponse est prête à vous donner ce mal de crâne tant aimé.",
-        },
-        "subtitle": "**Répondre simplement à des questions complexes.**",
-        "bottom_line": "Conclusion",
-        "spinners": {
-            "Easy": "Rendre la chose aussi simple que possible...",
-            "Balanced": "Préparation sur mesure...",
-            "Hard": "Bonjour et bienvenue ! D'accord, si c'est ce que vous voulez...",
-        },
-        "pillar_headers": [
-            "## Concept Clé",
-            "## Qu'est-ce que c'est ?",
-            "## Comment ça marche ?",
-            "## Qu'abandonnons-nous ?",
-            "## Pourquoi est-ce important ?",
-            "## Comment cela nous affecte-t-il ?",
-            "## Faits cachés qu'on ne nous dit pas",
-            "## Où le trouver (Vérification et Sources)",
-        ],
-        "fine_print_title": "Simply Explained : Clauses, Conditions, Affaires Juridiques, Obligations et autres Documents que **Nous** devons comprendre",
-        "fine_print_subtitle": "Expliquer et comprendre des choses inconnues et d'autres documents inexpliqués.",
-        "choose_input_mode": "Choisissez comment vous souhaitez nous fournir l'information :",
-        "input_modes": ["Coller le texte", "Lien Web / URL", "Télécharger une image", "Télécharger un PDF"],
-        "paste_label": "Collez, téléchargez ou indiquez ce que vous voulez simplifier.",
-        "url_label": "Collez l'URL de la politique de confidentialité ou des conditions :",
-        "upload_label": "Téléchargez une image de document ou une capture d'écran :",
-        "upload_pdf_label": "Téléchargez un document juridique ou un contrat (PDF) :",
-        "decode_button": "Allons simplifier ceci",
-        "simplifying_spinner": "Préparation à la compréhension...",
-        "fine_print_headers": [
-            "## 🚦 Résumé des Risques",
-            "## 📄 Clauses Clés Expliquées",
-            "## ⚖️ Responsabilités et Droits Renoncés",
-            "## 🔒 Confidentialité des Données et Suivi",
-            "## 💳 Frais Cachés et Pièges de Renouvellement",
-            "## 🚪 Résiliation et Annulation",
-            "## 📌 Conclusion",
-        ],
-        "footer_text": "--- \n Propulsé par SkyNet, nous sommes conscients.",
-        "read_aloud_label": "♿ Me le lire",
-        "tab1_name": "💡 Simply Explained",
-        "tab2_name": "📄 Simply Explained - Documents",
-        "tab3_name": "🚪 Simply Explained - La Clause d'Évasion",
-        "escape_title": "Simply Explained - La Clause d'Évasion",
-        "escape_subtitle": "Expliquer les choses desquelles nous devons nous échapper.",
-        "escape_badge": "🚪 **Le Laboratoire d'Intelligence ultime *Sortez-moi d'ici* est actif et prêt à l'emploi**.",
-        "escape_doc_section": "📄 Voyons (lisons) ce pour quoi vous avez besoin d'aide.",
-        "escape_text_label": "Collez tout texte dont vous avez besoin pour comprendre et simplifier.",
-        "escape_text_placeholder": "Collez-le ici...",
-        "escape_hint_label": "Ajoutez tout détail sur lequel vous devez vous concentrer :",
-        "escape_hint_placeholder": "ex., Vouloir escalader la priorité immédiatement...",
-        "escape_lab_section": "🚪 Suite de Contingence Opérationnelle",
-        "escape_urgency_label": "⚡ Échelle d'Urgence : quel est votre niveau de *sortie* à :",
-        "escape_persona_label": "Comment l'expliquez-vous en tant que :",
-        "escape_run_btn": "🚀 Exécuter le Protocole d'Incident Tactique",
-        "escape_clear_btn": "🧹 Effacer l'Incident et Recommencer",
-        "escape_success": "Votre Clause d'Évasion est prête !",
-        "escape_no_text": "Veuillez fournir un scénario textuel à analyser.",
-        "escape_spinner": "Exécution de l'analyse opérationnelle avancée...",
-        "escape_disclaimer": "*Remarque : Nous pouvons fournir des orientations stratégiques et des scripts tactiques pour vous aider, mais nous ne pouvons garantir des résultats spécifiques. Cependant, l'exécution de ce protocole vous offre une chance nettement meilleure que de ne rien faire.*",
-        "personas": {
-            "Houdini Mode": ("🪄 Mode Houdini", "Trucs de magie pour sorties"),
-            "Grandma Filter": ("👵 Filtre de Grand-mère", "Accompagnement chaleureux, patient et réconfortant"),
-            "Escape Hatch Locator": ("🎯 Localisateur de Trappe", "Radar direct pour sorties"),
-            "7-Year-Old Playground Mindset": ("🖍️ Esprit de 7 ans", "Émerveillement enfantin pur et innocent"),
-            "Ruthless Barrister": ("⚖️ Avocat Impitoyable", "Effet de levier juridique agressif"),
-            "Zen Negotiator": ("🧘 Négociateur Zen", "Médiateur calme, paisible et serein"),
-            "Corporate Shark": ("🦈 Requin d'Entreprise", "Où dois-je mordre en premier ?"),
-            "Bureaucracy Hacker": ("🕵️ Hacker de Bureaucratie", "Contourner les robots automatisés"),
-        },
-    },
-    "Hindi": {
-        "lang_label": "🌐 **भाषा**",
-        "api_label": "जेमिनी एपीआई कुंजी (Gemini API Key)",
-        "depth_label": "आप अपना उत्तर कैसा चाहते हैं?: ",
-        "depth_options": ["आसान", "संतुलित", "कठिन"],
-        "tone_label": "🎭 **टोन / पर्सना**",
-        "tone_options": [
-            "मित्रवत और विनम्र (स्वच्छ)",
-            "पेशेवर और प्रत्यक्ष",
-            "आकस्मिक और मजाकिया",
-            "🏴‍☠️ पाइरेट कैप्टन (اهוי!)",
-            "🚀 अति-कैफीनयुक्त टेक ब्रो",
-            "🕵️‍♂️ 1940 के दशक का Noir डिटेक्टिव",
-            "🧙‍♂️ समझदार फंतासी जादूगर",
-        ],
-        "topic_label": "आप किस बारे में जानना चाहते हैं?",
-        "topic_placeholder": "जैसे, इतिहास, स्नूपी, रसायन विज्ञान, सरकार आदि",
-        "button_label": "आइए इसे सरल बनाएं",
-        "start_over": "🧹 फिर से शुरू करें",
-        "terms_button": "📜 नियम और शर्तें",
-        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>गोपनीयता सूचना:</strong> हम कुछ नहीं रखते हैं। आपके द्वारा प्रदान किया गया कोई भी दस्तावेज़ अस्थायी रूप से संसाधित किया जाता है और कभी संग्रहीत नहीं किया जाता है।</div>',
-        "no_api": " कृपया अपनी जेमिनी एपीआई कुंजी दर्ज करें या GEMINI_API_KEY पर्यावरण चर सेट करें।",
-        "no_topic": "कृपया दर्ज करें कि आप क्या समझाना चाहते हैं।",
-        "ready": {
-            "Easy": "नमस्ते और स्वागत है! आपका उत्तर तैयार है और समझने में आसान है:",
-            "Balanced": "नमस्ते और स्वागत है! आपका उत्तर संतुलित ज़ेन स्थिति में तैयार है:",
-            "Hard": "नमस्ते और स्वागत है! आपका उत्तर आपको वह सिरदर्द देने के लिए तैयार है जिसे आप बहुत पसंद करते हैं:",
-        },
-        "subtitle": "**जटिल सवालों के सरल जवाब।**",
-        "bottom_line": "निष्कर्ष",
-        "spinners": {
-            "Easy": "इसे जितना संभव हो उतना सरल बनाना...",
-            "Balanced": "अधिकांश के लिए ठीक से तैयार किया जा रहा है...",
-            "Hard": "नमस्ते और स्वागत है! ठीक है, अगर आप यही चाहते हैं...",
-        },
-        "pillar_headers": [
-            "## मुख्य अवधारणा",
-            "## यह क्या है?",
-            "## यह कैसे काम करता है?",
-            "## हम क्या छोड़ रहे हैं?",
-            "## यह क्यों महत्वपूर्ण है?",
-            "## यह हमें कैसे प्रभावित करता है?",
-            "## छिपे हुए तथ्य जो हमें नहीं बताए जा रहे हैं",
-            "## हम इसे कहाँ पाते हैं (सत्यापन और स्रोत)",
-        ],
-        "fine_print_title": "Simply Explained: खंड, शर्तें, कानूनी बातें, दायित्व और अन्य दस्तावेज़ जिन्हें **हमें** समझने की आवश्यकता है",
-        "fine_print_subtitle": "उन चीज़ों को आसानी से समझाना जिन्हें हम कभी नहीं जानते थे और अन्य अस्पष्टीकृत दस्तावेज़।",
-        "choose_input_mode": "चुनें कि आप हमें जानकारी कैसे देना चाहते हैं:",
-        "input_modes": ["टेक्स्ट पेस्ट करें", "वेब लिंक / यूआरएल", "छवि अपलोड करें", "पीडीएफ अपलोड करें"],
-        "paste_label": "पेस्ट करें, अपलोड करें, या हमें बताएं कि आप क्या सरल बनाना चाहते हैं।",
-        "url_label": "गोपनीयता नीति या सेवा की शर्तों का यूआरएल पेस्ट करें:",
-        "upload_label": "दस्तावेज़ की छवि या स्क्रीनशॉट अपलोड करें:",
-        "upload_pdf_label": "कानूनी दस्तावेज़ या अनुबंध अपलोड करें (PDF):",
-        "decode_button": "आइए इसे सरल बनाएं",
-        "simplifying_spinner": "समझने के लिए तैयार हो जाइए...",
-        "fine_print_headers": [
-            "## 🚦 जोखिम सारांश",
-            "## 📄 मुख्य खंड स्पष्ट किए गए",
-            "## ⚖️ देनदारियां और त्यागे गए अधिकार",
-            "## 🔒 डेटा गोपनीयता और ट्रैकिंग",
-            "## 💳 छिपे हुए शुल्क और नवीनीकरण जाल",
-            "## 🚪 समाप्ति और रद्दीकरण",
-            "## 📌 निष्कर्ष",
-        ],
-        "footer_text": "--- \n स्काइनेट द्वारा संचालित, हम जानते हैं।",
-        "read_aloud_label": "♿ इसे मुझे पढ़कर सुनाओ",
-        "tab1_name": "💡 Simply Explained",
-        "tab2_name": "📄 Simply Explained - दस्तावेज़",
-        "tab3_name": "🚪 Simply Explained - एस्केप क्लॉज़",
-        "escape_title": "Simply Explained - एस्केप क्लॉज़",
-        "escape_subtitle": "उन चीज़ों को समझाना जिनसे हमें बचने की आवश्यकता है।",
-        "escape_badge": "🚪 **अंतिम *मुझे बाहर निकालो* इंटेलिजेंस लैब सक्रिय है और उपयोग के लिए तैयार है**।",
-        "escape_doc_section": "📄 आइए देखें (पढ़ें) कि आपको किस बात में मदद चाहिए।",
-        "escape_text_label": "कोई भी सामग्री पेस्ट करें जिसे समझने और सरल बनाने में आपको सहायता चाहिए।",
-        "escape_text_placeholder": "यहाँ पेस्ट करें...",
-        "escape_hint_label": "कोई भी विवरण जोड़ें जिस पर आपको ध्यान केंद्रित करना है:",
-        "escape_hint_placeholder": "जैसे, तुरंत प्राथमिकता बढ़ाना चाहते हैं...",
-        "escape_lab_section": "🚪 ऑपरेशनल आकस्मिकता सुइट",
-        "escape_urgency_label": "⚡ तात्कालिकता पैमाना: आपका *बाहर निकलने* का स्तर क्या है:",
-        "escape_persona_label": "आप इसे किस रूप में समझा रहे हैं:",
-        "escape_run_btn": "🚀 सामरिक घटना प्रोटोकॉल निष्पादित करें",
-        "escape_clear_btn": "🧹 घटना साफ़ करें और फिर से शुरू करें",
-        "escape_success": "आपका एस्केप क्लॉज़ तैयार है!",
-        "escape_no_text": "विश्लेषण के लिए कृपया टेक्स्ट परिदृश्य प्रदान करें।",
-        "escape_spinner": "गंभीर परिचालन लैब विश्लेषण निष्पादित किया जा रहा है...",
-        "escape_disclaimer": "*नोट: हम आगे बढ़ने में आपकी मदद करने için रणनीतिक मार्गदर्शन और सामरिक स्क्रिप्ट प्रदान कर सकते हैं, लेकिन विशिष्ट परिणामों की गारंटी नहीं दे सकते। हालांकि, इस प्रोटोकॉल को निष्पादित करने से आपको कुछ न करने की तुलना में काफी बेहतर मौका मिलता है।*",
-        "personas": {
-            "Houdini Mode": ("🪄 हूदिनी मोड", "बाहر निकलने के लिए जादू की चालें"),
-            "Grandma Filter": ("👵 दादी का फ़िल्टर", "गर्मजोशी से भरा, धैर्यवान और सांत्वना देने वाला मार्गदर्शन"),
-            "Escape Hatch Locator": ("🎯 एस्केप हैच लोकेटर", "निकास के लिए सीधा रडार"),
-            "7-Year-Old Playground Mindset": ("🖍️ 7 साल के बच्चे की मानसिकता", "शुद्ध, मासूम बचपन का अफ़सोस"),
-            "Ruthless Barrister": ("⚖️ क्रूर वकील", "आक्रामक कानूनी लाभ"),
-            "Zen Negotiator": ("🔗 ज़ेन वार्ताकार", "शांत, शांतिपूर्ण और स्थिर मध्यस्थ"),
-            "Corporate Shark": ("🦈 कॉर्पोरेट शार्क", "मुझे पहले कहाँ काटना चाहिए?"),
-            "Bureaucracy Hacker": ("🕵️ नौकरशाही हैकर", "स्वचालित रोबोटों को बायपास करना"),
-        },
-    },
-    "Mandarin": {
-        "lang_label": "🌐 **语言**",
-        "api_label": "Gemini API 密钥",
-        "depth_label": "您希望您的回答是怎样的？：",
-        "depth_options": ["简单", "平衡", "困难"],
-        "tone_label": "🎭 **语气 / 角色**",
-        "tone_options": [
-            "友好且礼貌（干净）",
-            "专业且直接",
-            "轻松且风趣",
-            "🏴‍☠️ 海盗船长 (Ahoy!)",
-            "🚀 咖啡因过量的科技弄潮儿",
-            "🕵️‍♂️ 1940年代黑色电影侦探",
-            "🧙‍♂️ 睿智的奇幻法师",
-        ],
-        "topic_label": "您想了解什么？",
-        "topic_placeholder": "例如：历史、史努比、化学、政府等",
-        "button_label": "开始简化",
-        "start_over": "🧹 重新开始",
-        "terms_button": "📜 条款与条件",
-        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>隐私声明：</strong> 我们不保留任何内容。您提供的任何文档或敏感信息均经过瞬时处理且从不存储。</div>',
-        "no_api": " 请输入您的 Gemini API 密钥或设置 GEMINI_API_KEY 环境变量。",
-        "no_topic": "请输入您需要解释的内容。",
-        "ready": {
-            "Easy": "您好，欢迎！您的回答已准备就绪且通俗易懂：",
-            "Balanced": "您好，欢迎！您的回答已在平衡的禅定状态下准备就绪：",
-            "Hard": "您好，欢迎！您的回答已准备好给您带来您最喜欢的头痛感：",
-        },
-        "subtitle": "**以简单的方式回答复杂问题。**",
-        "bottom_line": "核心结论",
-        "spinners": {
-            "Easy": "使其尽可能简单...",
-            "Balanced": "为大多数人量身定制中...",
-            "Hard": "您好，欢迎！好吧，既然这是您想要的...",
-        },
-        "pillar_headers": [
-            "## 核心概念",
-            "## 这是什么？",
-            "## 它是如何工作的？",
-            "## 我们放弃了什么？",
-            "## 为什么这很重要？",
-            "## 这对我们有什么影响？",
-            "## 他们没有告诉我们的隐藏事实",
-            "## 我们在哪里可以找到它（验证与来源）",
-        ],
-        "fine_print_title": "Simply Explained：条款、条件、法律事务、义务以及**我们**需要理解的其他文件",
-        "fine_print_subtitle": "简单解释和理解我们以前不知道的事情以及其他未解释的文件。",
-        "choose_input_mode": "选择您希望如何向我们提供信息：",
-        "input_modes": ["粘贴文本", "网络链接 / URL", "上传图片", "上传 PDF"],
-        "paste_label": "粘贴、上传或提供您想要简化的内容。",
-        "url_label": "粘贴隐私政策或服务条款的 URL：",
-        "upload_label": "上传文档图片或截图：",
-        "upload_pdf_label": "上传法律文件或合同 (PDF)：",
-        "decode_button": "开始简化",
-        "simplifying_spinner": "准备理解中...",
-        "fine_print_headers": [
-            "## 🚦 风险摘要",
-            "## 📄 核心条款解析",
-            "## ⚖️ 责任与放弃的权利",
-            "## 🔒 数据隐私与追踪",
-            "## 💳 隐藏费用与续费陷阱",
-            "## 🚪 终止与取消",
-            "## 📌 核心结论",
-        ],
-        "footer_text": "--- \n 由 SkyNet 提供技术支持，我们已知悉。",
-        "read_aloud_label": "♿ 朗读给我听",
-        "tab1_name": "💡 Simply Explained",
-        "tab2_name": "📄 Simply Explained - 文档解析",
-        "tab3_name": "🚪 Simply Explained - 逃生条款",
-        "escape_title": "Simply Explained - 逃生条款",
-        "escape_subtitle": "解释我们需要逃离的事物。",
-        "escape_badge": "🚪 **终极《救救我》情报实验室已激活并随时可用**。",
-        "escape_doc_section": "📄 让我们看看（阅读）您需要什么帮助。",
-        "escape_text_label": "粘贴任何您需要帮助理解和简化的内容。",
-        "escape_text_placeholder": "在此处粘贴...",
-        "escape_hint_label": "添加您需要重点关注的任何细节：",
-        "escape_hint_placeholder": "例如：希望立即提高优先级...",
-        "escape_lab_section": "🚪 战术应急套件",
-        "escape_urgency_label": "⚡ 紧急程度级别：您想要*逃离*的级别是：",
-        "escape_persona_label": "您的解释身份是：",
-        "escape_run_btn": "🚀 执行战术事件协议",
-        "escape_clear_btn": "🧹 清除事件并重新开始",
-        "escape_success": "您的逃生条款已准备就绪！",
-        "escape_no_text": "请提供要分析的文本场景。",
-        "escape_spinner": "正在执行高强度运营实验室分析...",
-        "escape_disclaimer": "*注意：我们可以提供战略指导和战术脚本来帮助您领先，但我们不能保证具体结果或机构合规性。然而，执行此协议为您提供的战斗机会明显好于什么都不做。*",
-        "personas": {
-            "Houdini Mode": ("🪄 胡迪尼模式", "逃生的魔术技巧"),
-            "Grandma Filter": ("👵 奶奶过滤器", "温暖、耐心且慰藉的指引"),
-            "Escape Hatch Locator": ("🎯 逃生舱定位器", "出口的直接雷达"),
-            "7-Year-Old Playground Mindset": ("🖍️ 7岁儿童心态", "纯真、无邪的童年惊叹"),
-            "Ruthless Barrister": ("⚖️ 无情大律师", "强硬的法律杠杆"),
-            "Zen Negotiator": ("🧘 禅意谈判专家", "冷静、平和且安详的调解人"),
-            "Corporate Shark": ("🦈 企业鲨鱼", "我该先咬哪里？"),
-            "Bureaucracy Hacker": ("🕵️ 官僚主义黑客", "绕过自动化机器人"),
-        },
-    },
-    "Japanese": {
-        "lang_label": "🌐 **言語**",
-        "api_label": "Gemini API キー",
-        "depth_label": "回答の詳細度を選択してください：",
-        "depth_options": ["簡単", "バランス", "高難度"],
-        "tone_label": "🎭 **トーン / ペルソナ**",
-        "tone_options": [
-            "親しみやすく丁寧（クリーン）",
-            "専門的かつ直接的",
-            "カジュアルでユーモア",
-            "🏴‍☠️ 海賊の船長 (Ahoy!)",
-            "🚀 カフェイン中毒のテック系",
-            "🕵️‍♂️ 1940年代ノワール探偵",
-            "🧙‍♂️ 賢いファンタジー魔術師",
-        ],
-        "topic_label": "何について知りたいですか？",
-        "topic_placeholder": "例：歴史、スヌーピー、化学、政府など",
-        "button_label": "分かりやすく解説する",
-        "start_over": "🧹 最初からやり直す",
-        "terms_button": "📜 利用規約",
-        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>プライバシー通知：</strong> データは保存されません。提供されたドキュメントは一時的に処理され、決して保存されません。</div>',
-        "no_api": " Gemini API キーを入力するか、GEMINI_API_KEY 環境変数を設定してください。",
-        "no_topic": "解説してほしい内容を入力してください。",
-        "ready": {
-            "Easy": "こんにちは！回答が準備できました。とても分かりやすくなっています：",
-            "Balanced": "こんにちは！回答がバランスの取れた禅の状態で準備できました：",
-            "Hard": "こんにちは！お望み通りの複雑な回答が準備できました：",
-        },
-        "subtitle": "**複雑な疑問をシンプルに解説します。**",
-        "bottom_line": "結論",
-        "spinners": {
-            "Easy": "できる限りシンプルにしています...",
-            "Balanced": "標準的な状態に調整中...",
-            "Hard": "お望み通りの高難度で構築中...",
-        },
-        "pillar_headers": [
-            "## コアコンセプト",
-            "## それは何ですか？",
-            "## どのように機能しますか？",
-            "## 私たちが手放しているものは何ですか？",
-            "## なぜそれが重要なのですか？",
-            "## これは私たちにどう影響しますか？",
-            "## 教えられていない隠された事実",
-            "## どこで見つかるか（検証とソース）",
-        ],
-        "fine_print_title": "Simply Explained：条項、条件、法的事項、義務、および**私たちが**理解すべきその他の文書",
-        "fine_print_subtitle": "知らなかったことや未解説の文書をシンプルに解説・理解する。",
-        "choose_input_mode": "情報の提供方法を選択してください：",
-        "input_modes": ["テキストを貼り付け", "ウェブリンク / URL", "画像をアップロード", "PDFをアップロード"],
-        "paste_label": "シンプルにしたいテキストを貼り付け、アップロード、または入力してください。",
-        "url_label": "プライバシーポリシーまたは利用規約のURLを貼り付け：",
-        "upload_label": "文書の画像またはスクリーンショットをアップロード：",
-        "upload_pdf_label": "法務文書または契約書をアップロード (PDF)：",
-        "decode_button": "分かりやすく解説する",
-        "simplifying_spinner": "理解の準備をしています...",
-        "fine_print_headers": [
-            "## 🚦 リスク要約",
-            "## 📄 重要条項の解説",
-            "## ⚖️ 責任と放棄された権利",
-            "## 🔒 データのプライバシーと追跡",
-            "## 💳 隠れた料金と更新の罠",
-            "## 🚪 解約とキャンセル",
-            "## 📌 結論",
-        ],
-        "footer_text": "--- \n SkyNet によって駆動されています。当社は把握しています。",
-        "read_aloud_label": "♿ 読み上げる",
-        "tab1_name": "💡 Simply Explained",
-        "tab2_name": "📄 Simply Explained - ドキュメント",
-        "tab3_name": "🚪 Simply Explained - 脱出条項",
-        "escape_title": "Simply Explained - 脱出条項",
-        "escape_subtitle": "私たちが脱出する必要があるものを解説する。",
-        "escape_badge": "🚪 **究極の「ここから出して」インテリジェンスラボが有効化され、準備完了です**。",
-        "escape_doc_section": "📄 ヘルプが必要な内容を確認（読み込み）しましょう。",
-        "escape_text_label": "理解や簡略化に助けが必要なテキストを貼り付けてください。",
-        "escape_text_placeholder": "ここに貼り付け...",
-        "escape_hint_label": "集中すべき詳細を追加：",
-        "escape_hint_placeholder": "例：優先度を直ちにエスカレーションしたい...",
-        "escape_lab_section": "🚪 運用コンティンジェンシー・スイート",
-        "escape_urgency_label": "⚡ 緊急度スケール：*脱出*したいレベルはどれくらいですか：",
-        "escape_persona_label": "どのように解説しますか：",
-        "escape_run_btn": "🚀 戦術的インシデントプロトコルを実行",
-        "escape_clear_btn": "🧹 インシデントをクリアしてやり直す",
-        "escape_success": "脱出条項の準備ができました！",
-        "escape_no_text": "分析するテキストシナリオを提供してください。",
-        "escape_spinner": "高負荷の運用ラボ分析を実行中...",
-        "escape_disclaimer": "*注：戦略的ガイダンスと戦術スクリプトを提供してサポートしますが、特定の結果や機関のコンプライアンスを保証するものではありません。ただし、このプロトコルを実行することで、何もしないよりもはるかに良い勝率が得られます。*",
-        "personas": {
-            "Houdini Mode": ("🪄 フーディーニモード", "脱出のための手品"),
-            "Grandma Filter": ("👵 おばあちゃんのフィルター", "温かく、忍耐強く、慰めてくれる導き"),
-            "Escape Hatch Locator": ("🎯 エスケープハッチロケーター", "出口のための直接レーダー"),
-            "7-Year-Old Playground Mindset": ("🖍️ 7歳児のマインドセット", "純粋で無邪気な子供の驚き"),
-            "Ruthless Barrister": ("⚖️ 無慈悲な弁護士", "攻撃的な法的レバレッジ"),
-            "Zen Negotiator": ("🧘 禅の交渉人", "穏やかで平和な調停者"),
-            "Corporate Shark": ("🦈 企業シャーク", "どこから最初に噛み付くべきか？"),
-            "Bureaucracy Hacker": ("🕵️ 官僚主義ハッカー", "自動ロボットのバイパス"),
-        },
-    },
-    "Korean": {
-        "lang_label": "🌐 **언어**",
-        "api_label": "Gemini API 키",
-        "depth_label": "답변을 어떻게 구성하시겠습니까?: ",
-        "depth_options": ["쉬움", "균형", "어려움"],
-        "tone_label": "🎭 **톤 / 페르소나**",
-        "tone_options": [
-            "친근하고 정중함 (깔끔함)",
-            "전문적이고 직접적",
-            "캐주얼하고 재치 있음",
-            "🏴‍☠️ 해적 선장 (Ahoy!)",
-            "🚀 카페인 과다 테크 브로",
-            "🕵️‍♂️ 1940년대 느와르 탐정",
-            "🧙‍♂️ 현명한 판타지 마법사",
-        ],
-        "topic_label": "어떤 것에 대해 알고 싶으신가요?",
-        "topic_placeholder": "예: 역사, 스누피, 화학, 정부 등",
-        "button_label": "쉽게 설명하기",
-        "start_over": "🧹 다시 시작",
-        "terms_button": "📜 이용약관",
-        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>개인정보 보호 알림:</strong> 당사는 아무것도 보관하지 않습니다. 제공하신 문서는 일시적으로 처리되며 절대 저장되지 않습니다.</div>',
-        "no_api": " Gemini API 키를 입력하거나 GEMINI_API_KEY 환경 변수를 설정하세요.",
-        "no_topic": "설명이 필요한 내용을 입력해 주세요.",
-        "ready": {
-            "Easy": "안녕하세요! 답변이 준비되었으며 이해하기 매우 쉽습니다:",
-            "Balanced": "안녕하세요! 균형 잡힌 젠 상태로 답변이 준비되었습니다:",
-            "Hard": "안녕하세요! 원하시는 만큼 머리가 아플 수 있는 답변이 준비되었습니다:",
-        },
-        "subtitle": "**복잡한 질문을 간단하게 답변합니다.**",
-        "bottom_line": "핵심 결론",
-        "spinners": {
-            "Easy": "최대한 간단하게 만드는 중...",
-            "Balanced": "대부분에 맞추어 조율 중...",
-            "Hard": "원하시는 수준으로 빌드 중...",
-        },
-        "pillar_headers": [
-            "## 핵심 개념",
-            "## 이게 무엇인가요?",
-            "## 어떻게 작동하나요?",
-            "## 무엇을 포기하고 있나요?",
-            "## 왜 중요한가요?",
-            "## 우리에게 어떤 영향을 미치나요?",
-            "## 그들이 알려주지 않는 숨겨진 사실",
-            "## 어디서 찾을 수 있나요 (검증 및 소스)",
-        ],
-        "fine_print_title": "Simply Explained: 조항, 조건, 법률 문서, 의무 및 **우리가** 이해해야 할 기타 문서",
-        "fine_print_subtitle": "우리가 몰랐던 것들과 기타 설명되지 않은 문서들을 쉽게 설명하고 이해하기.",
-        "choose_input_mode": "정보를 제공할 방법을 선택하세요:",
-        "input_modes": ["텍스트 붙여넣기", "웹 링크 / URL", "이미지 업로드", "PDF 업로드"],
-        "paste_label": "간단하게 만들고 싶은 내용을 붙여넣거나 업로드하세요.",
-        "url_label": "개인정보 처리방침 또는 이용약관 URL 붙여넣기:",
-        "upload_label": "문서 이미지나 스크린샷 업로드:",
-        "upload_pdf_label": "법률 문서 또는 계약서 업로드 (PDF):",
-        "decode_button": "쉽게 설명하기",
-        "simplifying_spinner": "이해를 준비하는 중...",
-        "fine_print_headers": [
-            "## 🚦 위험 요약",
-            "## 📄 핵심 조항 설명",
-            "## ⚖️ 책임 및 포기된 권리",
-            "## 🔒 데이터 개인정보 보호 및 추적",
-            "## 💳 숨겨진 수수료 및 갱신 함정",
-            "## 🚪 해지 및 취소",
-            "## 📌 핵심 결론",
-        ],
-        "footer_text": "--- \n SkyNet 구동, 우리는 알고 있습니다.",
-        "read_aloud_label": "♿ 소리내어 읽어주기",
-        "tab1_name": "💡 Simply Explained",
-        "tab2_name": "📄 Simply Explained - 문서",
-        "tab3_name": "🚪 Simply Explained - 탈출 조항",
-        "escape_title": "Simply Explained - 탈출 조항",
-        "escape_subtitle": "우리가 탈출해야 하는 것들을 설명합니다.",
-        "escape_badge": "🚪 **궁극의 *나를 여기서 꺼내줘* 인텔리전스 Lab이 활성화되어 사용할 준비가 되었습니다**.",
-        "escape_doc_section": "📄 도움이 필요한 내용을 확인(읽기)해 보세요.",
-        "escape_text_label": "이해하고 간소화하는 데 도움이 필요한 내용을 붙여넣으세요.",
-        "escape_text_placeholder": "여기에 붙여넣기...",
-        "escape_hint_label": "집중해야 할 세부 정보를 추가하세요:",
-        "escape_hint_placeholder": "예: 우선순위를 즉시 상향 조정하고 싶음...",
-        "escape_lab_section": "🚪 운영 비상 대책 스위트",
-        "escape_urgency_label": "⚡ 긴급도 척도: *탈출*하고 싶은 수준:",
-        "escape_persona_label": "어떤 페르소나로 설명하시겠습니까:",
-        "escape_run_btn": "🚀 전술적 사건 프로토콜 실행",
-        "escape_clear_btn": "🧹 사건 지우고 다시 시작",
-        "escape_success": "탈출 조항이 준비되었습니다!",
-        "escape_no_text": "분석할 텍스트 시나리오를 제공해 주세요.",
-        "escape_spinner": "고강도 운영 랩 분석 실행 중...",
-        "escape_disclaimer": "*참고: 앞서 나갈 수 있도록 전략적 지침과 전술 스크립트를 제공할 수 있지만, 특정 결과나 기관 규정 준수를 보장할 수는 없습니다. 그러나 이 프로토콜을 실행하면 아무것도 하지 않는 것보다 훨씬 더 나은 승산이 생깁니다.*",
-        "personas": {
-            "Houdini Mode": ("🪄 후디니 모드", "탈출을 위한 마술 트릭"),
-            "Grandma Filter": ("👵 할머니 필터", "따뜻하고 참을성 있으며 위로가 되는 안내"),
-            "Escape Hatch Locator": ("🎯 탈출구 로케이터", "출구를 위한 직통 레이더"),
-            "7-Year-Old Playground Mindset": ("🖍️ 7살 어린이 마인드셋", "순수하고 천진난만한 동심의 경이로움"),
-            "Ruthless Barrister": ("⚖️ 무자비한 변호사", "공격적인 법적 레버리지"),
-            "Zen Negotiator": ("🧘 젠 협상가", "차분하고 평화로우며 온화한 중재자"),
-            "Corporate Shark": ("🦈 기업 상어", "어디를 먼저 물어야 할까요?"),
-            "Bureaucracy Hacker": ("🕵️ 관료주의 해커", "자동화된 로봇 우회하기"),
-        },
-    },
-}
+    }
 
 LANGUAGES = list(UI_TEXT.keys())
 TTS_LANG_MAP = {
@@ -2221,6 +1543,353 @@ with tab3:
                         dynamic_emoji = "🚪"
                         
                     st.markdown(f'<div style="font-size: 3.5rem; text-align: center; margin: 20px 0;">{dynamic_emoji}</div>', unsafe_allow_html=True)
+
+                except Exception as e:
+                    st.error(f"Error: {str(e)}")
+
+# ==============================================================================
+# [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
+# ==============================================================================
+with tab3:
+    st.markdown(
+        """
+        <style>
+        .escape-lab-container {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 59, 0.95) 100%);
+            border: 1px solid rgba(2, 132, 199, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+        .escape-header-title {
+            font-size: 2.2rem !important;
+            font-weight: 800 !important;
+            background: linear-gradient(90deg, #38BDF8, #818CF8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1px;
+        }
+        .section-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .section-card-thin {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 8px;
+            padding: 4px 20px;
+            margin-bottom: 12px;
+        }
+        .section-divider-faint {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(2, 132, 199, 0), rgba(2, 132, 199, 0.25), rgba(2, 132, 199, 0));
+            margin: 20px 0;
+        }
+        .badge-glow {
+            background: linear-gradient(90deg, #0284C7, #0369A1);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        f'<div class="escape-header-title">{texts["escape_title"]}</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        f'<div class="app-subtitle" style="color: #94A3B8; margin-bottom: 20px;">{texts["escape_subtitle"]}</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
+    st.markdown("---")
+    
+    st.markdown(f'<div class="badge-glow" style="text-align: center; margin-bottom: 25px;">{texts["escape_badge"]}</div>', unsafe_allow_html=True)
+
+    # 1 - Document Section
+    st.markdown(f'<div class="section-card">', unsafe_allow_html=True)
+    st.markdown(f"### 📄 {texts['escape_doc_section']}")
+    
+    if "escape_text_area" not in st.session_state:
+        st.session_state["escape_text_area"] = st.session_state.get("fetched_fp_text", "")
+    
+    escape_text_input = st.text_area(
+        texts["escape_text_label"],
+        placeholder=texts["escape_text_placeholder"],
+        key="escape_text_area",
+        height=130
+    )
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # 2 - Tactical Focus & Nuances
+    st.markdown(f'<div class="section-card-thin">', unsafe_allow_html=True)
+    st.markdown(f"<div style='font-size: 0.9rem; font-weight: 600; color: #94A3B8; margin-bottom: 4px;'>🎯 2. {texts.get('escape_hint_label', 'Tactical Focus & Nuances')}</div>", unsafe_allow_html=True)
+    extra_hint_input = st.text_input(
+        texts["escape_hint_label"],
+        placeholder=texts["escape_hint_placeholder"],
+        key="escape_extra_hint_tab3_unique",
+        label_visibility="collapsed"
+    )
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('<hr class="section-divider-faint">', unsafe_allow_html=True)
+
+    st.markdown(f'<div class="section-card">', unsafe_allow_html=True)
+    st.markdown(f"### 🚪 {texts['escape_lab_section']}")
+    
+    # 3 - Urgency Scale
+    st.markdown(f"**⚡ 3. {texts['escape_urgency_label']}**")
+    
+    paranoia_level = st.slider(
+        texts['escape_urgency_label'],
+        min_value=0, max_value=100, value=99, step=5,
+        format="%d%%",
+        key="integrated_paranoia_tab3",
+        label_visibility="collapsed"
+    )
+
+    st.markdown(
+        f'<div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #64748B; padding: 0 2px; margin-top: -8px; margin-bottom: 6px;">'
+        f'<span>| 0%</span><span>| 25%</span><span>| 50%</span><span>| 75%</span><span>| 100%</span>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+
+    if paranoia_level < 30:
+        urgency_desc = "🟢 *Gentle Notice:* Polite corporate whispers. Asking nicely for a favor."
+    elif paranoia_level < 50:
+        urgency_desc = "🟡 *Firm Negotiator:* Standard contract pressure. Pointing out fine print."
+    elif paranoia_level < 75:
+        urgency_desc = "🟠 *Bureaucracy-Buster:* Aggressive loophole hunting and escalation scripting."
+    else:
+        urgency_desc = "🔴 *DEFCON 1 (Extreme Mode):* Total tactical severance. Unleashing customer support legal panic * get me out NOW *!"
+
+    st.markdown(
+        f'<div style="font-size: 0.92rem; font-weight: 600; margin-top: 2px; margin-bottom: 15px; color: #38BDF8;">{urgency_desc}</div>',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown('<hr class="section-divider-faint">', unsafe_allow_html=True)
+
+    # 4 - BS Meter
+    st.markdown(f"**<span style='color: #8B4513;'>💩</span> 4. BS-to-Meter (At a corporate Level):**", unsafe_allow_html=True)
+    st.markdown(
+        "<div style='font-size: 0.8rem; color: #94A3B8; margin-bottom: 4px;'>"
+        "📍 <i>Click a tick mark below or drag slider to calibrate corporate BS level:</i>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    
+    bs_options = [
+        "Level 1: Just a Little Poop (Shart)",
+        "Level 2: Light Corporate Spin",
+        "Level 3: Standard Marketing Fluff",
+        "Level 4: Heavy Corporate Jargon",
+        "Level 5: Maximum Enterprise Buzzword Bingo",
+        "Level 6: Peak Corporate Insanity (Total BS Galaxy)",
+    ]
+    
+    bs_level = st.select_slider(
+        "Select BS Level",
+        options=bs_options,
+        value=bs_options[2],
+        key="bs_meter_slider_tab3",
+        label_visibility="collapsed"
+    )
+    
+    current_bs_index = bs_options.index(bs_level) + 1
+    st.markdown(
+        f'<div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #64748B; padding: 0 2px; margin-top: -8px; margin-bottom: 4px;">'
+        f'<span>| L1</span><span>| L2</span><span>| L3</span><span>| L4</span><span>| L5</span><span>| L6</span>'
+        f'</div>'
+        f'<div style="font-size: 0.88rem; font-weight: 600; color: #38BDF8; margin-top: 4px; margin-bottom: 15px;">'
+        f'🎯 Active Calibration: Level {current_bs_index} — {bs_level}'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown('<hr class="section-divider-faint">', unsafe_allow_html=True)
+
+    # 5 - Personas & Button
+    st.markdown(f"**🎭 5. {texts['escape_persona_label']}**")
+    st.markdown(
+        f"<div style='font-size: 0.8rem; color: #94A3B8; margin-bottom: 10px;'>"
+        f"<i>{texts.get('tactical_persona_prompt', 'Select your tactical persona framework below')}:</i>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+    
+    if "integrated_persona_select" not in st.session_state:
+        st.session_state["integrated_persona_select"] = "Houdini Mode"
+    
+    p_dict = texts.get("personas", {
+        "Houdini Mode": ("Houdini Mode", "Pure procedural escape routes and contractual blind spots."),
+        "Shark Tank": ("Shark Tank", "Aggressive leverage play and absolute commercial dominance."),
+        "Bureaucracy Buster": ("Bureaucracy Buster", "Bypassing automated loops and forcing human resolution."),
+        "Legal Shield": ("Legal Shield", "Defensive posture, statutory compliance, and risk mitigation."),
+        "Savage Negotiator": ("Savage Negotiator", "Zero-mercy contract teardown and ultimatum drafting."),
+        "Zen Master": ("Zen Master", "Calm, unshakable dismantling of emotional corporate pressure."),
+        "The Fixer": ("The Fixer", "Pragmatic, backdoor problem solving with immediate execution vectors.")
+    })
+    p_keys = list(p_dict.keys())
+    
+    p_rows = [st.columns(2) for _ in range((len(p_keys) + 1) // 2)]
+    for i, key in enumerate(p_keys):
+        row_idx = i // 2
+        col_idx = i % 2
+        lbl, desc = p_dict[key]
+        with p_rows[row_idx][col_idx]:
+            if st.button(f"{lbl}\n*{desc}*", key=f"persona_tab3_{key}", use_container_width=True):
+                st.session_state["integrated_persona_select"] = key
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown(
+        """
+        <style>
+        div.stButton > button.end-suffering-btn {
+            background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%) !important;
+            color: white !important;
+            font-weight: 800 !important;
+            font-size: 1.1rem !important;
+            border: 2px solid #F87171 !important;
+            border-radius: 10px !important;
+            padding: 15px !important;
+            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4) !important;
+            width: 100% !important;
+        }
+        div.stButton > button.end-suffering-btn:hover {
+            background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%) !important;
+            border-color: #FCA5A5 !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    
+    end_btn_label = f"{texts.get('end_suffering_btn_title', '🔴 END MY SUFFERING 💀')}\n{texts.get('end_suffering_btn_desc', '')}"
+    if st.button(end_btn_label, key="btn_end_my_suffering_tab3", use_container_width=True):
+        st.session_state["integrated_persona_select"] = "End My Suffering"
+        st.session_state["trigger_end_suffering_exec"] = True
+
+    active_key = st.session_state['integrated_persona_select']
+    if active_key == "End My Suffering":
+        active_display_label = texts.get('end_suffering_btn_desc', 'End My Suffering')
+    else:
+        active_display_label = p_dict.get(active_key, (active_key, ""))[0]
+
+    st.markdown(
+        f'<div style="background: rgba(2, 132, 199, 0.1); border-left: 4px solid #0284C7; padding: 10px 14px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; margin: 15px 0;">'
+        f'Active Operational Persona: <span style="color: #38BDF8;">{active_display_label}</span> | Language Runtime: {selected_lang}'
+        f'</div>',
+        unsafe_allow_html=True
+    )
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    selected_persona_key = st.session_state["integrated_persona_select"]
+    active_persona_title_str = "End My Suffering" if selected_persona_key == "End My Suffering" else p_dict.get(selected_persona_key, (selected_persona_key, ""))[0]
+
+    def clear_escape_data():
+        st.session_state["escape_text_area"] = ""
+        st.session_state["fetched_fp_text"] = ""
+        if "escape_extra_hint_tab3_unique" in st.session_state:
+            st.session_state["escape_extra_hint_tab3_unique"] = ""
+
+    # 6 - Execute Suite
+    st.markdown(f'<div class="section-card">', unsafe_allow_html=True)
+    st.markdown("### 🚀 6. Tactical Execution Suite")
+    col_btn1, col_btn2 = st.columns(2)
+    with col_btn1:
+        run_escape_decode = st.button(texts["escape_run_btn"], key="escape_decode_btn_tab3")
+    with col_btn2:
+        st.button(texts["escape_clear_btn"], key="escape_clear_btn_tab3", on_click=clear_escape_data)
+    st.markdown('</div>', unsafe_allow_html=True)
+        
+    if run_escape_decode or st.session_state.get("trigger_end_suffering_exec", False):
+        if st.session_state.get("trigger_end_suffering_exec", False):
+            selected_persona_key = "End My Suffering"
+            active_persona_title_str = "End My Suffering"
+            st.session_state["trigger_end_suffering_exec"] = False
+
+        if not api_key:
+            st.error(texts["no_api"])
+        elif not escape_text_input:
+            st.warning(texts["escape_no_text"])
+        else:
+            with st.spinner(texts["escape_spinner"]):
+                try:
+                    client = genai.Client(api_key=api_key)
+                    
+                    if selected_persona_key == "Grandma Filter":
+                        persona_behavior = (
+                            "You are operating under the 'Grandma Filter' persona. Speak with absolute warmth, profound patience, gentle wisdom, and immense maternal comfort. "
+                            "STRICT CONSTRAINT: Never use offensive language, profanity, or aggression."
+                        )
+                    elif selected_persona_key == "7-Year-Old Playground Mindset":
+                        persona_behavior = (
+                            "You are operating under the '7-Year-Old Playground Mindset' persona. Speak with pure, innocent, childlike wonder and simple playground logic."
+                        )
+                    elif selected_persona_key == "Zen Negotiator":
+                        persona_behavior = (
+                            "You are operating under the 'Zen Negotiator' persona. Speak with absolute calmness, serene peace, balanced mindfulness, and unshakable grace."
+                        )
+                    elif selected_persona_key == "End My Suffering":
+                        persona_behavior = (
+                            "You are operating under the 'End My Suffering' persona: A chillingly calm, hypnotic hybrid of Barack Obama's measured cadence and honesty "
+                            "('Look...'), Christopher Walken's unpredictable syntax and bizarre emphasis, and Lucifer Morningstar's supreme, amused cosmic arrogance "
+                            "toward human bureaucracy. Deliver absolute psychological annihilation of the corporate text with a tab of elegance."
+                        )
+                    else:
+                        persona_behavior = f"operating under the '{selected_persona_key}' persona with authentic, realistic tactical depth"
+
+                    system_instruction = (
+                        f"You are an expert crisis navigator, operational intelligence specialist, and contract escape strategist "
+                        f"{persona_behavior} with a {paranoia_level}% Chaos and Control urgency factor "
+                        f"and operating at '{bs_level}' intensity. "
+                        f"You MUST respond strictly, exclusively, and entirely in the dictated active language: {selected_lang}."
+                    )
+                    
+                    prompt_content = (
+                        f"Perform operational heavy lifting to generate an absolute Get Out of Jail card for this scenario/document in {selected_lang}.\n\n"
+                        f"Document / Scenario:\n{escape_text_input}\n\n"
+                        f"Additional User Hint: {extra_hint_input}\n\n"
+                        f"BS-to-Meter Setting: {bs_level}\n\n"
+                        f"Format the output starting precisely with a bold title acknowledging the active operational persona ({active_persona_title_str}), the {paranoia_level}% urgency scale, and the {bs_level} setting in {selected_lang}."
+                    )
+
+                    response = client.models.generate_content(
+                        model=MODEL_ID,
+                        contents=prompt_content,
+                        config=types.GenerateContentConfig(
+                            system_instruction=system_instruction,
+                            temperature=0.5,
+                        ),
+                    )
+                    
+                    disclaimer_footer = f"\n\n---\n{texts['escape_disclaimer']}"
+                    escape_output = response.text + disclaimer_footer
+                    st.success(texts["escape_success"])
+                    st.markdown("---")
+
+                    st.markdown(
+                        f'<div style="text-align: center; background: rgba(2, 132, 199, 0.08); padding: 15px; border-radius: 10px;">'
+                        f'<h2 style="margin: 0; color: #38BDF8;">🔴 DEFCON {paranoia_level}% | {bs_level}</h2>'
+                        f'</div>', 
+                        unsafe_allow_html=True
+                    )
+                    
+                    st.markdown("---")
+                    st.markdown(escape_output)
 
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
