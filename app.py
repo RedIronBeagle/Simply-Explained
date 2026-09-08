@@ -1908,10 +1908,11 @@ with tab3:
     
     paranoia_level = st.slider(
         texts['escape_urgency_label'],
-        min_value=0, max_value=100, value=99, step=5,
-        format="%d%%",
-        key="integrated_paranoia_tab3",
-        label_visibility="collapsed"
+        min_value=1,
+        max_value=10,
+        value=5,
+        label_visibility="collapsed",
+        key="escape_paranoia_level_unique"
     )
 
     st.markdown(
