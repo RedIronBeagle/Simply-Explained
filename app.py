@@ -1425,7 +1425,6 @@ with tab2:
 	      except Exception as e:
 	        st.error(f"An unexpected error occurred: {str(e)}")
 
-
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
 # ==============================================================================
@@ -1775,3 +1774,4 @@ with tab3:
 
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
+
