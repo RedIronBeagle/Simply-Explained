@@ -748,7 +748,7 @@ UI_TEXT = {
 
 LANGUAGES = list(UI_TEXT.keys())
 selected_lang = st.sidebar.selectbox("Select Language", LANGUAGES, index=0)
-    texts = UI_TEXT[selected_lang]
+texts = UI_TEXT[selected_lang]
 
     # Sidebar Help Expander
     st.sidebar.markdown("---")
