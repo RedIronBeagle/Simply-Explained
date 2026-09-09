@@ -746,77 +746,76 @@ UI_TEXT = {
     }
 }
 
-	LANGUAGES = list(UI_TEXT.keys())
-	selected_lang = st.sidebar.selectbox("Select Language", LANGUAGES, index=0)
-	texts = UI_TEXT[selected_lang]
-	
-	# Sidebar Help Expander
-	st.sidebar.markdown("---")
-	help_texts = {
-		"English": {
-			"title": "💡 How to Use This App",
-			"step1_title": "1. Sidebar Settings",
-			"step1_desc": "Select your preferred language, complexity tier, and tone.",
-			"step2_title": "2. Tab 1 (Topic Simplifier)",
-			"step2_desc": "Type or dictate a subject for structured explanations, PDFs, and audio.",
-			"step3_title": "3. Tab 2 & Tab 3",
-			"step3_desc": "Explore document analysis, advanced operational labs, and session logs.",
-		},
-		"Spanish": {
-			"title": "💡 Cómo Usar Esta Aplicación",
-			"step1_title": "1. Configuración de la Barra Lateral",
-			"step1_desc": "Selecciona tu idioma preferido, nivel de complejidad y tono.",
-			"step2_title": "2. Pestaña 1 (Simplificador)",
-			"step2_desc": "Escribe o dicta un tema para obtener explicaciones, PDF y audio.",
-			"step3_title": "3. Pestaña 2 y Pestaña 3",
-			"step3_desc": "Explora el análisis de documentos, laboratorios y tu historial.",
-		},
-		"French": {
-			"title": "💡 Comment Utiliser Cette Application",
-			"step1_title": "1. Paramètres",
-			"step1_desc": "Sélectionnez votre langue, complexité et ton.",
-			"step2_title": "2. Onglet 1",
-			"step2_desc": "Tapez ou dictez un sujet pour des explications structurées, PDF et audio.",
-			"step3_title": "3. Onglet 2 et 3",
-			"step3_desc": "Explorez l'analyse de documents et l'historique.",
-		},
-		"German": {
-			"title": "💡 Wie man diese App benutzt",
-			"step1_title": "1. Einstellungen",
-			"step1_desc": "Wählen Sie Sprache, Komplexität und Ton aus.",
-			"step2_title": "2. Tab 1",
-			"step2_desc": "Geben Sie ein Thema ein für strukturierte Erklärungen, PDFs und Audio.",
-			"step3_title": "3. Tab 2 & 3",
-			"step3_desc": "Entdecken Sie Dokumentenanalyse und Verlauf.",
-		},
-		"Italian": {
-			"title": "💡 Come Usare Questa App",
-			"step1_title": "1. Impostazioni",
-			"step1_desc": "Seleziona lingua, complessità e tono.",
-			"step2_title": "2. Scheda 1",
-			"step2_desc": "Digita o dettate un argomento per spiegazioni, PDF e audio.",
-			"step3_title": "3. Scheda 2 e 3",
-			"step3_desc": "Esplora l'analisi dei documenti e la cronologia.",
-		},
-		"Portuguese": {
-			"title": "💡 Como Usar Este Aplicativo",
-			"step1_title": "1. Configurações",
-			"step1_desc": "Selecione idioma, complexidade e tom.",
-			"step2_title": "2. Aba 1",
-			"step2_desc": "Digite ou grave um tópico para explicações, PDF e áudio.",
-			"step3_title": "3. Aba 2 e 3",
-			"step3_desc": "Explore a análise de documentos e histórico.",
-		}
-	}
-	current_help = help_texts.get(selected_lang, help_texts["English"])
-	
-	with st.sidebar.expander(current_help["title"]):
-		st.markdown(f"**{current_help['step1_title']}**\n{current_help['step1_desc']}")
-		st.markdown("---")
-		st.markdown(f"**{current_help['step2_title']}**\n{current_help['step2_desc']}")
-		st.markdown("---")
-		st.markdown(f"**{current_help['step3_title']}**\n{current_help['step3_desc']}")
+LANGUAGES = list(UI_TEXT.keys())
+selected_lang = st.sidebar.selectbox("Select Language", LANGUAGES, index=0)
+texts = UI_TEXT[selected_lang]
 
+# Sidebar Help Expander
+st.sidebar.markdown("---")
+help_texts = {
+    "English": {
+        "title": "💡 How to Use This App",
+        "step1_title": "1. Sidebar Settings",
+        "step1_desc": "Select your preferred language, complexity tier, and tone.",
+        "step2_title": "2. Tab 1 (Topic Simplifier)",
+        "step2_desc": "Type or dictate a subject for structured explanations, PDFs, and audio.",
+        "step3_title": "3. Tab 2 & Tab 3",
+        "step3_desc": "Explore document analysis, advanced operational labs, and session logs.",
+    },
+    "Spanish": {
+        "title": "💡 Cómo Usar Esta Aplicación",
+        "step1_title": "1. Configuración de la Barra Lateral",
+        "step1_desc": "Selecciona tu idioma preferido, nivel de complejidad y tono.",
+        "step2_title": "2. Pestaña 1 (Simplificador)",
+        "step2_desc": "Escribe o dicta un tema para obtener explicaciones, PDF y audio.",
+        "step3_title": "3. Pestaña 2 y Pestaña 3",
+        "step3_desc": "Explora el análisis de documentos, laboratorios y tu historial.",
+    },
+    "French": {
+        "title": "💡 Comment Utiliser Cette Application",
+        "step1_title": "1. Paramètres",
+        "step1_desc": "Sélectionnez votre langue, complexité et ton.",
+        "step2_title": "2. Onglet 1",
+        "step2_desc": "Tapez ou dictez un sujet pour des explications structurées, PDF et audio.",
+        "step3_title": "3. Onglet 2 et 3",
+        "step3_desc": "Explorez l'analyse de documents et l'historique.",
+    },
+    "German": {
+        "title": "💡 Wie man diese App benutzt",
+        "step1_title": "1. Einstellungen",
+        "step1_desc": "Wählen Sie Sprache, Komplexität und Ton aus.",
+        "step2_title": "2. Tab 1",
+        "step2_desc": "Geben Sie ein Thema ein für strukturierte Erklärungen, PDFs und Audio.",
+        "step3_title": "3. Tab 2 & 3",
+        "step3_desc": "Entdecken Sie Dokumentenanalyse und Verlauf.",
+    },
+    "Italian": {
+        "title": "💡 Come Usare Questa App",
+        "step1_title": "1. Impostazioni",
+        "step1_desc": "Seleziona lingua, complessità e tono.",
+        "step2_title": "2. Scheda 1",
+        "step2_desc": "Digita o dettate un argomento per spiegazioni, PDF e audio.",
+        "step3_title": "3. Scheda 2 e 3",
+        "step3_desc": "Esplora l'analisi dei documenti e la cronologia.",
+    },
+    "Portuguese": {
+        "title": "💡 Como Usar Este Aplicativo",
+        "step1_title": "1. Configurações",
+        "step1_desc": "Selecione idioma, complexidade e tom.",
+        "step2_title": "2. Aba 1",
+        "step2_desc": "Digite ou grave um tópico para explicações, PDF e áudio.",
+        "step3_title": "3. Aba 2 e 3",
+        "step3_desc": "Explore a análise de documentos e histórico.",
+    }
+}
+current_help = help_texts.get(selected_lang, help_texts["English"])
+
+with st.sidebar.expander(current_help["title"]):
+    st.markdown(f"**{current_help['step1_title']}**\n{current_help['step1_desc']}")
+    st.markdown("---")
+    st.markdown(f"**{current_help['step2_title']}**\n{current_help['step2_desc']}")
+    st.markdown("---")
+    st.markdown(f"**{current_help['step3_title']}**\n{current_help['step3_desc']}")
 # ==============================================================================
 # [SECTION 4: UTILITY FUNCTIONS (PDF EXPORT & FETCHERS)]
 # ==============================================================================
