@@ -751,7 +751,7 @@ selected_lang = st.sidebar.selectbox("Select Language", LANGUAGES, index=0)
 texts = UI_TEXT[selected_lang]
 
 		# Sidebar Help Expander
-		st.sidebar.markdown("---")
+    St.sidebar.markdown("---")
 		help_texts = {
 			"English": {
 				"title": "💡 How to Use This App",
