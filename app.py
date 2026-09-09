@@ -777,66 +777,81 @@ def prepare_media_part(uploaded_file):
   return types.Part.from_bytes(
       data=uploaded_file.getvalue(), mime_type=uploaded_file.type
   )
-
-
 def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
-  import re
+    import os
+    
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_auto_page_break(auto=True, margin=15)
 
-  pdf = FPDF()
-  pdf.add_page()
-  pdf.set_auto_page_break(auto=True, margin=15)
+    # Automatically look for the font files in the exact same folder as app.py
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    font_path = os.path.join(base_dir, "DejaVuSans.ttf")
+    bold_font_path = os.path.join(base_dir, "DejaVuSans-Bold.ttf")
+    
+    if os.path.exists(font_path):
+        pdf.add_font("DejaVu", "", font_path)
+        pdf.add_font("DejaVu", "B", bold_font_path if os.path.exists(bold_font_path) else font_path)
+        font_family = "DejaVu"
+    else:
+        # Fallback if the files aren't found
+        font_family = "helvetica"
 
-  pdf.set_font("helvetica", "B", 16)
-  pdf.set_text_color(2, 132, 199)
-  pdf.cell(
-      0,
-      10,
-      "Simply Explained - Professional Report",
-      new_x=XPos.LMARGIN,
-      new_y=YPos.NEXT,
-      align="L",
-  )
+    # Title Styling
+    pdf.set_font(font_family, "B", 16)
+    pdf.set_text_color(2, 132, 199)
+    pdf.cell(
+        0,
+        10,
+        "Simply Explained - Professional Report",
+        new_x=XPos.LMARGIN,
+        new_y=YPos.NEXT,
+        align="L",
+    )
 
-  pdf.set_font("helvetica", "I", 9)
-  pdf.set_text_color(100, 100, 100)
-  pdf.cell(
-      0,
-      6,
-      f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-      new_x=XPos.LMARGIN,
-      new_y=YPos.NEXT,
-      align="L",
-  )
-  pdf.ln(5)
+    # Timestamp
+    pdf.set_font(font_family, "I", 9)
+    pdf.set_text_color(100, 100, 100)
+    pdf.cell(
+        0,
+        6,
+        f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+        new_x=XPos.LMARGIN,
+        new_y=YPos.NEXT,
+        align="L",
+    )
+    pdf.ln(5)
 
-  pdf.set_font("helvetica", "B", 14)
-  pdf.set_text_color(30, 30, 30)
-  pdf.multi_cell(0, 8, title)
-  pdf.ln(4)
+    # Report Title
+    pdf.set_font(font_family, "B", 14)
+    pdf.set_text_color(30, 30, 30)
+    pdf.multi_cell(0, 8, title)
+    pdf.ln(4)
 
-  pdf.set_font("helvetica", "", 10)
-  pdf.set_text_color(50, 50, 50)
+    # Main Content
+    pdf.set_font(font_family, "", 10)
+    pdf.set_text_color(50, 50, 50)
 
-  raw_clean = content.replace("##", "").replace("###", "").replace("**", "")
-  cleaned_content = re.sub(r"[^\x00-\x7F]+", " ", raw_clean)
+    raw_clean = content.replace("##", "").replace("###", "").replace("**", "")
+    pdf.multi_cell(0, 6, raw_clean)
 
-  pdf.multi_cell(0, 6, cleaned_content)
+    # Footer Signoff
+    pdf.ln(10)
+    pdf.set_font(font_family, "I", 8)
+    pdf.set_text_color(120, 120, 120)
 
-  pdf.ln(10)
-  pdf.set_font("helvetica", "I", 8)
-  pdf.set_text_color(120, 120, 120)
+    raw_signoff = footer_signoff.replace("---", "").strip()
+    pdf.multi_cell(0, 5, raw_signoff)
 
-  raw_signoff = footer_signoff.replace("---", "").strip()
-  clean_signoff = re.sub(r"[^\x00-\x7F]+", " ", raw_signoff)
-  pdf.multi_cell(0, 5, clean_signoff)
+    pdf_output = pdf.output()
+    if isinstance(pdf_output, str):
+        pdf_bytes = pdf_output.encode("latin-1")
+    else:
+        pdf_bytes = bytes(pdf_output)
 
-  pdf_output = pdf.output()
-  if isinstance(pdf_output, str):
-    pdf_bytes = pdf_output.encode("latin-1")
-  else:
-    pdf_bytes = bytes(pdf_output)
+    return pdf_bytes
 
-  return pdf_bytes
+
 
 
 # ==============================================================================
