@@ -48,7 +48,7 @@ If you do not agree to these Terms in their entirety, you must immediately cease
 * **1.4 Time-Traveler Waiver:** If you are accessing this Service from a future timeline or parallel universe, you explicitly agree that your local temporal paradoxes do not invalidate these Terms, nor shall you hold us liable for any accidental erasure of your ancestors.
 
 #### 2. General Disclaimers & No Professional Advice
-* **2.1 Informational Use Only:** The Service utilizes artificial intelligence to synthesize, summarize, and simplify user-provided content. All generated output is strictly for informational, educational, and entertainment purposes.
+* **2.1 Informational Use Only:** The Service utilizes artificial intelligence to synthesize, summarize, and simplify user-provided content. All d output is strictly for informational, educational, and entertainment purposes.
 * **2.2 Not Professional Counsel:** The output produced by the Application does NOT constitute professional legal, financial, tax, accounting, or medical advice. You agree not to rely upon the Service as a substitute for actual qualified human professionals.
 * **2.3 Warranty of Accuracy:** AI-generated summaries may contain hallucinations, errors, or wild misinterpretations. We make zero guarantees regarding accuracy, completeness, or sanity.
 * **2.4 The Princess Bride Standard:** You agree that using words like "Inconceivable!" to describe our AI's outputs does not mean what you think it means, and we are not liable if the system occasionally falls victim to a classic blunder—the most famous of which is never get involved in a land war in Asia.
@@ -778,27 +778,21 @@ def prepare_media_part(uploaded_file):
       data=uploaded_file.getvalue(), mime_type=uploaded_file.type
   )
 def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
-    import os
+    import re
     
     pdf = FPDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
 
-    # Automatically look for the font files in the exact same folder as app.py
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    font_path = os.path.join(base_dir, "DejaVuSans.ttf")
-    bold_font_path = os.path.join(base_dir, "DejaVuSans-Bold.ttf")
-    
-    if os.path.exists(font_path):
-        pdf.add_font("DejaVu", "", font_path)
-        pdf.add_font("DejaVu", "B", bold_font_path if os.path.exists(bold_font_path) else font_path)
-        font_family = "DejaVu"
-    else:
-        # Fallback if the files aren't found
-        font_family = "helvetica"
+    # Aggressively strip out any non-standard/non-ASCII characters that break core fonts
+    def sanitize(text: str) -> str:
+        if not text:
+            return ""
+        # Keep only basic ascii characters, tabs, and newlines
+        return re.sub(r'[^\x00-\x7F]+', '', text)
 
     # Title Styling
-    pdf.set_font(font_family, "B", 16)
+    pdf.set_font("helvetica", "B", 16)
     pdf.set_text_color(2, 132, 199)
     pdf.cell(
         0,
@@ -810,7 +804,7 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     )
 
     # Timestamp
-    pdf.set_font(font_family, "I", 9)
+    pdf.set_font("helvetica", "I", 9)
     pdf.set_text_color(100, 100, 100)
     pdf.cell(
         0,
@@ -823,25 +817,25 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     pdf.ln(5)
 
     # Report Title
-    pdf.set_font(font_family, "B", 14)
+    pdf.set_font("helvetica", "B", 14)
     pdf.set_text_color(30, 30, 30)
-    pdf.multi_cell(0, 8, title)
+    pdf.multi_cell(0, 8, sanitize(title))
     pdf.ln(4)
 
     # Main Content
-    pdf.set_font(font_family, "", 10)
+    pdf.set_font("helvetica", "", 10)
     pdf.set_text_color(50, 50, 50)
 
     raw_clean = content.replace("##", "").replace("###", "").replace("**", "")
-    pdf.multi_cell(0, 6, raw_clean)
+    pdf.multi_cell(0, 6, sanitize(raw_clean))
 
     # Footer Signoff
     pdf.ln(10)
-    pdf.set_font(font_family, "I", 8)
+    pdf.set_font("helvetica", "I", 8)
     pdf.set_text_color(120, 120, 120)
 
     raw_signoff = footer_signoff.replace("---", "").strip()
-    pdf.multi_cell(0, 5, raw_signoff)
+    pdf.multi_cell(0, 5, sanitize(raw_signoff))
 
     pdf_output = pdf.output()
     if isinstance(pdf_output, str):
@@ -850,8 +844,6 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
         pdf_bytes = bytes(pdf_output)
 
     return pdf_bytes
-
-
 
 
 # ==============================================================================
