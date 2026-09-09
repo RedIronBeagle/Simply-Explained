@@ -7,6 +7,13 @@
 # ==============================================================================
 # [SECTION 1: IMPORTS & ENVIRONMENT SETUP]
 # ==============================================================================
+import streamlit as st
+import google.genai as genai
+from google.genai import types
+import os
+import io
+import datetime
+import re
 import contextlib
 import datetime
 import io
