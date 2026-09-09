@@ -821,16 +821,16 @@ with st.sidebar:
         st.markdown("---")
         st.markdown(f"**{current_help['step3_title']}**\n{current_help['step3_desc']}")
 		
-LANGUAGES = list(UI_TEXT.keys())
-TTS_LANG_MAP = {
-	"English": "en",
-	"Spanish": "es",
-	"German": "de",
-	"French": "fr",
-	"Hindi": "hi",
-	"Mandarin": "zh-CN",
-	"Japanese": "ja",
-	"Korean": "ko",
+	LANGUAGES = list(UI_TEXT.keys())
+	TTS_LANG_MAP = {
+		"English": "en",
+		"Spanish": "es",
+		"German": "de",
+		"French": "fr",
+		"Hindi": "hi",
+		"Mandarin": "zh-CN",
+		"Japanese": "ja",
+		"Korean": "ko",
 }
 
 
