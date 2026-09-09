@@ -821,9 +821,9 @@ with st.sidebar:
         st.markdown("---")
         st.markdown(f"**{current_help['step3_title']}**\n{current_help['step3_desc']}")
 		
-     LANGUAGES = list(UI_TEXT.keys())
-        selected_lang = st.sidebar.selectbox("Select Language", LANGUAGES, index=0)
-        texts = UI_TEXT[selected_lang]
+    LANGUAGES = list(UI_TEXT.keys())
+    selected_lang = st.sidebar.selectbox("Select Language", LANGUAGES, index=0)
+    texts = UI_TEXT[selected_lang]
 }
 
 
