@@ -746,80 +746,80 @@ UI_TEXT = {
     }
 }
 
-# ==============================================================================
-# [SIDEBAR HELP SECTION - LANGUAGE DYNAMIC]
-# ==============================================================================
-# ==============================================================================
-# [SIDEBAR HELP SECTION - LANGUAGE DYNAMIC]
-# ==============================================================================
-with st.sidebar:
-    st.markdown("---")
-    
+LANGUAGES = list(UI_TEXT.keys())
+    selected_lang = st.sidebar.selectbox("Select Language", LANGUAGES, index=0)
+    texts = UI_TEXT[selected_lang]
+
+    # Sidebar Help Expander
+    st.sidebar.markdown("---")
     help_texts = {
         "English": {
             "title": "💡 How to Use This App",
             "step1_title": "1. Sidebar Settings",
-            "step1_desc": "Select your preferred language, complexity tier (Easy/Balanced/Hard), and tone before generating content.",
+            "step1_desc": "Select your preferred language, complexity tier, and tone.",
             "step2_title": "2. Tab 1 (Topic Simplifier)",
-            "step2_desc": "Type any subject or use the voice recorder to generate structured, multi-pillar explanations with optional PDF downloads and audio playback.",
+            "step2_desc": "Type or dictate a subject for structured explanations, PDFs, and audio.",
             "step3_title": "3. Tab 2 & Tab 3",
-            "step3_desc": "Explore additional tabs for specialized document analysis, strategic outputs, and reviewing your session history log.",
+            "step3_desc": "Explore document analysis, advanced operational labs, and session logs.",
         },
         "Spanish": {
             "title": "💡 Cómo Usar Esta Aplicación",
             "step1_title": "1. Configuración de la Barra Lateral",
-            "step1_desc": "Selecciona tu idioma preferido, nivel de complejidad y tono antes de generar contenido.",
-            "step2_title": "2. Pestaña 1 (Simplificador de Temas)",
-            "step2_desc": "Escribe cualquier tema o usa el grabador de voz para obtener explicaciones estructuradas, con opción de descargar PDF y audio.",
+            "step1_desc": "Selecciona tu idioma preferido, nivel de complejidad y tono.",
+            "step2_title": "2. Pestaña 1 (Simplificador)",
+            "step2_desc": "Escribe o dicta un tema para obtener explicaciones, PDF y audio.",
             "step3_title": "3. Pestaña 2 y Pestaña 3",
-            "step3_desc": "Explora pestañas adicionales para análisis de documentos especializados, resultados estratégicos y tu historial.",
+            "step3_desc": "Explora el análisis de documentos, laboratorios y tu historial.",
         },
         "French": {
             "title": "💡 Comment Utiliser Cette Application",
-            "step1_title": "1. Paramètres de la Barre Latérale",
-            "step1_desc": "Sélectionnez votre langue préférée, le niveau de complexité et le ton avant de générer du contenu.",
-            "step2_title": "2. Onglet 1 (Simplificateur)",
-            "step2_desc": "Tapez un sujet ou utilisez l'enregistreur vocal pour obtenir des explications structurées, avec téléchargement PDF et audio.",
-            "step3_title": "3. Onglet 2 et Onglet 3",
-            "step3_desc": "Explorez les onglets supplémentaires pour l'analyse de documents, les stratégies et l'historique de session.",
+            "step1_title": "1. Paramètres",
+            "step1_desc": "Sélectionnez votre langue, complexité et ton.",
+            "step2_title": "2. Onglet 1",
+            "step2_desc": "Tapez ou dictez un sujet pour des explications structurées, PDF et audio.",
+            "step3_title": "3. Onglet 2 et 3",
+            "step3_desc": "Explorez l'analyse de documents et l'historique.",
         },
         "German": {
             "title": "💡 Wie man diese App benutzt",
-            "step1_title": "1. Seitenleisten-Einstellungen",
-            "step1_desc": "Wählen Sie Ihre bevorzugte Sprache, Komplexität und den Ton aus, bevor Sie Inhalte generieren.",
-            "step2_title": "2. Tab 1 (Themen-Vereinfacher)",
-            "step2_desc": "Geben Sie ein Thema ein oder nutzen Sie die Sprachaufnahme für strukturierte Erklärungen inkl. PDF-Download.",
-            "step3_title": "3. Tab 2 & Tab 3",
-            "step3_desc": "Entdecken Sie weitere Tabs für Dokumentenanalyse, strategische Berichte und Ihren Verlauf.",
+            "step1_title": "1. Einstellungen",
+            "step1_desc": "Wählen Sie Sprache, Komplexität und Ton aus.",
+            "step2_title": "2. Tab 1",
+            "step2_desc": "Geben Sie ein Thema ein für strukturierte Erklärungen, PDFs und Audio.",
+            "step3_title": "3. Tab 2 & 3",
+            "step3_desc": "Entdecken Sie Dokumentenanalyse und Verlauf.",
         },
         "Italian": {
             "title": "💡 Come Usare Questa App",
-            "step1_title": "1. Impostazioni della Barra Laterale",
-            "step1_desc": "Seleziona la lingua preferita, il livello di complessità e il tono prima di generare contenuti.",
-            "step2_title": "2. Scheda 1 (Semplificatore)",
-            "step2_desc": "Digita un argomento o usa il registratore vocale per ottenere spiegazioni strutturate, con download PDF e audio.",
-            "step3_title": "3. Scheda 2 e Scheda 3",
-            "step3_desc": "Esplora le schede aggiuntive per l'analisi di documenti, strategie e la cronologia delle sessioni.",
+            "step1_title": "1. Impostazioni",
+            "step1_desc": "Seleziona lingua, complessità e tono.",
+            "step2_title": "2. Scheda 1",
+            "step2_desc": "Digita o dettate un argomento per spiegazioni, PDF e audio.",
+            "step3_title": "3. Scheda 2 e 3",
+            "step3_desc": "Esplora l'analisi dei documenti e la cronologia.",
         },
         "Portuguese": {
             "title": "💡 Como Usar Este Aplicativo",
-            "step1_title": "1. Configurações da Barra Lateral",
-            "step1_desc": "Selecione seu idioma preferido, nível de complexidade e tom antes de gerar o conteúdo.",
-            "step2_title": "2. Aba 1 (Simplificador de Tópicos)",
-            "step2_desc": "Digite qualquer assunto ou use o gravador de voz para explicações estruturadas, com PDF e áudio.",
-            "step3_title": "3. Aba 2 e Aba 3",
-            "step3_desc": "Explore abas adicionais para análise de documentos especializados, relatórios estratégicos e histórico.",
+            "step1_title": "1. Configurações",
+            "step1_desc": "Selecione idioma, complexidade e tom.",
+            "step2_title": "2. Aba 1",
+            "step2_desc": "Digite ou grave um tópico para explicações, PDF e áudio.",
+            "step3_title": "3. Aba 2 e 3",
+            "step3_desc": "Explore a análise de documentos e histórico.",
         }
     }
-
     current_help = help_texts.get(selected_lang, help_texts["English"])
 
-    with st.expander(current_help["title"]):
+    with st.sidebar.expander(current_help["title"]):
         st.markdown(f"**{current_help['step1_title']}**\n{current_help['step1_desc']}")
         st.markdown("---")
         st.markdown(f"**{current_help['step2_title']}**\n{current_help['step2_desc']}")
         st.markdown("---")
         st.markdown(f"**{current_help['step3_title']}**\n{current_help['step3_desc']}")
+
+
+
+
 # ==============================================================================
 # [SECTION 4: UTILITY FUNCTIONS (PDF EXPORT & FETCHERS)]
 # ==============================================================================
