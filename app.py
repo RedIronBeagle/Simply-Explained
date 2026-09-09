@@ -1083,18 +1083,19 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
 
     return pdf_bytes
 
+
 # ==============================================================================
 # [SECTION 5: STREAMLIT APP INITIALIZATION & STYLING]
 # ==============================================================================
 is_streamlit = "streamlit" in sys.modules or os.getenv("SERVER_PORT") == "8501"
 
 if is_streamlit:
-  import streamlit as st
+    import streamlit as st
 
-  st.set_page_config(page_title="Simply Explained", page_icon="💡", layout="wide")
+    st.set_page_config(page_title="Simply Explained", page_icon="💡", layout="wide")
 
-  st.markdown(
-      """
+    st.markdown(
+        """
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
@@ -1168,91 +1169,88 @@ if is_streamlit:
         }
         </style>
         """,
-      unsafe_allow_html=True,
-  )
-
-  env_api_key = os.getenv("GEMINI_API_KEY", "")
-  texts = UI_TEXT["English"]
-
-  if "selected_lang" not in st.session_state:
-    st.session_state["selected_lang"] = "English"
-  if "history_log" not in st.session_state:
-    st.session_state["history_log"] = []
-
-  selected_lang = st.sidebar.selectbox(
-      "🌐 **Language**",
-      LANGUAGES
-      index=(
-          LANGUAGES.index(st.session_state["selected_lang"])
-          if st.session_state["selected_lang"] in LANGUAGES
-          else 0
-      ),
-      key="language_selector",
-  )
-  st.session_state["selected_lang"] = selected_lang
-  texts = UI_TEXT.get(selected_lang, UI_TEXT["English"])
-
-  tone_level = st.sidebar.selectbox(
-      texts["tone_label"], texts["tone_options"], key="tone_radio_key"
-  )
-
-  enable_audio_speech = st.sidebar.checkbox(
-      texts["read_aloud_label"],
-      value=False,
-      help=(
-          "Generates an audio player for each simplified response in the"
-          " selected language."
-      ),
-      key="enable_audio_speech_unique_key",
-  )
-
-  st.sidebar.markdown("---")
-
-  depth_level = st.sidebar.radio(
-      texts["depth_label"], texts["depth_options"], key="depth_radio_key"
-  )
-
-  st.sidebar.markdown("---")
-
-  if st.sidebar.button(texts["start_over"], key="reset_app_button"):
-    current_lang = st.session_state.get("selected_lang", "English")
-    st.session_state.clear()
-    st.session_state["selected_lang"] = current_lang
-    st.rerun()
-
-
-  @st.dialog("Terms & Conditions / Términos y Condiciones")
-  def show_terms_dialog():
-    st.markdown(TERMS_TEXT.get(selected_lang, TERMS_TEXT["English"]))
-
-
-  if st.sidebar.button(texts["terms_button"], key="terms_button_sidebar"):
-    show_terms_dialog()
-
-  st.sidebar.markdown("---")
-  with st.sidebar.expander("🔑 ", expanded=False):
-    api_key_input = st.text_input(
-        texts["api_label"],
-        value=env_api_key,
-        type="password",
-        key="gemini_api_key_input_unique",
-        label_visibility="collapsed",
+        unsafe_allow_html=True,
     )
-  api_key = (api_key_input or "").strip() or env_api_key
 
-  st.sidebar.markdown(
-      "<div style='text-align: center; font-size: 0.78rem; font-weight: 700;"
-      " opacity: 0.9; margin: 4px 0 2px 0;'>♿ Universal Accessibility"
-      " Enabled</div>",
-      unsafe_allow_html=True,
-  )
-  st.sidebar.markdown("---")
-  st.sidebar.markdown(
-      "<div style='text-align: center; font-size: 0.72rem; font-weight: 600;"
-      " color: #0284C7;'>Powered by SkyNet, we are aware API</div>",
-      unsafe_allow_html=True,
-  )
+    env_api_key = os.getenv("GEMINI_API_KEY", "")
+    texts = UI_TEXT["English"]
 
+    if "selected_lang" not in st.session_state:
+        st.session_state["selected_lang"] = "English"
+    if "history_log" not in st.session_state:
+        st.session_state["history_log"] = []
+
+    selected_lang = st.sidebar.selectbox(
+        "🌐 **Language**",
+        LANGUAGES,
+        index=(
+            LANGUAGES.index(st.session_state["selected_lang"])
+            if st.session_state["selected_lang"] in LANGUAGES
+            else 0
+        ),
+        key="language_selector",
+    )
+    st.session_state["selected_lang"] = selected_lang
+    texts = UI_TEXT.get(selected_lang, UI_TEXT["English"])
+
+    tone_level = st.sidebar.selectbox(
+        texts["tone_label"], texts["tone_options"], key="tone_radio_key"
+    )
+
+    enable_audio_speech = st.sidebar.checkbox(
+        texts["read_aloud_label"],
+        value=False,
+        help=(
+            "Generates an audio player for each simplified response in the"
+            " selected language."
+        ),
+        key="enable_audio_speech_unique_key",
+    )
+
+    st.sidebar.markdown("---")
+
+    depth_level = st.sidebar.radio(
+        texts["depth_label"], texts["depth_options"], key="depth_radio_key"
+    )
+
+    st.sidebar.markdown("---")
+
+    if st.sidebar.button(texts["start_over"], key="reset_app_button"):
+        current_lang = st.session_state.get("selected_lang", "English")
+        st.session_state.clear()
+        st.session_state["selected_lang"] = current_lang
+        st.rerun()
+
+    @st.dialog("Terms & Conditions / Términos y Condiciones")
+    def show_terms_dialog():
+        st.markdown(TERMS_TEXT.get(selected_lang, TERMS_TEXT["English"]))
+
+    if st.sidebar.button(texts["terms_button"], key="terms_button_sidebar"):
+        show_terms_dialog()
+
+    st.sidebar.markdown("---")
+    with st.sidebar.expander("🔑 ", expanded=False):
+        api_key_input = st.text_input(
+            texts["api_label"],
+            value=env_api_key,
+            type="password",
+            key="gemini_api_key_input_unique",
+            label_visibility="collapsed",
+        )
+    api_key = (api_key_input or "").strip() or env_api_key
+
+    st.sidebar.markdown(
+        "<div style='text-align: center; font-size: 0.78rem; font-weight: 700;"
+        " opacity: 0.9; margin: 4px 0 2px 0;'>♿ Universal Accessibility"
+        " Enabled</div>",
+        unsafe_allow_html=True,
+    )
+    st.sidebar.markdown("---")
+    st.sidebar.markdown(
+        "<div style='text-align: center; font-size: 0.72rem; font-weight: 600;"
+        " color: #0284C7;'>Powered by SkyNet, we are aware API</div>",
+        unsafe_allow_html=True,
+    )
 
 # ==============================================================================
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
