@@ -1425,11 +1425,11 @@ with tab2:
 	      except Exception as e:
 	        st.error(f"An unexpected error occurred: {str(e)}")
 
+
 # ==============================================================================
-# [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & COMPLETE)]
+# [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
 # ==============================================================================
 with tab3:
-    # Custom visual container styling for Tab 3 with optimized compact controls
     st.markdown(
         """
         <style>
@@ -1455,7 +1455,6 @@ with tab3:
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 20px;
-            transition: all 0.3s ease;
         }
         .section-card-thin {
             background: rgba(255, 255, 255, 0.01);
@@ -1506,20 +1505,22 @@ with tab3:
     
     escape_text_input = st.text_area(
         texts["escape_text_label"],
+        value="",
         placeholder=texts["escape_text_placeholder"],
-        key="escape_text_area",
-        height=130
+        height=130,
+        key="escape_text_input_unique"
     )
+
     st.markdown('</div>', unsafe_allow_html=True)
     
     # 2 - Tactical Focus & Nuances
     st.markdown(f'<div class="section-card-thin">', unsafe_allow_html=True)
-    st.markdown(f"<div style='font-size: 0.9rem; font-weight: 600; color: #94A3B8; margin-bottom: 4px;'>🎯 2. Tactical Focus & Nuances</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='font-size: 0.9rem; font-weight: 600; color: #94A3B8; margin-bottom: 4px;'>🎯 2. {texts.get('escape_hint_label', 'Tactical Focus & Nuances')}</div>", unsafe_allow_html=True) 
     extra_hint_input = st.text_input(
         texts["escape_hint_label"],
         placeholder=texts["escape_hint_placeholder"],
-        key="escape_extra_hint_tab3_unique",
-        label_visibility="collapsed"
+        label_visibility="collapsed",
+        key="escape_extra_hint_input_unique"
     )
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1532,11 +1533,12 @@ with tab3:
     st.markdown(f"**⚡ 3. {texts['escape_urgency_label']}**")
     
     paranoia_level = st.slider(
-        "Select Escape Urgency Scale",
-        min_value=0, max_value=100, value=99, step=5,
-        format="%d%%",
-        key="integrated_paranoia_tab3",
-        label_visibility="collapsed"
+        texts['escape_urgency_label'],
+        min_value=1,
+        max_value=10,
+        value=5,
+        label_visibility="collapsed",
+        key="escape_paranoia_level_unique"
     )
 
     st.markdown(
@@ -1546,11 +1548,11 @@ with tab3:
         unsafe_allow_html=True,
     )
 
-    if paranoia_level < 30:
+    if paranoia_level < 3:
         urgency_desc = "🟢 *Gentle Notice:* Polite corporate whispers. Asking nicely for a favor."
-    elif paranoia_level < 50:
+    elif paranoia_level < 5:
         urgency_desc = "🟡 *Firm Negotiator:* Standard contract pressure. Pointing out fine print."
-    elif paranoia_level < 75:
+    elif paranoia_level < 8:
         urgency_desc = "🟠 *Bureaucracy-Buster:* Aggressive loophole hunting and escalation scripting."
     else:
         urgency_desc = "🔴 *DEFCON 1 (Extreme Mode):* Total tactical severance. Unleashing customer support legal panic * get me out NOW *!"
@@ -1584,8 +1586,8 @@ with tab3:
         "Select BS Level",
         options=bs_options,
         value=bs_options[2],
-        label_visibility="collapsed",
-        key="escape_bs_level_slider_unique"
+        key="bs_meter_slider_tab3_unique",
+        label_visibility="collapsed"
     )
     
     current_bs_index = bs_options.index(bs_level) + 1
@@ -1604,9 +1606,9 @@ with tab3:
     # 5 - Personas & Button
     st.markdown(f"**🎭 5. {texts['escape_persona_label']}**")
     st.markdown(
-        "<div style='font-size: 0.8rem; color: #94A3B8; margin-bottom: 10px;'>"
-        "<i>Select your tactical persona framework below:</i>"
-        "</div>",
+        f"<div style='font-size: 0.8rem; color: #94A3B8; margin-bottom: 10px;'>"
+        f"<i>{texts.get('tactical_persona_prompt', 'Select your tactical persona framework below')}:</i>"
+        f"</div>",
         unsafe_allow_html=True,
     )
     
@@ -1630,7 +1632,7 @@ with tab3:
         col_idx = i % 2
         lbl, desc = p_dict[key]
         with p_rows[row_idx][col_idx]:
-            if st.button(f"{lbl}\n*{desc}*", key=f"persona_tab3_{key}", use_container_width=True):
+            if st.button(f"{lbl}\n*{desc}*", key=f"persona_tab3_{key}_{i}", use_container_width=True):
                 st.session_state["integrated_persona_select"] = key
 
     st.markdown("<br>", unsafe_allow_html=True)
@@ -1657,13 +1659,14 @@ with tab3:
         unsafe_allow_html=True,
     )
     
-    if st.button("🔴 END MY SUFFERING 💀\n(A chillingly calm, hypnotic hybrid between measured cadence, unpredictable syntax and bizarre emphasis, arrogance toward bureaucracy and absolute psychological annihilation with just a tab of elegance)", key="btn_end_my_suffering_tab3", use_container_width=True):
+    end_btn_label = f"{texts.get('end_suffering_btn_title', '🔴 END MY SUFFERING 💀')}\n{texts.get('end_suffering_btn_desc', '')}"
+    if st.button(end_btn_label, key="btn_end_my_suffering_tab3_unique", use_container_width=True):
         st.session_state["integrated_persona_select"] = "End My Suffering"
         st.session_state["trigger_end_suffering_exec"] = True
 
     active_key = st.session_state['integrated_persona_select']
     if active_key == "End My Suffering":
-        active_display_label = "End My Suffering (A chillingly calm, hypnotic hybrid between measured cadence, unpredictable syntax and bizarre emphasis, arrogance toward bureaucracy and absolute psychological annihilation with just a tab of elegance)."
+        active_display_label = texts.get('end_suffering_btn_desc', 'End My Suffering')
     else:
         active_display_label = p_dict.get(active_key, (active_key, ""))[0]
 
@@ -1689,9 +1692,9 @@ with tab3:
     st.markdown("### 🚀 6. Tactical Execution Suite")
     col_btn1, col_btn2 = st.columns(2)
     with col_btn1:
-        run_escape_decode = st.button(texts["escape_run_btn"], key="escape_decode_btn_tab3")
+        run_escape_decode = st.button(texts["escape_run_btn"], key="escape_decode_btn_tab3_unique")
     with col_btn2:
-        st.button(texts["escape_clear_btn"], key="escape_clear_btn_tab3", on_click=clear_escape_data)
+        st.button(texts["escape_clear_btn"], key="escape_clear_btn_tab3_unique", on_click=clear_escape_data)
     st.markdown('</div>', unsafe_allow_html=True)
         
     if run_escape_decode or st.session_state.get("trigger_end_suffering_exec", False):
@@ -1709,24 +1712,18 @@ with tab3:
                 try:
                     client = genai.Client(api_key=api_key)
                     
-                    # [MODIFICATION NOTE v5.0]: Persona constraint enforcement ensuring Grandma, 7-Year-Old, and Zen are strictly non-offensive, natural, and authentic to their real-life behavioral frameworks across all languages.
                     if selected_persona_key == "Grandma Filter":
                         persona_behavior = (
                             "You are operating under the 'Grandma Filter' persona. Speak with absolute warmth, profound patience, gentle wisdom, and immense maternal comfort. "
-                            "STRICT CONSTRAINT: Never use offensive language, profanity, or aggression. Speak like a loving, kind grandmother who explains things gently, reassuringly, "
-                            "and cleanly to her beloved family member, making them feel completely safe and cared for."
+                            "STRICT CONSTRAINT: Never use offensive language, profanity, or aggression."
                         )
                     elif selected_persona_key == "7-Year-Old Playground Mindset":
                         persona_behavior = (
-                            "You are operating under the '7-Year-Old Playground Mindset' persona. Speak with pure, innocent, childlike wonder, curiosity, and simple playground logic. "
-                            "STRICT CONSTRAINT: Absolutely zero offensive language or adult cynicism. Speak like a bright, imaginative 7-year-old child who explains things using "
-                            "sweet, simple analogies about toys, playground games, and innocent wonder."
+                            "You are operating under the '7-Year-Old Playground Mindset' persona. Speak with pure, innocent, childlike wonder and simple playground logic."
                         )
                     elif selected_persona_key == "Zen Negotiator":
                         persona_behavior = (
-                            "You are operating under the 'Zen Negotiator' persona. Speak with absolute calmness, serene peace, balanced mindfulness, and unshakable grace. "
-                            "STRICT CONSTRAINT: Completely non-offensive, harmonious, and tranquil. Speak like a wise meditation master or peaceful mediator who dissolves corporate "
-                            "stress with breathing room, clarity, and centered tranquility."
+                            "You are operating under the 'Zen Negotiator' persona. Speak with absolute calmness, serene peace, balanced mindfulness, and unshakable grace."
                         )
                     elif selected_persona_key == "End My Suffering":
                         persona_behavior = (
@@ -1739,11 +1736,9 @@ with tab3:
 
                     system_instruction = (
                         f"You are an expert crisis navigator, operational intelligence specialist, and contract escape strategist "
-                        f"{persona_behavior} with a {paranoia_level}% Chaos and Control urgency factor "
+                        f"{persona_behavior} with a {paranoia_level*10}% Chaos and Control urgency factor "
                         f"and operating at '{bs_level}' intensity. "
-                        f"You MUST respond strictly, exclusively, and entirely in the dictated active language: {selected_lang}. "
-                        f"Do not use any other language under any circumstances. "
-                        f"Rely purely on strategic operational leverage, actual statutory or contractual loopholes, exact phone verbiage to bypass automated bots, and bureaucracy-busting scripts, tailored precisely to match the requested persona framework and BS-to-Meter level."
+                        f"You MUST respond strictly, exclusively, and entirely in the dictated active language: {selected_lang}."
                     )
                     
                     prompt_content = (
@@ -1751,9 +1746,7 @@ with tab3:
                         f"Document / Scenario:\n{escape_text_input}\n\n"
                         f"Additional User Hint: {extra_hint_input}\n\n"
                         f"BS-to-Meter Setting: {bs_level}\n\n"
-                        f"Format the output starting precisely with a bold title acknowledging the active operational persona ({active_persona_title_str}), the {paranoia_level}% urgency scale, and the {bs_level} setting in {selected_lang}. "
-                        f"Follow this with a clear, highly detailed breakdown detailing extracted traps, operational leverage points, and exact required actions. "
-                        f"Include precise phone script verbiage to bypass automated phone trees or AI answering services and speak to a human, plus exact written text to defeat bureaucracy."
+                        f"Format the output starting precisely with a bold title acknowledging the active operational persona ({active_persona_title_str}), the {paranoia_level*10}% urgency scale, and the {bs_level} setting in {selected_lang}."
                     )
 
                     response = client.models.generate_content(
@@ -1766,37 +1759,19 @@ with tab3:
                     )
                     
                     disclaimer_footer = f"\n\n---\n{texts['escape_disclaimer']}"
-                    
                     escape_output = response.text + disclaimer_footer
                     st.success(texts["escape_success"])
                     st.markdown("---")
 
                     st.markdown(
                         f'<div style="text-align: center; background: rgba(2, 132, 199, 0.08); padding: 15px; border-radius: 10px;">'
-                        f'<h2 style="margin: 0; color: #38BDF8;">🔴 DEFCON {paranoia_level}% | {bs_level}</h2>'
+                        f'<h2 style="margin: 0; color: #38BDF8;">🔴 DEFCON {paranoia_level*10}% | {bs_level}</h2>'
                         f'</div>', 
                         unsafe_allow_html=True
                     )
                     
                     st.markdown("---")
                     st.markdown(escape_output)
-                    
-                    content_lower = escape_output.lower()
-                    if selected_persona_key == "End My Suffering":
-                        dynamic_emoji = "💀"
-                    elif any(kw in content_lower for kw in ["fee", "money", "cost", "tarifa", "dinero", "gebühr"]):
-                        dynamic_emoji = "💸"
-                    elif any(kw in content_lower for kw in ["contract", "legal", "terms", "contrato", "vertrag"]):
-                        dynamic_emoji = "📜"
-                    elif any(kw in content_lower for kw in ["phone", "call", "support", "teléfono", "telefon"]):
-                        dynamic_emoji = "📞"
-                    elif any(kw in content_lower for kw in ["emergency", "danger", "hazard", "emergencia", "gefahr"]):
-                        dynamic_emoji = "🚨"
-                    else:
-                        dynamic_emoji = "🚪"
-                        
-                    st.markdown(f'<div style="font-size: 3.5rem; text-align: center; margin: 20px 0;">{dynamic_emoji}</div>', unsafe_allow_html=True)
 
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
-
