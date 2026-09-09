@@ -458,7 +458,8 @@ UI_TEXT = {
 	        "help_s3_desc": "Explore document analysis, advanced operational labs, and session logs.",
 	    },
 
-
+	}
+	
     "Español": {
         "lang_label": "🌐 **Idioma**",
         "api_label": "Clave API de Gemini",
