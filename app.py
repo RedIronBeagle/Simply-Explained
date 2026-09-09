@@ -350,7 +350,7 @@ Simply Explained("본 애플리케이션", "당사")에 오신 것을 환영합�
 # ==============================================================================
 
 UI_TEXT = {
-    "English": {
+    "English":{
         "lang_label": "🌐 **Language**",
         "api_label": "Gemini API Key",
         "depth_label": "Would you like your answer to be: ",
