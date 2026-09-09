@@ -1065,7 +1065,7 @@ with tab1:
         """
         <style>
         div[data-testid="stAudioInput"] {
-            transform: scale(1.3);
+            transform: scale(1.0);
             transform-origin: top left;
             margin-top: 10px;
             margin-bottom: 25px;
