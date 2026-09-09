@@ -986,13 +986,15 @@ UI_TEXT = {
         },
         "help_title": "💡 Como Usar Este Aplicativo",
         "help_s1_title": "1. Configurações da Barra Lateral",
-        "help_s1_desc": "Seleccione seu idioma preferido, nível de complexidade e tom.",
+        "help_s1_desc": "Selecione seu idioma preferido, nível de complexidad e tom.",
         "help_s2_title": "2. Aba 1 (Simplificador de Tópicos)",
-        "help_s2_desc": "Digite qualquer assunto ou use o gravador de voz para explicações estructuradas, com PDF e áudio.",
+        "help_s2_desc": "Digite qualquer assunto ou use o gravador de voz para explicações estruturadas, com PDF e áudio.",
         "help_s3_title": "3. Aba 2 e Aba 3",
         "help_s3_desc": "Explore abas adicionais para análise de documentos e histórico.",
     }
 }
+
+LANGUAGES = list(UI_TEXT.keys())
 
 # ==============================================================================
 # [SECTION 4: UTILITY FUNCTIONS (PDF EXPORT & FETCHERS)]
@@ -1179,7 +1181,7 @@ if is_streamlit:
 
   selected_lang = st.sidebar.selectbox(
       "🌐 **Language**",
-      LANGUAGES = list(UI_TEXT.keys())
+      LANGUAGES
       index=(
           LANGUAGES.index(st.session_state["selected_lang"])
           if st.session_state["selected_lang"] in LANGUAGES
