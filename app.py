@@ -1068,7 +1068,7 @@ with tab1:
             transform: scale(1.0);
             transform-origin: top left;
             margin-top: 10px;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
         </style>
         """,
