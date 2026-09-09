@@ -750,7 +750,7 @@ UI_TEXT = {
 # [SIDEBAR HELP SECTION - LANGUAGE DYNAMIC]
 # ==============================================================================
 with st.sidebar:
-    st.markdown("---")
+st.markdown("---")
     
     help_texts = {
         "English": {
