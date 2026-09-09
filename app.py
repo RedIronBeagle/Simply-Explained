@@ -350,7 +350,7 @@ Simply Explained("본 애플리케이션", "당사")에 오신 것을 환영합�
 # ==============================================================================
 
 UI_TEXT = {
-    "English":{
+    "English": {
         "lang_label": "🌐 **Language**",
         "api_label": "Gemini API Key",
         "depth_label": "Would you like your answer to be: ",
@@ -449,7 +449,8 @@ UI_TEXT = {
             "Corporate Shark": ("🦈 Corporate Shark", "Where should I bite first"),
             "Bureaucracy Hacker": ("🕵️ Bureaucracy Hacker", "Bypassing automated Robots"),
 	    # ... (keep your other English keys here) ...
-	        "help_title": "💡 How to Use This App",
+    "English":{
+			"help_title": "💡 How to Use This App",
 	        "help_s1_title": "1. Sidebar Settings",
 	        "help_s1_desc": "Select your preferred language, complexity tier, and tone.",
 	        "help_s2_title": "2. Tab 1 (Topic Simplifier)",
