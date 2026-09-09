@@ -752,7 +752,6 @@ UI_TEXT = {
 with st.sidebar:
     st.markdown("---")
     
-    # Help guide text dictionary for supported languages
     help_texts = {
         "English": {
             "title": "💡 How to Use This App",
@@ -810,7 +809,6 @@ with st.sidebar:
         }
     }
 
-    # Fetch language-specific text or default to English
     current_help = help_texts.get(selected_lang, help_texts["English"])
 
     with st.expander(current_help["title"]):
@@ -819,7 +817,6 @@ with st.sidebar:
         st.markdown(f"**{current_help['step2_title']}**\n{current_help['step2_desc']}")
         st.markdown("---")
         st.markdown(f"**{current_help['step3_title']}**\n{current_help['step3_desc']}")
-
 LANGUAGES = list(UI_TEXT.keys())
 TTS_LANG_MAP = {
     "English": "en",
