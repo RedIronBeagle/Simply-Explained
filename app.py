@@ -746,12 +746,15 @@ UI_TEXT = {
     }
 }
 
+# ==============================================================================
+#  HELP GUIDE]
+# ==============================================================================
 LANGUAGES = list(UI_TEXT.keys())
 selected_lang = st.sidebar.selectbox("Select Language", LANGUAGES, index=0)
 texts = UI_TEXT[selected_lang]
 
-# Sidebar Help Expander
 st.sidebar.markdown("---")
+
 help_texts = {
     "English": {
         "title": "💡 How to Use This App",
@@ -808,6 +811,7 @@ help_texts = {
         "step3_desc": "Explore a análise de documentos e histórico.",
     }
 }
+
 current_help = help_texts.get(selected_lang, help_texts["English"])
 
 with st.sidebar.expander(current_help["title"]):
@@ -816,6 +820,8 @@ with st.sidebar.expander(current_help["title"]):
     st.markdown(f"**{current_help['step2_title']}**\n{current_help['step2_desc']}")
     st.markdown("---")
     st.markdown(f"**{current_help['step3_title']}**\n{current_help['step3_desc']}")
+	
+
 # ==============================================================================
 # [SECTION 4: UTILITY FUNCTIONS (PDF EXPORT & FETCHERS)]
 # ==============================================================================
