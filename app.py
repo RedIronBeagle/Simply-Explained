@@ -2014,7 +2014,7 @@ with tab3:
 
             end_btn_label = texts.get("end_suffering_btn_title", "🔴 END MY SUFFERING 💀")
 	
-	    if st.button(end_btn_label, key="btn_end_my_suffering_tab3_unique", use_container_width=True):
+        if st.button(end_btn_label, key="btn_end_my_suffering_tab3_unique", use_container_width=True):
 	        # Indent the code that runs when this button is clicked
 	        st.session_state["end_suffering_triggered"] = True
 	
