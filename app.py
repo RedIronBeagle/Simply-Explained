@@ -1025,9 +1025,7 @@ if is_streamlit:
       [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
   )
 
-# ==============================================================================
-# [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
-# ==============================================================================
+
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
 # ==============================================================================
@@ -1067,10 +1065,10 @@ with tab1:
         """
         <style>
         div[data-testid="stAudioInput"] {
-            transform: scale(1.6);
+            transform: scale(1.3);
             transform-origin: top left;
-            margin-top: 15px;
-            margin-bottom: 45px;
+            margin-top: 10px;
+            margin-bottom: 25px;
         }
         </style>
         """,
