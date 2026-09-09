@@ -1025,12 +1025,19 @@ if is_streamlit:
       [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
   )
 
-
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
 # ==============================================================================
 with tab1:
-    # Dynamic header translation for the main subtitle
+    # Dynamic header translations based on selected language
+    title_map = {
+        "English": "Simply Explained",
+        "Spanish": "Simplemente Explicado",
+        "French": "Simplement Expliqué",
+        "German": "Einfach Erklärt",
+        "Italian": "Semplicemente Spiegato",
+        "Portuguese": "Simplesmente Explicado",
+    }
     subtitle_map = {
         "English": "What You Need To Know",
         "Spanish": "Lo Que Necesitas Saber",
@@ -1039,10 +1046,11 @@ with tab1:
         "Italian": "Quello Che Devi Sapere",
         "Portuguese": "O Que Voce Precisa Saber",
     }
+    current_title = title_map.get(selected_lang, texts.get("app_main_title", "Simply Explained"))
     current_subtitle = subtitle_map.get(selected_lang, texts.get("subtitle", "What you need to know"))
 
     st.markdown(
-        f'<div class="app-title">{texts.get("app_main_title", "Simply Explained")}</div>', unsafe_allow_html=True
+        f'<div class="app-title">{current_title}</div>', unsafe_allow_html=True
     )
     st.markdown(
         f'<div class="app-subtitle">{current_subtitle}</div>',
@@ -1060,15 +1068,15 @@ with tab1:
     st.markdown(f"### 🎙️ {texts.get('voice_header', 'Voice Inquiry Dictation')}")
     st.markdown(texts.get('voice_instructions', 'Click the microphone below to record your question, then hit submit.'))
     
-    # CSS styling to enlarge the native audio recorder input block to roughly twice its footprint
+    # CSS styling to scale the audio recorder input block to roughly 3/4 size
     st.markdown(
         """
         <style>
         div[data-testid="stAudioInput"] {
-            transform: scale(1.0);
+            transform: scale(1.35);
             transform-origin: top left;
             margin-top: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 25px;
         }
         </style>
         """,
@@ -1213,8 +1221,9 @@ with tab1:
                 except APIError as e:
                     st.error(f"API Error: {e.message}")
                 except Exception as e:
-                    st.error(f"An unexpected error occurred: {str(e)}")		
-  # ==============================================================================
+                    st.error(f"An unexpected error occurred: {str(e)}")
+
+# ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
   # ==============================================================================
 with tab2:
