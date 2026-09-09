@@ -820,13 +820,6 @@ with st.sidebar:
         st.markdown(f"**{current_help['step2_title']}**\n{current_help['step2_desc']}")
         st.markdown("---")
         st.markdown(f"**{current_help['step3_title']}**\n{current_help['step3_desc']}")
-		
-    LANGUAGES = list(UI_TEXT.keys())
-    selected_lang = st.sidebar.selectbox("Select Language", LANGUAGES, index=0)
-    texts = UI_TEXT[selected_lang]
-}
-
-
 # ==============================================================================
 # [SECTION 4: UTILITY FUNCTIONS (PDF EXPORT & FETCHERS)]
 # ==============================================================================
