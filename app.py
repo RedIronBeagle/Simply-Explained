@@ -460,7 +460,6 @@ UI_TEXT = {
     }
 }
 
-}
     "Español": {
         "lang_label": "🌐 **Idioma**",
         "api_label": "Clave API de Gemini",
