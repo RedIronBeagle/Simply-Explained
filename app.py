@@ -439,7 +439,8 @@ UI_TEXT = {
         "escape_no_text": "Please provide text scenario to analyze.",
         "escape_spinner": "Executing heavy-lifting operational lab analysis...",
         "escape_disclaimer": "*Note: We can provide strategic guidance and tactical scripts to help you get ahead, but we cannot guarantee specific outcomes or institutional compliance. However, executing this protocol grants you a significantly better fighting chance than doing nothing.*",
-        "personas": {
+
+		"personas": {
             "Houdini Mode": ("🪄 Houdini Mode", "Magic tricks to exits"),
             "Grandma Filter": ("👵 Grandma Filter", "Warm, patient, comforting guidance"),
             "Escape Hatch Locator": ("🎯 Escape Hatch Locator", "Direct radar for exits"),
@@ -448,20 +449,16 @@ UI_TEXT = {
             "Zen Negotiator": ("🧘 Zen Negotiator", "Calm, peaceful, serene mediator"),
             "Corporate Shark": ("🦈 Corporate Shark", "Where should I bite first"),
             "Bureaucracy Hacker": ("🕵️ Bureaucracy Hacker", "Bypassing automated Robots"),
-	    # ... (keep your other English keys here) ...
-    "English":{
-			"help_title": "💡 How to Use This App",
-	        "help_s1_title": "1. Sidebar Settings",
-	        "help_s1_desc": "Select your preferred language, complexity tier, and tone.",
-	        "help_s2_title": "2. Tab 1 (Topic Simplifier)",
-	        "help_s2_desc": "Type or dictate a subject for structured explanations, PDFs, and audio.",
-	        "help_s3_title": "3. Tab 2 & Tab 3",
-	        "help_s3_desc": "Explore document analysis, advanced operational labs, and session logs.",
         },
+        "help_title": "💡 How to Use This App",
+        "help_s1_title": "1. Sidebar Settings",
+        "help_s1_desc": "Select your preferred language, complexity tier, and tone.",
+        "help_s2_title": "2. Tab 1 (Topic Simplifier)",
+        "help_s2_desc": "Type or dictate a subject for structured explanations, PDFs, and audio.",
+        "help_s3_title": "3. Tab 2 & Tab 3",
+        "help_s3_desc": "Explore document analysis, advanced operational labs, and session logs.",
     }
-
-}
-	
+}	
     "Español": {
         "lang_label": "🌐 **Idioma**",
         "api_label": "Clave API de Gemini",
