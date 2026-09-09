@@ -1081,7 +1081,6 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
 
     return pdf_bytes
 
-
 # ==============================================================================
 # [SECTION 5: STREAMLIT APP INITIALIZATION & STYLING]
 # ==============================================================================
