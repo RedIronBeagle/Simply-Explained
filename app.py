@@ -1564,7 +1564,7 @@ with tab3:
     st.markdown('<hr class="section-divider-faint">', unsafe_allow_html=True)
 
     # 4 - BS Meter
-    st.markdown(f"**<span style='color: #8B4513;'>💩</span> 4. BS-to-Meter (At a corporate Level):**", unsafe_allow_html=True)
+    st.markdown(f"**<span style='color: #8B4513;'>💩</span> 4. BS-to-Meter (The more the level, the more the pile):**", unsafe_allow_html=True)
     st.markdown(
         "<div style='font-size: 0.8rem; color: #94A3B8; margin-bottom: 4px;'>"
         "📍 <i>Click a tick mark below or drag slider to calibrate corporate BS level:</i>"
