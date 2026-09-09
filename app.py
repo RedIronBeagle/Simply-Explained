@@ -1179,7 +1179,7 @@ if is_streamlit:
 
   selected_lang = st.sidebar.selectbox(
       "🌐 **Language**",
-      LANGUAGES,
+      LANGUAGES = list(UI_TEXT.keys())
       index=(
           LANGUAGES.index(st.session_state["selected_lang"])
           if st.session_state["selected_lang"] in LANGUAGES
