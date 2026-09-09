@@ -448,16 +448,16 @@ UI_TEXT = {
             "Zen Negotiator": ("🧘 Zen Negotiator", "Calm, peaceful, serene mediator"),
             "Corporate Shark": ("🦈 Corporate Shark", "Where should I bite first"),
             "Bureaucracy Hacker": ("🕵️ Bureaucracy Hacker", "Bypassing automated Robots"),
-    # ... (keep your other English keys here) ...
-        "help_title": "💡 How to Use This App",
-        "help_s1_title": "1. Sidebar Settings",
-        "help_s1_desc": "Select your preferred language, complexity tier, and tone.",
-        "help_s2_title": "2. Tab 1 (Topic Simplifier)",
-        "help_s2_desc": "Type or dictate a subject for structured explanations, PDFs, and audio.",
-        "help_s3_title": "3. Tab 2 & Tab 3",
-        "help_s3_desc": "Explore document analysis, advanced operational labs, and session logs.",
-    },
-		
+	    # ... (keep your other English keys here) ...
+	        "help_title": "💡 How to Use This App",
+	        "help_s1_title": "1. Sidebar Settings",
+	        "help_s1_desc": "Select your preferred language, complexity tier, and tone.",
+	        "help_s2_title": "2. Tab 1 (Topic Simplifier)",
+	        "help_s2_desc": "Type or dictate a subject for structured explanations, PDFs, and audio.",
+	        "help_s3_title": "3. Tab 2 & Tab 3",
+	        "help_s3_desc": "Explore document analysis, advanced operational labs, and session logs.",
+	    },
+			
 }
     "Español": {
         "lang_label": "🌐 **Idioma**",
