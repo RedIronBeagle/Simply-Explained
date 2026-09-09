@@ -1028,18 +1028,29 @@ if is_streamlit:
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
 # ==============================================================================
+# ==============================================================================
+# [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
+# ==============================================================================
 with tab1:
+    # Dynamic header translation for the main subtitle
+    subtitle_map = {
+        "English": "What You Need To Know",
+        "Spanish": "Lo Que Necesitas Saber",
+        "French": "Ce Que Vous Devez Savoir",
+        "German": "Was Sie Wissens Muessten",
+        "Italian": "Quello Che Devi Sapere",
+        "Portuguese": "O Que Voce Precisa Saber",
+    }
+    current_subtitle = subtitle_map.get(selected_lang, texts.get("subtitle", "What you need to know"))
+
     st.markdown(
-        f'<div class="app-title">{texts.get("app_main_title", "Simply Explained - What you need to know")}</div>', unsafe_allow_html=True
+        f'<div class="app-title">{texts.get("app_main_title", "Simply Explained")}</div>', unsafe_allow_html=True
     )
     st.markdown(
-        f'<div class="app-subtitle">{texts["subtitle"]}</div>',
+        f'<div class="app-subtitle">{current_subtitle}</div>',
         unsafe_allow_html=True,
     )
     st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
-
-    with st.expander(texts.get("help_title_tab1", "💡 Quick Guide: How to Use Tab 1")):
-        st.markdown(texts.get("help_body_tab1", ""))
 
     topic = st.text_input(
         texts["topic_label"],
@@ -1051,6 +1062,21 @@ with tab1:
     st.markdown(f"### 🎙️ {texts.get('voice_header', 'Voice Inquiry Dictation')}")
     st.markdown(texts.get('voice_instructions', 'Click the microphone below to record your question, then hit submit.'))
     
+    # CSS styling to enlarge the native audio recorder input block to roughly twice its footprint
+    st.markdown(
+        """
+        <style>
+        div[data-testid="stAudioInput"] {
+            transform: scale(1.6);
+            transform-origin: top left;
+            margin-top: 15px;
+            margin-bottom: 45px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
     audio_value = st.audio_input("Record your question", key="main_audio_recorder_field")
     
     st.markdown("")
@@ -1189,8 +1215,7 @@ with tab1:
                 except APIError as e:
                     st.error(f"API Error: {e.message}")
                 except Exception as e:
-                    st.error(f"An unexpected error occurred: {str(e)}")
-					
+                    st.error(f"An unexpected error occurred: {str(e)}")		
   # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
   # ==============================================================================
