@@ -528,7 +528,7 @@ UI_TEXT = {
         "read_aloud_label": "♿ Leemelo",
         "voice_section_title": "🎙️ Explicación por Voz",
         "voice_instruction": "Graba tu pregunta o tema a continuación para que sea transcrito y simplificado automáticamente.",
-		"voice_record_label"] = "Grabar voz",
+		"voice_record_label" = "Grabar voz",
         "tab1_name": "💡 Explicado Simple",
         "tab2_name": "📄 Explicado Simple - Documentos",
         "tab3_name": "🚪 Explicado Simple - La Cláusula de Escape",
