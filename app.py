@@ -1094,6 +1094,9 @@ if is_streamlit:
 
     st.set_page_config(page_title="Simply Explained", page_icon="💡", layout="wide")
 
+    # [Ensure UI_TEXT is fully defined above this point in your file]
+#-----------
+
     st.markdown(
         """
         <style>
@@ -1171,9 +1174,8 @@ if is_streamlit:
         """,
         unsafe_allow_html=True,
     )
-
+#----------------
     env_api_key = os.getenv("GEMINI_API_KEY", "")
-    texts = UI_TEXT["English"]
 
     if "selected_lang" not in st.session_state:
         st.session_state["selected_lang"] = "English"
@@ -1191,7 +1193,11 @@ if is_streamlit:
         key="language_selector",
     )
     st.session_state["selected_lang"] = selected_lang
+    
+    # CRITICAL: Re-assign texts immediately after capturing selected_lang
     texts = UI_TEXT.get(selected_lang, UI_TEXT["English"])
+
+#-----------------
 
     tone_level = st.sidebar.selectbox(
         texts["tone_label"], texts["tone_options"], key="tone_radio_key"
