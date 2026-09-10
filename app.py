@@ -350,8 +350,7 @@ Simply Explained("본 애플리케이션", "당사")에 오신 것을 환영합�
 # [SECTION 3: INTERNATIONALIZATION (I18N) & LOCALIZATION DICTIONARY]
 # ==============================================================================
 
-# -----UI_TEXT = {
-UI_TEXT["English"]["voice_section_title"] = "🎙️ Voice Explanation"	
+UI_TEXT = {
     "English": {
         "lang_label": "🌐 **Language**",
         "api_label": "Gemini API Key",
@@ -418,6 +417,7 @@ UI_TEXT["English"]["voice_section_title"] = "🎙️ Voice Explanation"
         ],
         "footer_text": "--- \n Powered by SkyNet, we are aware.",
         "read_aloud_label": "♿ Read it to me",
+        "voice_section_title": "🎙️ Voice Explanation",
         "tab1_name": "💡 Simply Explained",
         "tab2_name": "📄 Simply Explained - Documents",
         "tab3_name": "🚪 Simply Explained - The Escape Clause",
@@ -525,6 +525,7 @@ UI_TEXT["English"]["voice_section_title"] = "🎙️ Voice Explanation"
         ],
         "footer_text": "--- \n Con tecnología de SkyNet, estamos al tanto.",
         "read_aloud_label": "♿ Leemelo",
+        "voice_section_title": "🎙️ Explicación por Voz",
         "tab1_name": "💡 Explicado Simple",
         "tab2_name": "📄 Explicado Simple - Documentos",
         "tab3_name": "🚪 Explicado Simple - La Cláusula de Escape",
@@ -632,6 +633,7 @@ UI_TEXT["English"]["voice_section_title"] = "🎙️ Voice Explanation"
         ],
         "footer_text": "--- \n Propulsé par SkyNet.",
         "read_aloud_label": "♿ Lis-le-moi",
+        "voice_section_title": "🎙️ Explication Vocale",
         "tab1_name": "💡 Expliqué Simplement",
         "tab2_name": "📄 Documents",
         "tab3_name": "🚪 La Clause d'Évasion",
@@ -739,6 +741,7 @@ UI_TEXT["English"]["voice_section_title"] = "🎙️ Voice Explanation"
         ],
         "footer_text": "--- \n Unterstützt durch SkyNet.",
         "read_aloud_label": "♿ Vorlesen",
+        "voice_section_title": "🎙️ Spracherklärung",
         "tab1_name": "💡 Einfach erklärt",
         "tab2_name": "📄 Dokumente",
         "tab3_name": "🚪 Die Ausstiegsklausel",
@@ -846,6 +849,7 @@ UI_TEXT["English"]["voice_section_title"] = "🎙️ Voice Explanation"
         ],
         "footer_text": "--- \n Offerto da SkyNet.",
         "read_aloud_label": "♿ Leggimelo",
+        "voice_section_title": "🎙️ Spiegazione Vocale",
         "tab1_name": "💡 Semplice",
         "tab2_name": "📄 Documenti",
         "tab3_name": "🚪 La Clausola di Fuga",
@@ -953,6 +957,7 @@ UI_TEXT["English"]["voice_section_title"] = "🎙️ Voice Explanation"
         ],
         "footer_text": "--- \n Desenvolvido por SkyNet.",
         "read_aloud_label": "♿ Leia para mim",
+        "voice_section_title": "🎙️ Explicação por Voz",
         "tab1_name": "💡 Explicado Simples",
         "tab2_name": "📄 Documentos",
         "tab3_name": "🚪 A Cláusula de Escape",
@@ -977,7 +982,7 @@ UI_TEXT["English"]["voice_section_title"] = "🎙️ Voice Explanation"
         "escape_spinner": "Executando análise laboratorial...",
         "escape_disclaimer": "*Nota: Fornecemos orientações estratégicas sem garantia.*",
         "personas": {
-            "Houdini Mode": ("🪄 Modo Houdini", "Truques de mágica para saídas"),
+            "Houdini Mode": ("🪄 Modo Houdini", "Trucos de mágica para saídas"),
             "Grandma Filter": ("👵 Filtro da Vovó", "Orientação acolhedora e paciente"),
             "Escape Hatch Locator": ("🎯 Localizador de Escotilla", "Radar direto para saídas"),
             "7-Year-Old Playground Mindset": ("🖍️ Mentalidade de 7 Anos", "Espanto infantil puro"),
@@ -997,6 +1002,8 @@ UI_TEXT["English"]["voice_section_title"] = "🎙️ Voice Explanation"
 }
 
 LANGUAGES = list(UI_TEXT.keys())
+
+
 # ==============================================================================
 # [SECTION 4: UTILITY FUNCTIONS (PDF EXPORT & FETCHERS)]
 # ==============================================================================
