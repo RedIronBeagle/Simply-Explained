@@ -346,6 +346,7 @@ Simply Explained("본 애플리케이션", "당사")에 오신 것을 환영합�
 }
 
 # =======================================================================
+# =======================================================================
 # [SECTION 3: INTERNATIONALIZATION (I18N) & LOCALIZATION DICTIONARY]
 # ==============================================================================
 
@@ -418,7 +419,7 @@ UI_TEXT = {
         "read_aloud_label": "♿ Read it to me",
         "voice_section_title": "🎙️ Voice Explanation",
         "voice_instruction": "Record your question or topic below to have it automatically transcribed and simplified.",
-		"voice_record_label" = "Record Voice"
+        "voice_record_label": "Record Voice",
         "tab1_name": "💡 Simply Explained",
         "tab2_name": "📄 Simply Explained - Documents",
         "tab3_name": "🚪 Simply Explained - The Escape Clause",
@@ -528,7 +529,7 @@ UI_TEXT = {
         "read_aloud_label": "♿ Leemelo",
         "voice_section_title": "🎙️ Explicación por Voz",
         "voice_instruction": "Graba tu pregunta o tema a continuación para que sea transcrito y simplificado automáticamente.",
-		"voice_record_label" = "Grabar voz"
+        "voice_record_label": "Grabar voz",
         "tab1_name": "💡 Explicado Simple",
         "tab2_name": "📄 Explicado Simple - Documentos",
         "tab3_name": "🚪 Explicado Simple - La Cláusula de Escape",
@@ -638,7 +639,7 @@ UI_TEXT = {
         "read_aloud_label": "♿ Lis-le-moi",
         "voice_section_title": "🎙️ Explication Vocale",
         "voice_instruction": "Enregistrez votre question ou sujet ci-dessous pour qu'il soit automatiquement transcrit et simplifié.",
-		"voice_record_label" = "Enregistrer la voix"
+        "voice_record_label": "Enregistrer la voix",
         "tab1_name": "💡 Expliqué Simplement",
         "tab2_name": "📄 Documents",
         "tab3_name": "🚪 La Clause d'Évasion",
@@ -748,7 +749,7 @@ UI_TEXT = {
         "read_aloud_label": "♿ Vorlesen",
         "voice_section_title": "🎙️ Spracherklärung",
         "voice_instruction": "Nehmen Sie Ihre Frage oder Ihr Thema unten auf, damit es automatisch transkribiert und vereinfacht wird.",
-		"voice_record_label" = "Sprache aufnehmen"
+        "voice_record_label": "Sprache aufnehmen",
         "tab1_name": "💡 Einfach erklärt",
         "tab2_name": "📄 Dokumente",
         "tab3_name": "🚪 Die Ausstiegsklausel",
@@ -858,7 +859,7 @@ UI_TEXT = {
         "read_aloud_label": "♿ Leggimelo",
         "voice_section_title": "🎙️ Spiegazione Vocale",
         "voice_instruction": "Registra la tua domanda o argomento qui sotto per farlo trascrivere e semplificare automaticamente.",
-		"voice_record_label" = "Registra voce"
+        "voice_record_label": "Registra voce",
         "tab1_name": "💡 Semplice",
         "tab2_name": "📄 Documenti",
         "tab3_name": "🚪 La Clausola di Fuga",
@@ -890,7 +891,7 @@ UI_TEXT = {
             "Ruthless Barrister": ("⚖️ Avvocato Spietato", "Leva legale aggressiva"),
             "Zen Negotiator": ("🧘 Negoziatore Zen", "Mediatore sereno"),
             "Corporate Shark": ("🦈 Squalo Aziendale", "Mordere per primi"),
-            "Bureaucracy Hacker": ("🕵️ Hacker della Burocrazia", "Saltare i robot"),
+            "Bureaucracy Hacker": ("🕵️ Hacker della Burocracia", "Saltare i robot"),
         },
         "help_title": "💡 Come Usare Questa App",
         "help_s1_title": "1. Impostazioni della Barra Laterale",
@@ -968,7 +969,7 @@ UI_TEXT = {
         "read_aloud_label": "♿ Leia para mim",
         "voice_section_title": "🎙️ Explicação por Voz",
         "voice_instruction": "Grave sua pergunta ou tópico abaixo para que seja transcrito e simplificado automaticamente.",
-		"voice_record_label" = "Gravar voz"
+        "voice_record_label": "Gravar voz",
         "tab1_name": "💡 Explicado Simples",
         "tab2_name": "📄 Documentos",
         "tab3_name": "🚪 A Cláusula de Escape",
@@ -1004,7 +1005,7 @@ UI_TEXT = {
         },
         "help_title": "💡 Como Usar Este Aplicativo",
         "help_s1_title": "1. Configurações da Barra Lateral",
-        "help_s1_desc": "Selecione seu idioma preferido, nível de complexidade e tom.",
+        "help_s1_desc": "Selecione seu idioma preferido, nível de complexidade e ton.",
         "help_s2_title": "2. Aba 1 (Simplificador de Tópicos)",
         "help_s2_desc": "Digite qualquer assunto ou use o gravador de voz para explicações estruturadas, com PDF e áudio.",
         "help_s3_title": "3. Aba 2 e Aba 3",
@@ -1013,7 +1014,6 @@ UI_TEXT = {
 }
 
 LANGUAGES = list(UI_TEXT.keys())
-
 # ==============================================================================
 # [SECTION 4: UTILITY FUNCTIONS (PDF EXPORT & FETCHERS)]
 # ==============================================================================
