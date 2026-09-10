@@ -350,7 +350,7 @@ Simply Explained("본 애플리케이션", "당사")에 오신 것을 환영합�
 # [SECTION 3: INTERNATIONALIZATION (I18N) & LOCALIZATION DICTIONARY]
 # ==============================================================================
 
-UI_TEXT = {
+# -----UI_TEXT = {
 UI_TEXT["English"]["voice_section_title"] = "🎙️ Voice Explanation"	
     "English": {
         "lang_label": "🌐 **Language**",
