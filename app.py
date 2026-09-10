@@ -1000,21 +1000,22 @@ LANGUAGES = list(UI_TEXT.keys())
 # [SECTION 4: UTILITY FUNCTIONS (PDF EXPORT & FETCHERS)]
 # ==============================================================================
 def fetch_url_text(url: str) -> str:
-  headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-  response = requests.get(url, headers=headers, timeout=10)
-  response.raise_for_status()
-  soup = BeautifulSoup(response.text, "html.parser")
-  for element in soup(["script", "style", "nav", "footer", "header", "noscript"]):
-    element.decompose()
-  return soup.get_text(separator=" ", strip=True)
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+    response = requests.get(url, headers=headers, timeout=10)
+    response.raise_for_status()
+    soup = BeautifulSoup(response.text, "html.parser")
+    for element in soup(["script", "style", "nav", "footer", "header", "noscript"]):
+        element.decompose()
+    return soup.get_text(separator=" ", strip=True)
 
 
 def prepare_media_part(uploaded_file):
-  if uploaded_file is None:
-    return None
-  return types.Part.from_bytes(
-      data=uploaded_file.getvalue(), mime_type=uploaded_file.type
-  )
+    if uploaded_file is None:
+        return None
+    return types.Part.from_bytes(
+        data=uploaded_file.getvalue(), mime_type=uploaded_file.type
+    )
+
 def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     import re
     
@@ -1026,7 +1027,6 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     def sanitize(text: str) -> str:
         if not text:
             return ""
-        # Keep only basic ascii characters, tabs, and newlines
         return re.sub(r'[^\x00-\x7F]+', '', text)
 
     # Title Styling
@@ -1256,15 +1256,14 @@ if is_streamlit:
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
 # ==============================================================================
 if is_streamlit:
-  tab1, tab2, tab3 = st.tabs(
-      [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
-  )
+    tab1, tab2, tab3 = st.tabs(
+        [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
+    )
 
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
 # ==============================================================================
 with tab1:
-    # Dynamic header translations based on selected language
     title_map = {
         "English": "Simply Explained",
         "Spanish": "Simplemente Explicado",
@@ -1300,10 +1299,10 @@ with tab1:
     )
     
     st.markdown("---")
-    st.markdown(f"### 🎙️ {texts.get('voice_header', 'Voice Inquiry Dictation')}")
-    st.markdown(texts.get('voice_instructions', 'Click the microphone below to record your question, then hit submit.'))
+    st.markdown(f"### {texts['voice_section_title']}")
+    st.markdown(texts['voice_instruction'])
     
-    # CSS styling to scale the audio recorder input block to roughly 3/4 size
+    # CSS styling to scale the audio recorder input block
     st.markdown(
         """
         <style>
@@ -1318,7 +1317,7 @@ with tab1:
         unsafe_allow_html=True,
     )
 
-    audio_value = st.audio_input("Record your question", key="main_audio_recorder_field")
+    audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
     
     st.markdown("")
     submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
@@ -1457,6 +1456,7 @@ with tab1:
                     st.error(f"API Error: {e.message}")
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {str(e)}")
+
 
 # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
