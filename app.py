@@ -418,6 +418,7 @@ UI_TEXT = {
         "footer_text": "--- \n Powered by SkyNet, we are aware.",
         "read_aloud_label": "♿ Read it to me",
         "voice_section_title": "🎙️ Voice Explanation",
+		"voice_instruction"] = "Record your question or topic below to have it automatically transcribed and simplified."
         "tab1_name": "💡 Simply Explained",
         "tab2_name": "📄 Simply Explained - Documents",
         "tab3_name": "🚪 Simply Explained - The Escape Clause",
