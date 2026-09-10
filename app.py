@@ -346,6 +346,7 @@ Simply Explained("본 애플리케이션", "당사")에 오신 것을 환영합�
 }
 
 # ==============================================================================
+# =======================================================================
 # [SECTION 3: INTERNATIONALIZATION (I18N) & LOCALIZATION DICTIONARY]
 # ==============================================================================
 
@@ -473,7 +474,7 @@ UI_TEXT = {
             "🧙‍♂️ Mago de fantasía sabio",
         ],
         "topic_label": "¿Qué te gustaría saber?",
-        "topic_placeholder": "ej., Historia, Snoopy, Química, Baba Yega, Gobierno, Barney",
+        "topic_placeholder": "ej., Historia, Snoopy, Química, Baba Yega, Government, Barney",
         "button_label": "Vamos a simplificarlo",
         "start_over": "🧹 Empezar de nuevo",
         "terms_button": "📜 Términos y Condiciones",
@@ -963,7 +964,7 @@ UI_TEXT = {
         "escape_hint_label": "Adicione detalhes:",
         "escape_hint_placeholder": "ex., Quero escalar a prioridade...",
         "escape_lab_section": "🚪 Suíte de Contingência Operacional",
-        "escape_urgency_label": "⚡ Escala de Urgência:",
+        "escape_urgency_label": "⚡ Escala de Urgencia:",
         "escape_persona_label": "Perspectiva da explicação:",
         "tactical_persona_prompt": "Selecione o framework de persona tática",
         "end_suffering_btn_title": "🔴 ACABAR COM MEU SOFRIMENTO 💀",
@@ -977,7 +978,7 @@ UI_TEXT = {
         "personas": {
             "Houdini Mode": ("🪄 Modo Houdini", "Truques de mágica para saídas"),
             "Grandma Filter": ("👵 Filtro da Vovó", "Orientação acolhedora e paciente"),
-            "Escape Hatch Locator": ("🎯 Localizador de Escotilha", "Radar direto para saídas"),
+            "Escape Hatch Locator": ("🎯 Localizador de Escotilla", "Radar direto para saídas"),
             "7-Year-Old Playground Mindset": ("🖍️ Mentalidade de 7 Anos", "Espanto infantil puro"),
             "Ruthless Barrister": ("⚖️ Advogado Implacável", "Alavanca legal agressiva"),
             "Zen Negotiator": ("🧘 Negociador Zen", "Mediador calmo e sereno"),
@@ -986,16 +987,15 @@ UI_TEXT = {
         },
         "help_title": "💡 Como Usar Este Aplicativo",
         "help_s1_title": "1. Configurações da Barra Lateral",
-        "help_s1_desc": "Selecione seu idioma preferido, nível de complexidad e tom.",
+        "help_s1_desc": "Selecione seu idioma preferido, nível de complexidade e tom.",
         "help_s2_title": "2. Aba 1 (Simplificador de Tópicos)",
         "help_s2_desc": "Digite qualquer assunto ou use o gravador de voz para explicações estruturadas, com PDF e áudio.",
         "help_s3_title": "3. Aba 2 e Aba 3",
         "help_s3_desc": "Explore abas adicionais para análise de documentos e histórico.",
-    }
+    },
 }
 
 LANGUAGES = list(UI_TEXT.keys())
-
 # ==============================================================================
 # [SECTION 4: UTILITY FUNCTIONS (PDF EXPORT & FETCHERS)]
 # ==============================================================================
