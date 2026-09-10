@@ -1543,180 +1543,281 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
 
     return pdf_bytes
 
-
 # ==============================================================================
-# [SECTION 5: STREAMLIT APP INITIALIZATION & STYLING]
+# [SECTION 5: CORE INTELLIGENCE ENGINE & CLIENT INITIALIZATION]
 # ==============================================================================
-is_streamlit = "streamlit" in sys.modules or os.getenv("SERVER_PORT") == "8501"
 
-if is_streamlit:
-    import streamlit as st
+def get_gemini_client(api_key: str):
+    if not api_key:
+        return None
+    return genai.Client(api_key=api_key)
 
-    st.set_page_config(page_title="Simply Explained", page_icon="💡", layout="wide")
 
-    # [Ensure UI_TEXT is fully defined above this point in your file]
-#-----------
-
-    st.markdown(
-        """
-        <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-
-        div[data-testid="stMarkdownContainer"] p, 
-        div[data-testid="stMarkdownContainer"] li {
-            font-size: 1.15rem !important;
-            line-height: 1.5 !important;
-        }
-        div[data-testid="stMarkdownContainer"] h2,
-        div[data-testid="stMarkdownContainer"] h3 {
-            font-size: 1.5rem !important;
-            margin-top: 1.5rem !important;
-            margin-bottom: 0.6rem !important;
-        }
-        .app-title {
-            font-size: 2.8rem !important;
-            font-weight: 700 !important;
-            text-decoration: underline;
-            margin-bottom: 0px;
-        }
-        .fine-print-title {
-            font-size: 1.8rem !important;
-            font-weight: 700 !important;
-            margin-bottom: 0px;
-        }
-        .app-subtitle {
-            font-size: 1.1rem !important;
-            font-weight: bold !important;
-            margin-top: 3px;
-            margin-bottom: 10px;
-        }
-
-        div[data-testid="stSidebar"] {
-            padding-top: 0.1rem !important;
-            font-family: 'Plus Jakarta Sans', sans-serif !important;
-        }
-        div[data-testid="stSidebar"] .block-container {
-            padding-top: 0.5rem !important;
-            padding-bottom: 0.5rem !important;
-            gap: 0.25rem !important;
-        }
-        div[data-testid="stSidebar"] hr {
-            margin: 0.4rem 0 !important;
-        }
-
-        div.stButton > button, 
-        div.stFormSubmitButton > button {
-            background-color: #0284C7 !important;
-            color: #FFFFFF !important;
-            font-family: 'Plus Jakarta Sans', sans-serif !important;
-            font-size: 0.95rem !important;
-            font-weight: 600 !important;
-            padding: 0.3rem 0.8rem !important;
-            border-radius: 0.4rem !important;
-            box-shadow: 0 3px 10px rgba(2, 132, 199, 0.2) !important;
-            border: none !important;
-            transition: all 0.2s ease-in-out !important;
-            width: 100% !important;
-        }
-        div.stButton > button:hover, 
-        div.stFormSubmitButton > button:hover {
-            background-color: #0369A1 !important;
-            color: #FFFFFF !important;
-            box-shadow: 0 5px 14px rgba(3, 105, 161, 0.3) !important;
-            border: none !important;
-        }
-
-        div[data-testid="stDialog"] {
-            width: 85vw !important;
-            max-width: 950px !important;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-#----------------
-    env_api_key = os.getenv("GEMINI_API_KEY", "")
-
-    if "selected_lang" not in st.session_state:
-        st.session_state["selected_lang"] = "English"
-    if "history_log" not in st.session_state:
-        st.session_state["history_log"] = []
-
-    selected_lang = st.sidebar.selectbox(
-        "🌐 **Language**",
-        LANGUAGES,
-        index=(
-            LANGUAGES.index(st.session_state["selected_lang"])
-            if st.session_state["selected_lang"] in LANGUAGES
-            else 0
-        ),
-        key="language_selector",
-    )
-    st.session_state["selected_lang"] = selected_lang
+def generate_explanation(client, model_id, topic, depth, tone, language, tdict):
+    system_instruction = f"""
+    You are 'Simply Explained', an expert multilingual intelligence synthesizer and master communicator.
+    Your objective is to break down complex topics into clear, structured, and engaging insights.
     
-    # CRITICAL: Re-assign texts immediately after capturing selected_lang
-    texts = UI_TEXT.get(selected_lang, UI_TEXT["English"])
-
-#-----------------
-
-    tone_level = st.sidebar.selectbox(
-        texts["tone_label"], texts["tone_options"], key="tone_radio_key"
-    )
-
-    enable_audio_speech = st.sidebar.checkbox(
-        texts["read_aloud_label"],
-        value=False,
-        help=(
-            "Generates an audio player for each simplified response in the"
-            " selected language."
-        ),
-        key="enable_audio_speech_unique_key",
-    )
-
-    st.sidebar.markdown("---")
-
-    depth_level = st.sidebar.radio(
-        texts["depth_label"], texts["depth_options"], key="depth_radio_key"
-    )
-
-    st.sidebar.markdown("---")
-
-    if st.sidebar.button(texts["start_over"], key="reset_app_button"):
-        current_lang = st.session_state.get("selected_lang", "English")
-        st.session_state.clear()
-        st.session_state["selected_lang"] = current_lang
-        st.rerun()
-
-    @st.dialog("Terms & Conditions / Términos y Condiciones")
-    def show_terms_dialog():
-        st.markdown(TERMS_TEXT.get(selected_lang, TERMS_TEXT["English"]))
-
-    if st.sidebar.button(texts["terms_button"], key="terms_button_sidebar"):
-        show_terms_dialog()
-
-    st.sidebar.markdown("---")
-    with st.sidebar.expander("🔑 ", expanded=False):
-        api_key_input = st.text_input(
-            texts["api_label"],
-            value=env_api_key,
-            type="password",
-            key="gemini_api_key_input_unique",
-            label_visibility="collapsed",
+    Parameters:
+    - Target Language: {language}
+    - Complexity Depth: {depth}
+    - Tone / Persona: {tone}
+    
+    Structure your response using these exact pillar headers where applicable:
+    {tdict["pillar_headers"]}
+    
+    Ensure the output strictly mirrors the requested persona nuance and depth level.
+    """
+    
+    prompt = f"Explain the following topic thoroughly: {topic}"
+    
+    try:
+        response = client.models.generate_content(
+            model=model_id,
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                system_instruction=system_instruction,
+                temperature=0.7,
+            )
         )
-    api_key = (api_key_input or "").strip() or env_api_key
+        return response.text
+    except APIError as e:
+        return f"API Error encountered: {e}"
+    except Exception as e:
+        return f"An unexpected error occurred: {e}"
 
-    st.sidebar.markdown(
-        "<div style='text-align: center; font-size: 0.78rem; font-weight: 700;"
-        " opacity: 0.9; margin: 4px 0 2px 0;'>♿ Universal Accessibility"
-        " Enabled</div>",
-        unsafe_allow_html=True,
+
+def analyze_document(client, model_id, doc_content, input_type, language, tdict):
+    system_instruction = f"""
+    You are a master legal analyst, contract decoder, and risk mitigation expert.
+    Analyze the provided document/text thoroughly and break down hidden traps, liabilities, and obligations.
+    Target Language: {language}
+    
+    Structure your output using these exact headers:
+    {tdict["fine_print_headers"]}
+    """
+    
+    try:
+        response = client.models.generate_content(
+            model=model_id,
+            contents=doc_content,
+            config=types.GenerateContentConfig(
+                system_instruction=system_instruction,
+                temperature=0.3,
+            )
+        )
+        return response.text
+    except Exception as e:
+        return f"Error during document analysis: {e}"
+
+
+def execute_escape_protocol(client, model_id, scenario, hint, urgency, persona, language, tdict):
+    system_instruction = f"""
+    You are the 'Escape Clause' Master Tactical Intelligence Engine.
+    Your mission is to provide an uncompromising, highly strategic, and operationally elite escape plan, script, or breakdown for the user's difficult scenario.
+    
+    Parameters:
+    - Urgency Level: {urgency}/10
+    - Tactical Persona: {persona}
+    - Target Language: {language}
+    - Additional Focus/Hint: {hint}
+    
+    Deliver a devastatingly effective, clear, and actionable roadmap or response script.
+    """
+    
+    prompt = f"Analyze and formulate an escape protocol for the following situation:\n\n{scenario}"
+    
+    try:
+        response = client.models.generate_content(
+            model=model_id,
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                system_instruction=system_instruction,
+                temperature=0.5,
+            )
+        )
+        return response.text
+    except Exception as e:
+        return f"Error executing escape protocol: {e}"
+
+
+# ==============================================================================
+# [SECTION 6: STREAMLIT MAIN APPLICATION & UI ORCHESTRATION]
+# ==============================================================================
+
+def main():
+    st.set_page_config(
+        page_title="Simply Explained (Master v5.0)",
+        page_icon="💡",
+        layout="wide",
+        initial_sidebar_state="expanded"
     )
+    
+    # Session state initializations
+    if "history" not in st.session_state:
+        st.session_state.history = []
+    if "escape_history" not in st.session_state:
+        st.session_state.escape_history = []
+
+    # --- SIDEBAR CONFIGURATION ---
+    st.sidebar.image("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop&q=60", use_container_width=True)
+    st.sidebar.title("💡 Simply Explained")
+    
+    # Language Selection
+    selected_lang = st.sidebar.selectbox("🌐 Language", list(UI_TEXT.keys()), index=0)
+    tdict = UI_TEXT[selected_lang]
+    
     st.sidebar.markdown("---")
-    st.sidebar.markdown(
-        "<div style='text-align: center; font-size: 0.72rem; font-weight: 600;"
-        " color: #0284C7;'>Powered by SkyNet, we are aware API</div>",
-        unsafe_allow_html=True,
-    )
+    
+    # API Key Input
+    env_api_key = os.environ.get("GEMINI_API_KEY", "")
+    api_key = st.sidebar.text_input(tdict["api_label"], value=env_api_key, type="password")
+    
+    st.sidebar.markdown("---")
+    
+    # Depth / Complexity
+    depth = st.sidebar.select_slider(tdict["depth_label"], options=tdict["depth_options"], value=tdict["depth_options"][1])
+    
+    # Tone / Persona
+    tone = st.sidebar.selectbox(tdict["tone_label"], tdict["tone_options"])
+    
+    st.sidebar.markdown("---")
+    
+    # Terms & Conditions Modal/Expander
+    if st.sidebar.button(tdict["terms_button"]):
+        st.sidebar.markdown(TERMS_TEXT.get(selected_lang, TERMS_TEXT["English"]))
+
+    # Initialize Client
+    client = get_gemini_client(api_key)
+
+    # --- MAIN INTERFACE TABS ---
+    tab1, tab2, tab3 = st.tabs([tdict["tab1_name"], tdict["tab2_name"], tdict["tab3_name"]])
+    
+    # -------------------------------------------------------------------------
+    # TAB 1: TOPIC SIMPLIFIER
+    # -------------------------------------------------------------------------
+    with tab1:
+        st.title("💡 Simply Explained")
+        st.markdown(tdict["subtitle"])
+        st.markdown(tdict["privacy_notice_box"], unsafe_allow_html=True)
+        
+        topic = st.text_input(tdict["topic_label"], placeholder=tdict["topic_placeholder"])
+        
+        col1, col2 = st.columns([1, 4])
+        with col1:
+            run_btn = st.button(tdict["button_label"], type="primary")
+        with col2:
+            if st.button(tdict["start_over"]):
+                st.rerun()
+                
+        if run_btn:
+            if not client:
+                st.error(tdict["no_api"])
+            elif not topic:
+                st.warning(tdict["no_topic"])
+            else:
+                with st.spinner(tdict["spinners"].get(depth, "Processing...")):
+                    result = generate_explanation(client, MODEL_ID, topic, depth, tone, selected_lang, tdict)
+                    st.session_state.history.append({"topic": topic, "result": result})
+                    
+                    st.success(tdict["ready"].get(depth, "Done!"))
+                    st.markdown(result)
+                    
+                    # PDF Export Option
+                    sections = [(s, result) for s in tdict["pillar_headers"]]
+                    pdf_bytes = create_pdf_report(f"Simply Explained: {topic}", sections)
+                    st.download_button(
+                        label="📥 Download PDF Report",
+                        data=pdf_bytes,
+                        file_name=f"simply_explained_{re.sub(r'[^a-zA-Z0-9]', '_', topic)}.pdf",
+                        mime="application/pdf"
+                    )
+
+    # -------------------------------------------------------------------------
+    # TAB 2: DOCUMENT & FINE PRINT DECODER
+    # -------------------------------------------------------------------------
+    with tab2:
+        st.title(tdict["fine_print_title"])
+        st.markdown(tdict["fine_print_subtitle"])
+        
+        input_mode = st.radio(tdict["choose_input_mode"], tdict["input_modes"], horizontal=True)
+        
+        doc_input = None
+        if input_mode == "Paste Text":
+            doc_input = st.text_area(tdict["paste_label"], height=200)
+        elif input_mode == "Web Link / URL":
+            url_val = st.text_input(tdict["url_label"])
+            if url_val:
+                try:
+                    resp = requests.get(url_val, timeout=10)
+                    soup = BeautifulSoup(resp.text, 'html.parser')
+                    doc_input = soup.get_text()
+                except Exception as e:
+                    st.error(f"Failed to fetch URL: {e}")
+        elif input_mode == "Upload Image":
+            img_file = st.file_uploader(tdict["upload_label"], type=["png", "jpg", "jpeg"])
+            if img_file:
+                doc_input = types.Part.from_bytes(data=img_file.read(), mime_type=img_file.type)
+        elif input_mode == "Upload PDF":
+            pdf_file = st.file_uploader(tdict["upload_pdf_label"], type=["pdf"])
+            if pdf_file:
+                doc_input = types.Part.from_bytes(data=pdf_file.read(), mime_type="application/pdf")
+                
+        if st.button(tdict["decode_button"], type="primary", key="decode_btn"):
+            if not client:
+                st.error(tdict["no_api"])
+            elif not doc_input:
+                st.warning("Please provide a document or text source to decode.")
+            else:
+                with st.spinner(tdict["simplifying_spinner"]):
+                    analysis = analyze_document(client, MODEL_ID, doc_input, input_mode, selected_lang, tdict)
+                    st.success("Document analyzed successfully!")
+                    st.markdown(analysis)
+
+    # -------------------------------------------------------------------------
+    # TAB 3: THE ESCAPE CLAUSE
+    # -------------------------------------------------------------------------
+    with tab3:
+        st.title(tdict["escape_title"])
+        st.markdown(tdict["escape_subtitle"])
+        st.markdown(tdict["escape_badge"])
+        
+        st.markdown(f"### {tdict['escape_doc_section']}")
+        scenario_text = st.text_area(tdict["escape_text_label"], placeholder=tdict["escape_text_placeholder"], height=150)
+        scenario_hint = st.text_input(tdict["escape_hint_label"], placeholder=tdict["escape_hint_placeholder"])
+        
+        st.markdown(f"### {tdict['escape_lab_section']}")
+        urgency_val = st.slider(tdict["escape_urgency_label"], 1, 10, 8)
+        
+        persona_keys = list(tdict["personas"].keys())
+        selected_persona_key = st.selectbox(tdict["escape_persona_label"], persona_keys, format_func=lambda x: tdict["personas"][x][0])
+        
+        col_e1, col_e2 = st.columns([1, 1])
+        with col_e1:
+            run_escape = st.button(tdict["escape_run_btn"], type="primary")
+        with col_e2:
+            if st.button(tdict["escape_clear_btn"]):
+                st.rerun()
+                
+        if run_escape:
+            if not client:
+                st.error(tdict["no_api"])
+            elif not scenario_text:
+                st.warning(tdict["escape_no_text"])
+            else:
+                with st.spinner(tdict["escape_spinner"]):
+                    escape_result = execute_escape_protocol(
+                        client, MODEL_ID, scenario_text, scenario_hint, urgency_val, selected_persona_key, selected_lang, tdict
+                    )
+                    st.success(tdict["escape_success"])
+                    st.markdown(escape_result)
+                    st.info(tdict["escape_disclaimer"])
+
+        st.markdown(tdict["footer_text"])
+
+if __name__ == "__main__":
+    main()
+
 
 # ==============================================================================
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
