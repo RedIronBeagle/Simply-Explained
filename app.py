@@ -1887,8 +1887,10 @@ with tab3:
 )
     st.markdown("---")
     
-    st.markdown(f'<div class="badge-glow" style="text-align: center; margin-bottom: 25px;">{texts["escape_badge"]}</div>', unsafe_allow_html=True)
-
+    st.markdown(
+    f'<div class="badge-glow" style="text-align: center;">{texts.get("escape_badge", "Operational Readiness / Preparación Operativa")}</div>',
+    unsafe_allow_html=True,
+)
     # 1 - Document Section
     st.markdown(f'<div class="section-card">', unsafe_allow_html=True)
     st.markdown(f"### 📄 {texts['escape_doc_section']}")
