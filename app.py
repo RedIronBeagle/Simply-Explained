@@ -1566,7 +1566,14 @@ if is_streamlit==True:
     tab1, tab2, tab3 = st.tabs(
         [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
     )
-	
+
+# Check your st.tabs() declaration right above Tab 1. It should look like this:
+tab1, tab2, tab3 = st.tabs([
+    texts.get("tab_core", "Core Simplifier"),
+    texts.get("tab_decoder", "Document Decoder"),
+    texts.get("tab_contingency", "Contingency Suite")
+])
+
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
 # =============================================================================
