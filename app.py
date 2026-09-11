@@ -1592,17 +1592,15 @@ with tab1:
         f'<div class="app-subtitle">{current_subtitle}</div>',
         unsafe_allow_html=True,
     )
-st.markdown(
-    texts.get("privacy_notice_box", '<div class="privacy-notice">🔒 Privacy Notice: Data is processed securely.</div>'), 
-    unsafe_allow_html=True
-)
+    st.markdown(
+        texts.get("privacy_notice_box", '<div class="privacy-notice">🔒 Privacy Notice: Data is processed securely.</div>'), 
+        unsafe_allow_html=True
+    )
 
     topic = st.text_input(
-        texts["topic_label"],
-        placeholder=texts["topic_placeholder"],
-        key="main_topic_input_field",
-    )
-    
+        texts.get("topic_label", "Enter topic or concept:"),
+        key="topic_input"
+    )    
     st.markdown("---")
     st.markdown(f"### {texts['voice_section_title']}")
     st.markdown(texts['voice_instruction'])
