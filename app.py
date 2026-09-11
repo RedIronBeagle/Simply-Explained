@@ -1773,6 +1773,10 @@ with tab1:
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {str(e)}")
 
+with tab1:
+    st.success("✅ EXECUTION ENTERED TAB 1")
+
+
 
 # ===================================================================
 # [SECTION 9: DOCUMENT DECODER & FINE PRINT EXECUTION HANDLER]
