@@ -1881,7 +1881,10 @@ with tab3:
         unsafe_allow_html=True,
     )
 
-    st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
+    st.markdown(
+    texts.get("privacy_notice_box", '<div class="privacy-notice">🔒 Privacy Notice: Data is processed securely. / Aviso de Privacidad: Los datos se procesan de forma segura.</div>'),
+    unsafe_allow_html=True,
+)
     st.markdown("---")
     
     st.markdown(f'<div class="badge-glow" style="text-align: center; margin-bottom: 25px;">{texts["escape_badge"]}</div>', unsafe_allow_html=True)
