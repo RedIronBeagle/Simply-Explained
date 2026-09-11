@@ -8,10 +8,6 @@
 # [SECTION 1: IMPORTS & ENVIRONMENT SETUP]
 # ==============================================================================
 import streamlit as st
-
-# Page Configuration
-st.set_page_config(
-...
 import google.genai as genai
 from google.genai import types
 import os
