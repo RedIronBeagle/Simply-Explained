@@ -1530,29 +1530,46 @@ with tab1:
   gtts_lang = LANG_CODES.get(current_lang, "en")
   # tts = gTTS(text=response_text, lang=gtts_lang, slow=False)
 
+
 # ==============================================================================
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
 # ==============================================================================
 if is_streamlit:
-  tab1, tab2, tab3 = st.tabs(
-      [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
-  )
+    tab1, tab2, tab3 = st.tabs(
+        [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
+    )
 
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
 # ==============================================================================
 with tab1:
+    title_map = {
+        "English": "Simply Explained",
+        "Spanish": "Simplemente Explicado",
+        "French": "Simplement Expliqué",
+        "German": "Einfach Erklärt",
+        "Italian": "Semplicemente Spiegato",
+        "Portuguese": "Simplesmente Explicado",
+    }
+    subtitle_map = {
+        "English": "What You Need To Know",
+        "Spanish": "Lo Que Necesitas Saber",
+        "French": "Ce Que Vous Devez Savoir",
+        "German": "Was Sie Wissens Muessten",
+        "Italian": "Quello Che Devi Sapere",
+        "Portuguese": "O Que Voce Precisa Saber",
+    }
+    current_title = title_map.get(selected_lang, texts.get("app_main_title", "Simply Explained"))
+    current_subtitle = subtitle_map.get(selected_lang, texts.get("subtitle", "What you need to know"))
+
     st.markdown(
-        f'<div class="app-title">{texts.get("app_main_title", "Simply Explained - What you need to know")}</div>', unsafe_allow_html=True
+        f'<div class="app-title">{current_title}</div>', unsafe_allow_html=True
     )
     st.markdown(
-        f'<div class="app-subtitle">{texts["subtitle"]}</div>',
+        f'<div class="app-subtitle">{current_subtitle}</div>',
         unsafe_allow_html=True,
     )
     st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
-
-    with st.expander(texts.get("help_title_tab1", "💡 Quick Guide: How to Use Tab 1")):
-        st.markdown(texts.get("help_body_tab1", ""))
 
     topic = st.text_input(
         texts["topic_label"],
@@ -1561,10 +1578,25 @@ with tab1:
     )
     
     st.markdown("---")
-    st.markdown(f"### 🎙️ {texts.get('voice_header', 'Voice Inquiry Dictation')}")
-    st.markdown(texts.get('voice_instructions', 'Click the microphone below to record your question, then hit submit.'))
+    st.markdown(f"### {texts['voice_section_title']}")
+    st.markdown(texts['voice_instruction'])
     
-    audio_value = st.audio_input("Record your question", key="main_audio_recorder_field")
+    # CSS styling to scale the audio recorder input block
+    st.markdown(
+        """
+        <style>
+        div[data-testid="stAudioInput"] {
+            transform: scale(1.35);
+            transform-origin: top left;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
     
     st.markdown("")
     submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
@@ -1703,8 +1735,9 @@ with tab1:
                     st.error(f"API Error: {e.message}")
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {str(e)}")
-					
-  # ==============================================================================
+
+
+# ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
   # ==============================================================================
 with tab2:
@@ -1945,7 +1978,6 @@ with tab2:
 	      except Exception as e:
 	        st.error(f"An unexpected error occurred: {str(e)}")
 
-
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
 # ==============================================================================
@@ -2085,7 +2117,7 @@ with tab3:
     st.markdown('<hr class="section-divider-faint">', unsafe_allow_html=True)
 
     # 4 - BS Meter
-    st.markdown(f"**<span style='color: #8B4513;'>💩</span> 4. BS-to-Meter (At a corporate Level):**", unsafe_allow_html=True)
+    st.markdown(f"**<span style='color: #8B4513;'>💩</span> 4. BS-to-Meter (The more the level, the more the pile):**", unsafe_allow_html=True)
     st.markdown(
         "<div style='font-size: 0.8rem; color: #94A3B8; margin-bottom: 4px;'>"
         "📍 <i>Click a tick mark below or drag slider to calibrate corporate BS level:</i>"
@@ -2295,3 +2327,4 @@ with tab3:
 
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
+
