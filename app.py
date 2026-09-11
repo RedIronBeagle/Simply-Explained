@@ -1528,7 +1528,8 @@ with tab1:
   # gTTS audio generation integration
   current_lang = st.session_state.get("language", "English")
   gtts_lang = LANG_CODES.get(current_lang, "en")
-  # tts = gTTS(text=response_text, lang=gtts_lang, slow=False)
+  # tts = gTTS(text=response_text, lang=gtts_lang, slow=False
+
 # ==============================================================================
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
 # ==============================================================================
@@ -1540,7 +1541,7 @@ if is_streamlit == True:
 
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
-# ==============================================================================
+# =============================================================================
 with tab1:
     title_map = {
         "English": "Simply Explained",
