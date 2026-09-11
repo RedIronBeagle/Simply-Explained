@@ -1592,7 +1592,10 @@ with tab1:
         f'<div class="app-subtitle">{current_subtitle}</div>',
         unsafe_allow_html=True,
     )
-    st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
+st.markdown(
+    texts.get("privacy_notice_box", '<div class="privacy-notice">🔒 Privacy Notice: Data is processed securely.</div>'), 
+    unsafe_allow_html=True
+)
 
     topic = st.text_input(
         texts["topic_label"],
