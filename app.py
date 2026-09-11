@@ -1824,356 +1824,77 @@ with tab2:
         else:
             st.warning(texts.get("upload_warning", "Please upload a document to proceed."))
 			
-# ==============================================================================
-# [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
-# ==============================================================================
+# ===================================================================
+# [SECTION 10: CONTINGENCY SUITE / SUITE DE CONTINGENCIA]
+# ===================================================================
 with tab3:
-    st.markdown(
-        """
-        <style>
-        .escape-lab-container {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 59, 0.95) 100%);
-            border: 1px solid rgba(2, 132, 199, 0.3);
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
-            margin-bottom: 30px;
-        }
-        .escape-header-title {
-            font-size: 2.2rem !important;
-            font-weight: 800 !important;
-            background: linear-gradient(90deg, #38BDF8, #818CF8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1px;
-        }
-        .section-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .section-card-thin {
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 8px;
-            padding: 4px 20px;
-            margin-bottom: 12px;
-        }
-        .section-divider-faint {
-            border: none;
-            height: 1px;
-            background: linear-gradient(90deg, rgba(2, 132, 199, 0), rgba(2, 132, 199, 0.25), rgba(2, 132, 199, 0));
-            margin: 20px 0;
-        }
-        .badge-glow {
-            background: linear-gradient(90deg, #0284C7, #0369A1);
-            color: white;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    st.markdown(
-    texts.get("privacy_notice_box", '<div class="privacy-notice">🔒 Privacy Notice: Data is processed securely. / Aviso de Privacidad: Los datos se procesan de forma segura.</div>'),
-    unsafe_allow_html=True,
-)
-    st.markdown("---")
-    
-    st.markdown(
-    f'<div class="badge-glow" style="text-align: center;">{texts.get("escape_badge", "Operational Readiness / Preparación Operativa")}</div>',
-    unsafe_allow_html=True,
-)
-    # 1 - Document Section
-    st.markdown(f'<div class="section-card">', unsafe_allow_html=True)
-    st.markdown(f"### 📄 {texts['escape_doc_section']}")
     st.markdown(
         f'<div class="escape-header-title">{texts.get("escape_title", "Escape & Contingency Plan / Plan de Contingencia")}</div>',
         unsafe_allow_html=True,
     )
     st.markdown(
-        texts.get("escape_subtitle", "Build realistic exit strategies and tactical plans for high-stakes scenarios."),
+        texts.get("escape_subtitle", "Build realistic exit strategies and tactical plans for high-stakes scenarios. / Construya estrategias de salida realistas y planes tácticos."),
     )
-    if "escape_text_area" not in st.session_state:
-        st.session_state["escape_text_area"] = st.session_state.get("fetched_fp_text", "")
     
-    escape_text_input = st.text_area(
-        texts["escape_text_label"],
-        value="",
-        placeholder=texts["escape_text_placeholder"],
-        height=130,
-        key="escape_text_input_unique"
+    st.markdown(
+        texts.get("privacy_notice_box", '<div class="privacy-notice">🔒 Privacy Notice: Data is processed securely. / Aviso de Privacidad: Los datos se procesan de forma segura.</div>'),
+        unsafe_allow_html=True,
+    )
+    st.markdown("---")
+
+    st.markdown(
+        f'<div class="badge-glow" style="text-align: center;">{texts.get("escape_badge", "Operational Readiness / Preparación Operativa")}</div>',
+        unsafe_allow_html=True,
     )
 
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    # 2 - Tactical Focus & Nuances
-    st.markdown(f'<div class="section-card-thin">', unsafe_allow_html=True)
-    st.markdown(f"<div style='font-size: 0.9rem; font-weight: 600; color: #94A3B8; margin-bottom: 4px;'>🎯 2. {texts.get('escape_hint_label', 'Tactical Focus & Nuances')}</div>", unsafe_allow_html=True) 
-    extra_hint_input = st.text_input(
-        texts["escape_hint_label"],
-        placeholder=texts["escape_hint_placeholder"],
-        label_visibility="collapsed",
-        key="escape_extra_hint_input_unique"
-    )
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    st.markdown('<hr class="section-divider-faint">', unsafe_allow_html=True)
-
+    # 1 - Document Section
     st.markdown(f'<div class="section-card">', unsafe_allow_html=True)
-    st.markdown(f"### 🚪 {texts['escape_lab_section']}")
+    st.markdown(f"### 📄 {texts.get('escape_doc_section', 'Document Section / Sección de Documentos')}")
     
-    # 3 - Urgency Scale
-    st.markdown(f"**⚡ 3. {texts['escape_urgency_label']}**")
-    
-    paranoia_level = st.slider(
-        texts['escape_urgency_label'],
-        min_value=1,
-        max_value=10,
-        value=5,
-        label_visibility="collapsed",
-        key="escape_paranoia_level_unique"
-    )
-
-    st.markdown(
-        f'<div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #64748B; padding: 0 2px; margin-top: -8px; margin-bottom: 6px;">'
-        f'<span>| 0%</span><span>| 25%</span><span>| 50%</span><span>| 75%</span><span>| 100%</span>'
-        f'</div>',
-        unsafe_allow_html=True,
-    )
-
-    if paranoia_level < 3:
-        urgency_desc = "🟢 *Gentle Notice:* Polite corporate whispers. Asking nicely for a favor."
-    elif paranoia_level < 5:
-        urgency_desc = "🟡 *Firm Negotiator:* Standard contract pressure. Pointing out fine print."
-    elif paranoia_level < 8:
-        urgency_desc = "🟠 *Bureaucracy-Buster:* Aggressive loophole hunting and escalation scripting."
-    else:
-        urgency_desc = "🔴 *DEFCON 1 (Extreme Mode):* Total tactical severance. Unleashing customer support legal panic * get me out NOW *!"
-
-    st.markdown(
-        f'<div style="font-size: 0.92rem; font-weight: 600; margin-top: 2px; margin-bottom: 15px; color: #38BDF8;">{urgency_desc}</div>',
-        unsafe_allow_html=True,
-    )
-
-    st.markdown('<hr class="section-divider-faint">', unsafe_allow_html=True)
-
-    # 4 - BS Meter
-    st.markdown(f"**<span style='color: #8B4513;'>💩</span> 4. BS-to-Meter (The more the level, the more the pile):**", unsafe_allow_html=True)
-    st.markdown(
-        "<div style='font-size: 0.8rem; color: #94A3B8; margin-bottom: 4px;'>"
-        "📍 <i>Click a tick mark below or drag slider to calibrate corporate BS level:</i>"
-        "</div>",
-        unsafe_allow_html=True,
+    contingency_input = st.text_area(
+        texts.get("escape_input_label", "Describe the situation or high-stakes scenario: / Describa la situación o escenario de alto riesgo:"),
+        key="contingency_situation_input"
     )
     
-    bs_options = [
-        "Level 1: Just a Little Poop (Shart)",
-        "Level 2: Light Corporate Spin",
-        "Level 3: Standard Marketing Fluff",
-        "Level 4: Heavy Corporate Jargon",
-        "Level 5: Maximum Enterprise Buzzword Bingo",
-        "Level 6: Peak Corporate Insanity (Total BS Galaxy)",
-    ]
-    
-    bs_level = st.select_slider(
-        "Select BS Level",
-        options=bs_options,
-        value=bs_options[2],
-        key="bs_meter_slider_tab3_unique",
-        label_visibility="collapsed"
-    )
-    
-    current_bs_index = bs_options.index(bs_level) + 1
-    st.markdown(
-        f'<div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #64748B; padding: 0 2px; margin-top: -8px; margin-bottom: 4px;">'
-        f'<span>| L1</span><span>| L2</span><span>| L3</span><span>| L4</span><span>| L5</span><span>| L6</span>'
-        f'</div>'
-        f'<div style="font-size: 0.88rem; font-weight: 600; color: #38BDF8; margin-top: 4px; margin-bottom: 15px;">'
-        f'🎯 Active Calibration: Level {current_bs_index} — {bs_level}'
-        f'</div>',
-        unsafe_allow_html=True,
+    contingency_file = st.file_uploader(
+        texts.get("escape_file_label", "Upload supportive materials (optional) / Subir materiales de apoyo (opcional)"),
+        type=["pdf", "txt"],
+        key="contingency_uploader"
     )
 
-    st.markdown('<hr class="section-divider-faint">', unsafe_allow_html=True)
-
-    # 5 - Personas & Button
-    st.markdown(f"**🎭 5. {texts['escape_persona_label']}**")
-    st.markdown(
-        f"<div style='font-size: 0.8rem; color: #94A3B8; margin-bottom: 10px;'>"
-        f"<i>{texts.get('tactical_persona_prompt', 'Select your tactical persona framework below')}:</i>"
-        f"</div>",
-        unsafe_allow_html=True,
-    )
-    
-    if "integrated_persona_select" not in st.session_state:
-        st.session_state["integrated_persona_select"] = "Houdini Mode"
-    
-    p_dict = texts.get("personas", {
-        "Houdini Mode": ("Houdini Mode", "Pure procedural escape routes and contractual blind spots."),
-        "Shark Tank": ("Shark Tank", "Aggressive leverage play and absolute commercial dominance."),
-        "Bureaucracy Buster": ("Bureaucracy Buster", "Bypassing automated loops and forcing human resolution."),
-        "Legal Shield": ("Legal Shield", "Defensive posture, statutory compliance, and risk mitigation."),
-        "Savage Negotiator": ("Savage Negotiator", "Zero-mercy contract teardown and ultimatum drafting."),
-        "Zen Master": ("Zen Master", "Calm, unshakable dismantling of emotional corporate pressure."),
-        "The Fixer": ("The Fixer", "Pragmatic, backdoor problem solving with immediate execution vectors.")
-    })
-    p_keys = list(p_dict.keys())
-    
-    p_rows = [st.columns(2) for _ in range((len(p_keys) + 1) // 2)]
-    for i, key in enumerate(p_keys):
-        row_idx = i // 2
-        col_idx = i % 2
-        lbl, desc = p_dict[key]
-        with p_rows[row_idx][col_idx]:
-            if st.button(f"{lbl}\n*{desc}*", key=f"persona_tab3_{key}_{i}", use_container_width=True):
-                st.session_state["integrated_persona_select"] = key
-
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown(
-        """
-        <style>
-        div.stButton > button.end-suffering-btn {
-            background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%) !important;
-            color: white !important;
-            font-weight: 800 !important;
-            font-size: 1.1rem !important;
-            border: 2px solid #F87171 !important;
-            border-radius: 10px !important;
-            padding: 15px !important;
-            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4) !important;
-            width: 100% !important;
-        }
-        div.stButton > button.end-suffering-btn:hover {
-            background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%) !important;
-            border-color: #FCA5A5 !important;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-    
-    end_btn_label = f"{texts.get('end_suffering_btn_title', '🔴 END MY SUFFERING 💀')}\n{texts.get('end_suffering_btn_desc', '')}"
-    if st.button(end_btn_label, key="btn_end_my_suffering_tab3_unique", use_container_width=True):
-        st.session_state["integrated_persona_select"] = "End My Suffering"
-        st.session_state["trigger_end_suffering_exec"] = True
-
-    active_key = st.session_state['integrated_persona_select']
-    if active_key == "End My Suffering":
-        active_display_label = texts.get('end_suffering_btn_desc', 'End My Suffering')
-    else:
-        active_display_label = p_dict.get(active_key, (active_key, ""))[0]
-
-    st.markdown(
-        f'<div style="background: rgba(2, 132, 199, 0.1); border-left: 4px solid #0284C7; padding: 10px 14px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; margin: 15px 0;">'
-        f'Active Operational Persona: <span style="color: #38BDF8;">{active_display_label}</span> | Language Runtime: {selected_lang}'
-        f'</div>',
-        unsafe_allow_html=True
-    )
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    selected_persona_key = st.session_state["integrated_persona_select"]
-    active_persona_title_str = "End My Suffering" if selected_persona_key == "End My Suffering" else p_dict.get(selected_persona_key, (selected_persona_key, ""))[0]
-
-    def clear_escape_data():
-        st.session_state["escape_text_area"] = ""
-        st.session_state["fetched_fp_text"] = ""
-        if "escape_extra_hint_tab3_unique" in st.session_state:
-            st.session_state["escape_extra_hint_tab3_unique"] = ""
-
-    # 6 - Execute Suite
-    st.markdown(f'<div class="section-card">', unsafe_allow_html=True)
-    st.markdown("### 🚀 6. Tactical Execution Suite")
-    col_btn1, col_btn2 = st.columns(2)
-    with col_btn1:
-        run_escape_decode = st.button(texts["escape_run_btn"], key="escape_decode_btn_tab3_unique")
-    with col_btn2:
-        st.button(texts["escape_clear_btn"], key="escape_clear_btn_tab3_unique", on_click=clear_escape_data)
-    st.markdown('</div>', unsafe_allow_html=True)
-        
-    if run_escape_decode or st.session_state.get("trigger_end_suffering_exec", False):
-        if st.session_state.get("trigger_end_suffering_exec", False):
-            selected_persona_key = "End My Suffering"
-            active_persona_title_str = "End My Suffering"
-            st.session_state["trigger_end_suffering_exec"] = False
-
-        if not api_key:
-            st.error(texts["no_api"])
-        elif not escape_text_input:
-            st.warning(texts["escape_no_text"])
-        else:
-            with st.spinner(texts["escape_spinner"]):
+    if st.button(texts.get("escape_button_label", "Generate Contingency Plan / Generar Plan de Contingencia"), key="contingency_execute_btn"):
+        if contingency_input or contingency_file:
+            with st.spinner(texts.get("analyzing_spinner", "Synthesizing tactical strategy... / Sintetizando estrategia táctica...")):
                 try:
-                    client = genai.Client(api_key=api_key)
-                    
-                    if selected_persona_key == "Grandma Filter":
-                        persona_behavior = (
-                            "You are operating under the 'Grandma Filter' persona. Speak with absolute warmth, profound patience, gentle wisdom, and immense maternal comfort. "
-                            "STRICT CONSTRAINT: Never use offensive language, profanity, or aggression."
+                    file_text = ""
+                    if contingency_file is not None:
+                        file_bytes = contingency_file.read()
+                        if contingency_file.type == "application/pdf":
+                            import pypdf
+                            import io
+                            reader = pypdf.PdfReader(io.BytesIO(file_bytes))
+                            file_text = "".join([page.extract_text() for page in reader.pages if page.extract_text()])
+                        else:
+                            file_text = file_bytes.decode("utf-8", errors="ignore")
+
+                    if "client" in st.session_state and st.session_state["client"]:
+                        client = st.session_state["client"]
+                        model_name = st.session_state.get("model_name", "gemini-2.5-flash")
+                        
+                        payload = f"Develop a rigorous, multi-step contingency plan, exit strategy, and risk mitigation roadmap for the following situation:\n\nSituation: {contingency_input}\n\nSupporting Text:\n{file_text[:10000]}"
+                        
+                        response = client.models.generate_content(
+                            model=model_name,
+                            contents=payload
                         )
-                    elif selected_persona_key == "7-Year-Old Playground Mindset":
-                        persona_behavior = (
-                            "You are operating under the '7-Year-Old Playground Mindset' persona. Speak with pure, innocent, childlike wonder and simple playground logic."
-                        )
-                    elif selected_persona_key == "Zen Negotiator":
-                        persona_behavior = (
-                            "You are operating under the 'Zen Negotiator' persona. Speak with absolute calmness, serene peace, balanced mindfulness, and unshakable grace."
-                        )
-                    elif selected_persona_key == "End My Suffering":
-                        persona_behavior = (
-                            "You are operating under the 'End My Suffering' persona: A chillingly calm, hypnotic hybrid of Barack Obama's measured cadence and honesty "
-                            "('Look...'), Christopher Walken's unpredictable syntax and bizarre emphasis, and Lucifer Morningstar's supreme, amused cosmic arrogance "
-                            "toward human bureaucracy. Deliver absolute psychological annihilation of the corporate text with a tab of elegance."
-                        )
+                        st.markdown("### Tactical Contingency Blueprint / Plan Táctico de Contingencia")
+                        st.write(response.text)
                     else:
-                        persona_behavior = f"operating under the '{selected_persona_key}' persona with authentic, realistic tactical depth"
-
-                    system_instruction = (
-                        f"You are an expert crisis navigator, operational intelligence specialist, and contract escape strategist "
-                        f"{persona_behavior} with a {paranoia_level*10}% Chaos and Control urgency factor "
-                        f"and operating at '{bs_level}' intensity. "
-                        f"You MUST respond strictly, exclusively, and entirely in the dictated active language: {selected_lang}."
-                    )
-                    
-                    prompt_content = (
-                        f"Perform operational heavy lifting to generate an absolute Get Out of Jail card for this scenario/document in {selected_lang}.\n\n"
-                        f"Document / Scenario:\n{escape_text_input}\n\n"
-                        f"Additional User Hint: {extra_hint_input}\n\n"
-                        f"BS-to-Meter Setting: {bs_level}\n\n"
-                        f"Format the output starting precisely with a bold title acknowledging the active operational persona ({active_persona_title_str}), the {paranoia_level*10}% urgency scale, and the {bs_level} setting in {selected_lang}."
-                    )
-
-                    response = client.models.generate_content(
-                        model=MODEL_ID,
-                        contents=prompt_content,
-                        config=types.GenerateContentConfig(
-                            system_instruction=system_instruction,
-                            temperature=0.5,
-                        ),
-                    )
-                    
-                    disclaimer_footer = f"\n\n---\n{texts['escape_disclaimer']}"
-                    escape_output = response.text + disclaimer_footer
-                    st.success(texts["escape_success"])
-                    st.markdown("---")
-
-                    st.markdown(
-                        f'<div style="text-align: center; background: rgba(2, 132, 199, 0.08); padding: 15px; border-radius: 10px;">'
-                        f'<h2 style="margin: 0; color: #38BDF8;">🔴 DEFCON {paranoia_level*10}% | {bs_level}</h2>'
-                        f'</div>', 
-                        unsafe_allow_html=True
-                    )
-                    
-                    st.markdown("---")
-                    st.markdown(escape_output)
-
+                        st.error("API client not initialized. Please enter your API key in the sidebar.")
                 except Exception as e:
-                    st.error(f"Error: {str(e)}")
+                    st.error(f"Error generating contingency plan: {str(e)}")
+        else:
+            st.warning(texts.get("escape_warning", "Please provide a situation description or upload a file."))
+    st.markdown('</div>', unsafe_allow_html=True)
 
+	
