@@ -25,6 +25,12 @@ from gtts import gTTS
 import requests
 import streamlit as st
 
+import streamlit as st
+
+# --- EMERGENCY DIAGNOSTIC BANNER ---
+st.error("🚨 APP EXECUTION REACHED TOP OF FILE - IF YOU SEE THIS, STREAMLIT IS RUNNING!")
+
+
 MODEL_ID = "gemini-3.6-flash"
 
 # ==============================================================================
