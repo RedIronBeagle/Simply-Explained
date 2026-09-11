@@ -1529,7 +1529,6 @@ with tab1:
   current_lang = st.session_state.get("language", "English")
   gtts_lang = LANG_CODES.get(current_lang, "en")
   # tts = gTTS(text=response_text, lang=gtts_lang, slow=False)
-
 # ==============================================================================
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
 # ==============================================================================
