@@ -1580,6 +1580,8 @@ with tab1:
         "Italian": "Quello Che Devi Sapere",
         "Portuguese": "O Que Voce Precisa Saber",
     }
+	# Ensure selected_lang is defined before lookup
+    selected_lang = st.session_state.get("lang_label", "English")
     current_title = title_map.get(selected_lang, texts.get("app_main_title", "Simply Explained"))
     current_subtitle = subtitle_map.get(selected_lang, texts.get("subtitle", "What you need to know"))
 
