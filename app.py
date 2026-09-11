@@ -1843,7 +1843,8 @@ with tab2:
             st.warning(texts.get("upload_warning", "Please upload a document to proceed."))
 
 with tab2:
-    st.success("✅ ENTERED TAB 2 / SECTION 9")
+    st.write("DEBUG: Entered tab2 block successfully")
+    st.stop()
 			
 # ===================================================================
 # [SECTION 10: CONTINGENCY SUITE / SUITE DE CONTINGENCIA]
