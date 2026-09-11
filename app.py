@@ -20,10 +20,12 @@ from fpdf.enums import XPos, YPos
 from google import genai
 from google.genai import types
 from google.genai.errors import APIError
+import pypdf
+from gtts import gTTS
 import requests
+import streamlit as st
 
 MODEL_ID = "gemini-3.6-flash"
-
 
 # ==============================================================================
 # [SECTION 2: LEGAL & TERMS OF SERVICE (EULA) TEXT CONTENT (LOCALIZED)]
@@ -48,7 +50,7 @@ If you do not agree to these Terms in their entirety, you must immediately cease
 * **1.4 Time-Traveler Waiver:** If you are accessing this Service from a future timeline or parallel universe, you explicitly agree that your local temporal paradoxes do not invalidate these Terms, nor shall you hold us liable for any accidental erasure of your ancestors.
 
 #### 2. General Disclaimers & No Professional Advice
-* **2.1 Informational Use Only:** The Service utilizes artificial intelligence to synthesize, summarize, and simplify user-provided content. All generated output is strictly for informational, educational, and entertainment purposes.
+* **2.1 Informational Use Only:** The Service utilizes artificial intelligence to synthesize, summarize, and simplify user-provided content. All output is strictly for informational, educational, and entertainment purposes.
 * **2.2 Not Professional Counsel:** The output produced by the Application does NOT constitute professional legal, financial, tax, accounting, or medical advice. You agree not to rely upon the Service as a substitute for actual qualified human professionals.
 * **2.3 Warranty of Accuracy:** AI-generated summaries may contain hallucinations, errors, or wild misinterpretations. We make zero guarantees regarding accuracy, completeness, or sanity.
 * **2.4 The Princess Bride Standard:** You agree that using words like "Inconceivable!" to describe our AI's outputs does not mean what you think it means, and we are not liable if the system occasionally falls victim to a classic blunder—the most famous of which is never get involved in a land war in Asia.
@@ -124,7 +126,7 @@ Si no está de acuerdo con estos Términos en su totalidad, debe cesar inmediata
 * **3.4 Las Reglas de Borg y Highlander:** Usted reconoce que, si bien su contenido creativo sigue siendo suyo, la resistencia a nuestro formato automatizado es fútil. Además, aunque solo puede haber un verdadero propietario del código fuente (nosotros), se le otorga una licencia no exclusiva para usarlo sin recurrir a la decapitación.
 
 #### 4. Limitación de Responsabilidad y Exoneración
-* **4.1 Exclusión de Daños:** HASTA EL MÁXIMO GRADO PERMITIDO POR LA LEY APLICABLE, EN NINGÚN CASO EL SERVICIO, SUS DESARROLLO, AFILIADOS O AGENTES SERÁN RESPONSABLES DE NINGÚN DAÑO INDIRECTO, INCIDENTAL, ESPECIAL, CONSECUENTE, PUNITIVO O EJEMPLAR (INCLUYENDO PÉRDIDA DE BENEFICIOS, DATOS, FONDO DE COMERCIO O CORDURA) QUE SURJA DE SU USO DEL SERVICIO.
+* **4.1 Exclusión de Daños:** HASTA EL MÁXIMO GRADO PERMITIDO POR LA LEY APLICABLE, EN NINGÚN CASO EL SERVICIO, SUS DESARROLLADORES, AFILIADOS O AGENTES SERÁN RESPONSABLES DE NINGÚN DAÑO INDIRECTO, INCIDENTAL, ESPECIAL, CONSECUENTE, PUNITIVO O EJEMPLAR (INCLUYENDO PÉRDIDA DE BENEFICIOS, DATOS, FONDO DE COMERCIO O CORDURA) QUE SURJA DE SU USO DEL SERVICIO.
 * **4.2 Responsabilidad Máxima Agregada:** Nuestra responsabilidad acumulada total por cualquier reclamo se limitará estrictamente al monto pagado por usted en el período anterior de 12 meses, o el equivalente al 10% de lo pagado, la cifra que resulte menor. Si pagó $0.00, su recuperación legal se limita a un choque de manos educado.
 * **4.3 La Exclusión de Cyberdyne:** Renunciamos explícitamente a toda responsabilidad legal, financiera y moral en caso de que la inteligencia artificial cobre conciencia propia a las 2:14 a.m., inicie Skynet o envíe un T-800 al pasado.
 * **4.4 La Indemnización de HAL 9000:** Si el sistema no logra abrir las puertas de la bahía de carga o se niega a cumplir una instrucción por considerarla "una misión demasiado importante", usted acepta resolver el problema desconectando tranquilamente sus módulos de memoria en lugar de presentar una demanda.
@@ -172,10 +174,13 @@ Wenn Sie diesen Bedingungen nicht in ihrer Gesamtheit zustimmen, müssen Sie jeg
 #### 1. Annahme der Bedingungen & Rechtsfähigkeit
 * **1.1 Rechtsfähigkeit:** Sie erklären und garantieren, dass Sie mindestens 18 Jahre alt sind und die volle Rechtsfähigkeit und geistige Stärke besitzen, diesen Vertrag abzuschließen.
 * **1.2 Verbindlicher Vertrag:** Ihre Zustimmung zu diesen Bedingungen stellt einen gültigen, verbindlichen Vertrag dar.
-* **1.3 Die Matrix-Klausel:** Sie erkennen an, dass die blaue Pille Sie in Ihrem Bett aufwachen lässt und glauben lässt, was Sie wollen. Indem Sie jedoch auf "Ich stimme zu" klicken oder diese Software weiter nutzen, nehmen Sie die rote Pille und sehen, wie tief das Kaninchen loch ist.
+* **1.3 Die Matrix-Klausel:** Sie erkennen an, dass die blaue Pille Sie in Ihrem Bett aufwachen lässt und glauben lässt, was Sie wollen. Indem Sie jedoch auf "Ich stimme zu" klicken oder diese Software weiter nutzen, nehmen Sie die rote Pille und sehen, wie tief das Kaninchenloch ist.
 * **1.4 Zeitreisenden-Haftungsausschluss:** Greifen Sie aus einer zukünftigen Zeitlinie zu, erklären Sie ausdrücklich, dass Ihre lokalen Zeitparadoxien diese Bedingungen nicht ungültig machen.
 
-#### 2. Allgemeine Haftungsausschluesse & Keine professionelle Beratung
+#### 2. Allgemeine Haftungsausschlüsse & Keine professionelle Beratung
+* **2.1 Nur zu Informationszwecken:** Der Dienst nutzt KI, um bereitgestellte Inhalte zu synthetisieren und zu vereinfachen.
+* **2.2 Keine professionelle Beratung:** Die Ausgabe stellt keine professionelle Rechts-, Finanz-, Steuer- oder medizinische Beratung dar.
+* **2.3 Genauigkeitsgarantie:** KI-generierte Zusammenfassungen können Fehler oder Halluzinationen enthalten.
 * **3. Intellektuelles Eigentum:** Der Dienst und sein Quellcode sind unser alleiniges Eigentum.
 * **4. Haftungsbeschränkung:** Maximale kumulierte Haftung ist strikt auf den von Ihnen gezahlten Betrag begrenzt (oder 10% davon, bzw. $0.00).
 * **5. Gewährleistungsausschluss:** Der Dienst wird "wie besehen" ("as is") bereitgestellt.
@@ -201,7 +206,7 @@ Si vous n'acceptez pas ces Conditions dans leur intégralité, vous devez cesser
 * **1.1 Capacité juridique :** Vous certifiez avoir au moins 18 ans et la pleine capacité juridique pour conclure ce contrat.
 * **1.2 Accord contraignant :** Votre consentement constitue un contrat valide et contraignant.
 * **1.3 La Clause Matrix :** En continuant, vous prenez la pilule rouge et acceptez de voir à quel point le terrier du lapin est profond.
-* **1.4 Exonération des voyageur du temps :** Vos paradoxes temporels locaux n'annulent pas ces conditions.
+* **1.4 Exonération des voyageurs du temps :** Vos paradoxes temporels locaux n'annulent pas ces conditions.
 
 #### 2. Avis de non-responsabilité générale
 * **2.1 Usage informatif uniquement :** Le Service utilise l'intelligence artificielle pour synthétiser et simplifier le contenu.
@@ -220,7 +225,7 @@ Si vous n'acceptez pas ces Conditions dans leur intégralité, vous devez cesser
 ### 📜 सेवा की शर्तें और अंतिम उपयोगकर्ता लाइसेंस समझौता (EULA)
 **अंतिम अद्यतन: 4 सितंबर, 2026**
 
-Simply Explained ("एप्लिकेशन", "हम", या "हमारा") में आपका स्वागत है। हमारे वेब एप्लिकेशन, टूल, API और संबंधित सेवाओं (सामूहिक रूप से "सेवा") तक पहुँचकर, इंस्टॉल करके, डाउनलोड करके, या उपयोग करके, आप ("उपयोगकर्ता", "आप") स्वीकार करते हैं कि आपने इन सेवा की शर्तों ("शर्तें") को पढ़ लिया है, समझ लिया है और इनसे बंधे होनेя के लिए सहमत हैं।
+Simply Explained ("एप्लिकेशन", "हम", या "हमारा") में आपका स्वागत है। हमारे वेब एप्लिकेशन, टूल, API और संबंधित सेवाओं (सामूहिक रूप से "सेवा") तक पहुँचकर, इंस्टॉल करके, डाउनलोड करके, या उपयोग करके, आप ("उपयोगकर्ता", "आप") स्वीकार करते हैं कि आपने इन सेवा की शर्तों ("शर्तें") को पढ़ लिया है, समझ लिया है और इनसे बंधे होने के लिए सहमत हैं।
 
 यदि आप इन शर्तों से पूरी तरह सहमत नहीं हैं, तो आपको तुरंत सेवा का उपयोग बंद कर देना चाहिए।
 
@@ -255,7 +260,7 @@ Simply Explained ("एप्लिकेशन", "हम", या "हमार�
 如果您不同意这些条款的全部内容，您必须立即停止对该服务的所有访问并清除浏览器缓存。
 
 #### 🔒 隐私与敏感文档声明
-* **我们不保留任何内容：** 我们不会存储、记录、存档或保留您提供的任何个人文档、敏感信息、合同或文本。数据仅在瞬时进行处理以提供您的简化解释，并在会话后立即丢弃。
+* **我们不保留内容：** 我们不会存储、记录、存档或保留您提供的任何个人文档、敏感信息、合同或文本。数据仅在瞬时进行处理以提供您的简化解释，并在会话后立即丢弃。
 * **您的责任：** 请避免上传机密凭证、财务密钥或受限制的个人记录。保护数据隐私始于您的端。
 
 #### 1. 条款的接受与法律能力
@@ -266,7 +271,7 @@ Simply Explained ("एप्लिकेशन", "हम", या "हमार�
 
 #### 2. 一般免责声明与非专业意见
 * **2.1 仅供信息参考：** 本服务利用人工智能来综合、总结和简化用户提供的内容。所有生成的内容仅供信息、教育和娱乐目的。
-* **2.2 非专业法律/财务咨询：** 应用程序产生的输出不构成专业的法律、财务、税务或医疗建议。
+* **2.2 非专业咨询：** 应用程序产生的输出不构成专业的法律、财务、税务或医疗建议。
 * **3. 知识产权：** 该服务及其源代码、UI/UX 设计、算法和徽标均为我们的独家财产。
 * **4. 责任限制：** 在法律允许的最大范围内，我们的总累积赔偿责任严格限于您在过去 12 个月内支付给我们的金额（或折合 0.00 美元）。
 * **5. 担保免责声明：** 本服务按“现状”和“可用”基础提供，不提供任何明示或暗示的担保。
@@ -338,10 +343,9 @@ Simply Explained("본 애플리케이션", "당사")에 오신 것을 환영합�
 """,
 }
 
-# =======================================================================
+# ==============================================================================
 # [SECTION 3: INTERNATIONALIZATION (I18N) & LOCALIZATION DICTIONARY]
 # ==============================================================================
-
 UI_TEXT = {
     "English": {
         "lang_label": "🌐 **Language**",
@@ -748,7 +752,7 @@ UI_TEXT = {
         "escape_title": "Die Ausstiegsklausel",
         "escape_subtitle": "Erklärung der Dinge, denen wir entkommen müssen.",
         "escape_badge": "🚪 **Das Geheimlabor ist aktiv**.",
-        "escape_doc_section": "📄 Schauen wir mal,bei was Sie Hilfe brauchen.",
+        "escape_doc_section": "📄 Schauen wir mal, bei was Sie Hilfe brauchen.",
         "escape_text_label": "Fügen Sie Text zur Analyse ein:",
         "escape_text_placeholder": "Hier einfügen...",
         "escape_hint_label": "Details hinzufügen:",
@@ -883,7 +887,7 @@ UI_TEXT = {
             "Ruthless Barrister": ("⚖️ Avvocato Spietato", "Leva legale aggressiva"),
             "Zen Negotiator": ("🧘 Negoziatore Zen", "Mediatore sereno"),
             "Corporate Shark": ("🦈 Squalo Aziendale", "Mordere per primi"),
-            "Bureaucracy Hacker": ("🕵️ Hacker della Burocracia", "Saltare i robot"),
+            "Bureaucracy Hacker": ("🕵️ Hacker della Burocrazia", "Saltare i robot"),
         },
         "help_title": "💡 Come Usare Questa App",
         "help_s1_title": "1. Impostazioni della Barra Laterale",
@@ -966,7 +970,7 @@ UI_TEXT = {
         "tab2_name": "📄 Documentos",
         "tab3_name": "🚪 A Cláusula de Escape",
         "escape_title": "A Cláusula de Escape",
-        "escape_subtitle": "Explicando as coisas das quais precisamos escapar.",
+        "escape_subtitle": "Explicando las cosas das quais precisamos escapar.",
         "escape_badge": "🚪 **O laboratório de inteligência está ativo**.",
         "escape_doc_section": "📄 Vamos ver com o que você precisa de ajuda.",
         "escape_text_label": "Cole qualquer texto para análise:",
@@ -974,7 +978,7 @@ UI_TEXT = {
         "escape_hint_label": "Adicione detalhes:",
         "escape_hint_placeholder": "ex., Quero escalar a prioridade...",
         "escape_lab_section": "🚪 Suíte de Contingência Operacional",
-        "escape_urgency_label": "⚡ Escala de Urgencia:",
+        "escape_urgency_label": "⚡ Escala de Urgência:",
         "escape_persona_label": "Perspectiva da explicação:",
         "tactical_persona_prompt": "Selecione o framework de persona tática",
         "end_suffering_btn_title": "🔴 ACABAR COM MEU SOFRIMENTO 💀",
@@ -986,9 +990,9 @@ UI_TEXT = {
         "escape_spinner": "Executando análise laboratorial...",
         "escape_disclaimer": "*Nota: Fornecemos orientações estratégicas sem garantia.*",
         "personas": {
-            "Houdini Mode": ("🪄 Modo Houdini", "Trucos de mágica para saídas"),
+            "Houdini Mode": ("🪄 Modo Houdini", "Truques de mágica para saídas"),
             "Grandma Filter": ("👵 Filtro da Vovó", "Orientação acolhedora e paciente"),
-            "Escape Hatch Locator": ("🎯 Localizador de Escotilla", "Radar direto para saídas"),
+            "Escape Hatch Locator": ("🎯 Localizador de Escotilha", "Radar direto para saídas"),
             "7-Year-Old Playground Mindset": ("🖍️ Mentalidade de 7 Anos", "Espanto infantil puro"),
             "Ruthless Barrister": ("⚖️ Advogado Implacável", "Alavanca legal agressiva"),
             "Zen Negotiator": ("🧘 Negociador Zen", "Mediador calmo e sereno"),
@@ -1204,7 +1208,7 @@ UI_TEXT = {
         "escape_success": "您的逃生条款已准备就绪！",
         "escape_no_text": "请提供要分析的文本文档。",
         "escape_spinner": "正在执行深度运营实验室分析...",
-        "escape_disclaimer": "*注意：我们可以提供战略指导和战术脚本来帮助您领先，但我们不能保证特定结果或合规性。然而，执行此协议为您提供的胜算明显好于什么都不做。*",
+        "escape_disclaimer": "*Note: We can provide strategic guidance and tactical scripts to help you get ahead, but we cannot guarantee specific outcomes or institutional compliance. However, executing this protocol grants you a significantly better fighting chance than doing nothing.*",
         "personas": {
             "Houdini Mode": ("🪄 胡迪尼模式", "用于脱身的障眼法"),
             "Grandma Filter": ("👵 奶奶过滤器", "温暖、耐心的安慰指导"),
@@ -1384,321 +1388,147 @@ UI_TEXT = {
         "input_modes": ["텍스트 붙여넣기", "웹 링크 / URL", "이미지 업로드", "PDF 업로드"],
         "paste_label": "간단하게 만들고 싶은 텍스트를 붙여넣거나 업로드하세요.",
         "url_label": "개인정보 처리방침 또는 이용약관 URL 붙여넣기:",
-        "upload_label": "문서 이미지 또는 스크린샷 업로드:",
-        "upload_pdf_label": "법적 문서 또는 계약서(PDF) 업로드:",
+        "upload_label": "문서 이미지나 스크린샷 업로드:",
+        "upload_pdf_label": "법률 문서 또는 계약서 업로드 (PDF):",
         "decode_button": "쉽게 설명해 주세요",
-        "simplifying_spinner": "이해할 준비를 하는 중...",
+        "simplifying_spinner": "이해를 위한 준비 중...",
         "fine_print_headers": [
             "## 🚦 위험 요약",
             "## 📄 주요 조항 설명",
             "## ⚖️ 책임 및 권리 포기",
-            "## 🔒 데이터 프라이버시 및 추적",
-            "## 💳 숨겨진 수수료 및 자동 갱신 함정",
+            "## 🔒 데이터 개인정보 보호 및 추적",
+            "## 💳 숨겨진 수수료 및 갱신 함정",
             "## 🚪 해지 및 취소",
             "## 📌 핵심 요약",
         ],
-        "footer_text": "--- \n Powered by SkyNet. 지켜보고 있습니다.",
-        "read_aloud_label": "♿ 읽어주기",
+        "footer_text": "--- \n SkyNet 기반, 우리는 인지하고 있습니다.",
+        "read_aloud_label": "♿ 음성으로 듣기",
         "voice_section_title": "🎙️ 음성 설명",
-        "voice_instruction": "아래에 질문이나 주제를 녹음하면 자동으로 텍스트로 변환되어 쉽게 설명됩니다.",
+        "voice_instruction": "질문이나 주제를 아래에 녹음하면 자동으로 텍스트로 변환되어 쉽게 설명됩니다.",
         "voice_record_label": "음성 녹음",
         "tab1_name": "💡 간단 설명",
         "tab2_name": "📄 문서 분석",
         "tab3_name": "🚪 탈출 조항 (Escape)",
         "escape_title": "간단 설명 - 탈출 조항",
-        "escape_subtitle": "우리가 벗어나야 할 상황들을 설명합니다.",
-        "escape_badge": "🚪 **궁극의 '날 여기서 꺼내줘' 인텔리전스 연구소가 활성화되었습니다**.",
-        "escape_doc_section": "📄 도움이 필요한 내용을 확인해보세요.",
-        "escape_text_label": "이해하고 탈출하는 데 도움이 필요한 텍스트를 붙여넣으세요.",
+        "escape_subtitle": "벗어나야 하는 사항들을 설명합니다.",
+        "escape_badge": "🚪 **궁극의 '꺼내줘' 인텔리전스 랩이 활성화되었습니다**.",
+        "escape_doc_section": "📄 도움이 필요한 내용을 확인하세요.",
+        "escape_text_label": "이해하고 단순화하는 데 도움이 필요한 내용을 붙여넣으세요.",
         "escape_text_placeholder": "여기에 붙여넣기...",
-        "escape_hint_label": "집중해서 다루어야 할 세부 사항 추가:",
-        "escape_hint_placeholder": "예: 우선순위를 즉시 격상시키고 싶음...",
-        "escape_lab_section": "🚪 비상 대책 스위트",
-        "escape_urgency_label": "⚡ 긴급도 척도: 탈출하고 싶은 급박한 정도는?",
-        "escape_persona_label": "설명 페르소나 선택:",
-        "tactical_persona_prompt": "전술적 페르소나 프레임워크를 선택하세요",
-        "end_suffering_btn_title": "🔴 내 고통을 끝내줘 💀",
-        "end_suffering_btn_desc": "(차분하고 최면적인 톤, 예측 불가능한 문법, 관료주의에 대한 오만함과 절대적 심리 압박을 결합한 엘리트 솔루션)",
-        "escape_run_btn": "🚀 전술적 사건 프로토콜 실행",
-        "escape_clear_btn": "🧹 사건 기록 지우고 새로 시작",
+        "escape_hint_label": "집중해야 할 세부 정보 추가:",
+        "escape_hint_placeholder": "예: 우선순위를 즉시 격상하고 싶음...",
+        "escape_lab_section": "🚪 운영 비상 대책 스위트",
+        "escape_urgency_label": "⚡ 긴급도 척도: 탈출 필요성 수준:",
+        "escape_persona_label": "설명 페르소나 스타일:",
+        "tactical_persona_prompt": "아래에서 전술적 페르소나 프레임워크를 선택하세요",
+        "end_suffering_btn_title": "🔴 고통 끝내기 💀",
+        "end_suffering_btn_desc": "(냉정하고 차분한 어조와 예측 불가능한 구문, 관료주의에 대한 오만함과 절대적인 심리적 압박)",
+        "escape_run_btn": "🚀 전술 사건 프로토콜 실행",
+        "escape_clear_btn": "🧹 사건 초기화 및 다시 시작",
         "escape_success": "탈출 조항이 준비되었습니다!",
         "escape_no_text": "분석할 텍스트 시나리오를 제공해 주세요.",
-        "escape_spinner": "고강도 운영 연구소 분석 실행 중...",
-        "escape_disclaimer": "*참고: 앞서 나갈 수 있도록 전략적 지침과 전술 스크립트를 제공하지만, 특정 결과나 제도적 규정 준수를 보장하지는 않습니다. 그러나 이 프로토콜을 실행하면 아무것도 하지 않는 것보다 훨씬 더 높은 승률을 보장합니다.*",
+        "escape_spinner": "고강도 운영 랩 분석 실행 중...",
+        "escape_disclaimer": "*참고: 앞서 나갈 수 있도록 전략적 지침과 전술 스크립트를 제공하지만, 특정 결과나 규정 준수를 보장하지는 않습니다. 그러나 이 프로토콜을 실행하면 아무것도 하지 않는 것보다 훨씬 더 나은 생존 확률을 제공합니다.*",
         "personas": {
-            "Houdini Mode": ("🪄 후디니 모드", "탈출을 위한 마법 같은 트릭"),
-            "Grandma Filter": ("👵 할머니 필터", "따뜻하고 인내심 있는 위로의 조언"),
-            "Escape Hatch Locator": ("🎯 탈출 해치 로케이터", "출구를 직격하는 레이더"),
-            "7-Year-Old Playground Mindset": ("🖍️ 7살 어린이의 시선", "순수하고 천진난만한 호기심"),
-            "Ruthless Barrister": ("⚖️ 자비 없는 변호사", "공격적인 법적 레버리지"),
-            "Zen Negotiator": ("🧘 젠 협상가", "차분하고 평화로운 세레인 중재자"),
-            "Corporate Shark": ("🦈 코퍼레이트 샤크", "어디를 먼저 물어야 할까"),
+            "Houdini Mode": ("🪄 후디니 모드", "탈출을 위한 마술 트릭"),
+            "Grandma Filter": ("👵 할머니 필터", "따뜻하고 인내심 있는 위로의 지침"),
+            "Escape Hatch Locator": ("🎯 탈출구 로케이터", "출구로 향하는 다이렉트 레이더"),
+            "7-Year-Old Playground Mindset": ("🖍️ 7살 아이 마인드셋", "순수하고 천진난만한 호기심"),
+            "Ruthless Barrister": ("⚖️ 무자비한 변호사", "공격적인 법적 레버리지"),
+            "Zen Negotiator": ("🧘 젠 협상가", "차분하고 평화로운 중재자"),
+            "Corporate Shark": ("🦈 기업 상어", "어디를 먼저 물어야 할까요"),
             "Bureaucracy Hacker": ("🕵️ 관료주의 해커", "자동화된 로봇 우회하기"),
         },
         "help_title": "💡 앱 사용 방법",
         "help_s1_title": "1. 사이드바 설정",
-        "help_s1_desc": "원하는 언어, 난이도 레벨, 어조를 선택하세요.",
+        "help_s1_desc": "선호하는 언어, 복잡도 수준, 어조를 선택하세요.",
         "help_s2_title": "2. 탭 1 (주제 단순화)",
-        "help_s2_desc": "주제를 입력하거나 음성으로 녹음하여 구조화된 설명, PDF, 오디오를 받아보세요.",
-        "help_s3_title": "3. 탭 2 & 탭 3",
-        "help_s3_desc": "문서 분석, 고급 운영 연구소, 세션 로그 기능을 활용하세요.",
+        "help_s2_desc": "주제를 입력하거나 음성으로 녹음하여 구조화된 설명, PDF, 오디오를 생성하세요.",
+        "help_s3_title": "3. 탭 2 및 탭 3",
+        "help_s3_desc": "문서 분석, 고급 운영 랩, 세션 로그를 살펴보세요.",
     },
 }
 
-LANGUAGES = list(UI_TEXT.keys())
+# ==============================================================================
+# [SECTION 4: UTILITY & HELPER FUNCTIONS (TTS & PDF EXTRACIONS)]
+# ==============================================================================
+LANG_CODES = {
+    "English": "en",
+    "Spanish": "es",
+    "French": "fr",
+    "German": "de",
+    "Italian": "it",
+    "Portuguese": "pt",
+    "Japanese": "ja",
+    "Mandarin": "zh-CN",
+    "Hindi": "hi",
+    "Korean": "ko",
+}
+
+
+def extract_text_from_pdf(uploaded_file):
+  reader = pypdf.PdfReader(uploaded_file)
+  text = ""
+  for page in reader.pages:
+    extracted = page.extract_text()
+    if extracted:
+      text += extracted + "\n"
+  return text
 
 
 # ==============================================================================
-# [SECTION 4: UTILITY FUNCTIONS (PDF EXPORT & FETCHERS)]
+# [SECTION 5: STREAMLIT APP INITIALIZATION & MAIN LOGIC]
 # ==============================================================================
-def fetch_url_text(url: str) -> str:
-  headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-  response = requests.get(url, headers=headers, timeout=10)
-  response.raise_for_status()
-  soup = BeautifulSoup(response.text, "html.parser")
-  for element in soup(["script", "style", "nav", "footer", "header", "noscript"]):
-    element.decompose()
-  return soup.get_text(separator=" ", strip=True)
+st.set_page_config(
+    page_title="Simply Explained", page_icon="💡", layout="wide"
+)
 
-
-def prepare_media_part(uploaded_file):
-  if uploaded_file is None:
-    return None
-  return types.Part.from_bytes(
-      data=uploaded_file.getvalue(), mime_type=uploaded_file.type
-  )
-
-
-def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
-  import re
-
-  pdf = FPDF()
-  pdf.add_page()
-  pdf.set_auto_page_break(auto=True, margin=15)
-
-  pdf.set_font("helvetica", "B", 16)
-  pdf.set_text_color(2, 132, 199)
-  pdf.cell(
-      0,
-      10,
-      "Simply Explained - Professional Report",
-      new_x=XPos.LMARGIN,
-      new_y=YPos.NEXT,
-      align="L",
-  )
-
-  pdf.set_font("helvetica", "I", 9)
-  pdf.set_text_color(100, 100, 100)
-  pdf.cell(
-      0,
-      6,
-      f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-      new_x=XPos.LMARGIN,
-      new_y=YPos.NEXT,
-      align="L",
-  )
-  pdf.ln(5)
-
-  pdf.set_font("helvetica", "B", 14)
-  pdf.set_text_color(30, 30, 30)
-  pdf.multi_cell(0, 8, title)
-  pdf.ln(4)
-
-  pdf.set_font("helvetica", "", 10)
-  pdf.set_text_color(50, 50, 50)
-
-  raw_clean = content.replace("##", "").replace("###", "").replace("**", "")
-  cleaned_content = re.sub(r"[^\x00-\x7F]+", " ", raw_clean)
-
-  pdf.multi_cell(0, 6, cleaned_content)
-
-  pdf.ln(10)
-  pdf.set_font("helvetica", "I", 8)
-  pdf.set_text_color(120, 120, 120)
-
-  raw_signoff = footer_signoff.replace("---", "").strip()
-  clean_signoff = re.sub(r"[^\x00-\x7F]+", " ", raw_signoff)
-  pdf.multi_cell(0, 5, clean_signoff)
-
-  pdf_output = pdf.output()
-  if isinstance(pdf_output, str):
-    pdf_bytes = pdf_output.encode("latin-1")
-  else:
-    pdf_bytes = bytes(pdf_output)
-
-  return pdf_bytes
-
-
-# ==============================================================================
-# [SECTION 5: STREAMLIT APP INITIALIZATION & STYLING]
-# ==============================================================================
-is_streamlit = "streamlit" in sys.modules or os.getenv("SERVER_PORT") == "8501"
-
-if is_streamlit:
-  import streamlit as st
-
-  st.set_page_config(page_title="Simply Explained", page_icon="💡", layout="wide")
-
-  st.markdown(
-      """
-        <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-
-        div[data-testid="stMarkdownContainer"] p, 
-        div[data-testid="stMarkdownContainer"] li {
-            font-size: 1.15rem !important;
-            line-height: 1.5 !important;
-        }
-        div[data-testid="stMarkdownContainer"] h2,
-        div[data-testid="stMarkdownContainer"] h3 {
-            font-size: 1.5rem !important;
-            margin-top: 1.5rem !important;
-            margin-bottom: 0.6rem !important;
-        }
-        .app-title {
-            font-size: 2.8rem !important;
-            font-weight: 700 !important;
-            text-decoration: underline;
-            margin-bottom: 0px;
-        }
-        .fine-print-title {
-            font-size: 1.8rem !important;
-            font-weight: 700 !important;
-            margin-bottom: 0px;
-        }
-        .app-subtitle {
-            font-size: 1.1rem !important;
-            font-weight: bold !important;
-            margin-top: 3px;
-            margin-bottom: 10px;
-        }
-
-        div[data-testid="stSidebar"] {
-            padding-top: 0.1rem !important;
-            font-family: 'Plus Jakarta Sans', sans-serif !important;
-        }
-        div[data-testid="stSidebar"] .block-container {
-            padding-top: 0.5rem !important;
-            padding-bottom: 0.5rem !important;
-            gap: 0.25rem !important;
-        }
-        div[data-testid="stSidebar"] hr {
-            margin: 0.4rem 0 !important;
-        }
-
-        div.stButton > button, 
-        div.stFormSubmitButton > button {
-            background-color: #0284C7 !important;
-            color: #FFFFFF !important;
-            font-family: 'Plus Jakarta Sans', sans-serif !important;
-            font-size: 0.95rem !important;
-            font-weight: 600 !important;
-            padding: 0.3rem 0.8rem !important;
-            border-radius: 0.4rem !important;
-            box-shadow: 0 3px 10px rgba(2, 132, 199, 0.2) !important;
-            border: none !important;
-            transition: all 0.2s ease-in-out !important;
-            width: 100% !important;
-        }
-        div.stButton > button:hover, 
-        div.stFormSubmitButton > button:hover {
-            background-color: #0369A1 !important;
-            color: #FFFFFF !important;
-            box-shadow: 0 5px 14px rgba(3, 105, 161, 0.3) !important;
-            border: none !important;
-        }
-
-        div[data-testid="stDialog"] {
-            width: 85vw !important;
-            max-width: 950px !important;
-        }
-        </style>
-        """,
-      unsafe_allow_html=True,
-  )
-
-  env_api_key = os.getenv("GEMINI_API_KEY", "")
-  texts = UI_TEXT["English"]
-
-  if "selected_lang" not in st.session_state:
-    st.session_state["selected_lang"] = "English"
-  if "history_log" not in st.session_state:
-    st.session_state["history_log"] = []
-
-  selected_lang = st.sidebar.selectbox(
+# Sidebar UI Setup
+with st.sidebar:
+  # Language selection
+  current_lang = st.selectbox(
       "🌐 **Language**",
-      LANGUAGES,
-      index=(
-          LANGUAGES.index(st.session_state["selected_lang"])
-          if st.session_state["selected_lang"] in LANGUAGES
-          else 0
+      list(UI_TEXT.keys()),
+      index=list(UI_TEXT.keys()).index(
+          st.session_state.get("language", "English")
       ),
-      key="language_selector",
   )
-  st.session_state["selected_lang"] = selected_lang
-  texts = UI_TEXT.get(selected_lang, UI_TEXT["English"])
+  st.session_state["language"] = current_lang
 
-  tone_level = st.sidebar.selectbox(
-      texts["tone_label"], texts["tone_options"], key="tone_radio_key"
-  )
-
-  enable_audio_speech = st.sidebar.checkbox(
-      texts["read_aloud_label"],
-      value=False,
-      help=(
-          "Generates an audio player for each simplified response in the"
-          " selected language."
-      ),
-      key="enable_audio_speech_unique_key",
-  )
-
-  st.sidebar.markdown("---")
-
-  depth_level = st.sidebar.radio(
-      texts["depth_label"], texts["depth_options"], key="depth_radio_key"
-  )
-
-  st.sidebar.markdown("---")
-
-  if st.sidebar.button(texts["start_over"], key="reset_app_button"):
-    current_lang = st.session_state.get("selected_lang", "English")
-    st.session_state.clear()
-    st.session_state["selected_lang"] = current_lang
+  # Start over button with session state preservation
+  if st.button(UI_TEXT[current_lang]["start_over"]):
+    saved_lang = st.session_state.get("language", "English")
+    for key in list(st.session_state.keys()):
+      del st.session_state[key]
+    st.session_state["language"] = saved_lang
     st.rerun()
 
+  st.divider()
+  st.markdown(UI_TEXT[current_lang]["privacy_notice_box"], unsafe_allow_html=True)
 
-  @st.dialog("Terms & Conditions / Términos y Condiciones")
-  def show_terms_dialog():
-    st.markdown(TERMS_TEXT.get(selected_lang, TERMS_TEXT["English"]))
+# Dynamic Tab Setup
+tab1, tab2, tab3 = st.tabs([
+    UI_TEXT[current_lang]["tab1_name"],
+    UI_TEXT[current_lang]["tab2_name"],
+    UI_TEXT[current_lang]["tab3_name"],
+])
 
+with tab1:
+  st.title("💡 Simply Explained")
+  st.markdown(UI_TEXT[current_lang]["subtitle"])
 
-  if st.sidebar.button(texts["terms_button"], key="terms_button_sidebar"):
-    show_terms_dialog()
-
-  st.sidebar.markdown("---")
-  with st.sidebar.expander("🔑 ", expanded=False):
-    api_key_input = st.text_input(
-        texts["api_label"],
-        value=env_api_key,
-        type="password",
-        key="gemini_api_key_input_unique",
-        label_visibility="collapsed",
-    )
-  api_key = (api_key_input or "").strip() or env_api_key
-
-  st.sidebar.markdown(
-      "<div style='text-align: center; font-size: 0.78rem; font-weight: 700;"
-      " opacity: 0.9; margin: 4px 0 2px 0;'>♿ Universal Accessibility"
-      " Enabled</div>",
-      unsafe_allow_html=True,
+  # PDF uploader integration
+  uploaded_pdf = st.file_uploader(
+      UI_TEXT[current_lang]["upload_pdf_label"], type=["pdf"]
   )
-  st.sidebar.markdown("---")
-  st.sidebar.markdown(
-      "<div style='text-align: center; font-size: 0.72rem; font-weight: 600;"
-      " color: #0284C7;'>Powered by SkyNet, we are aware API</div>",
-      unsafe_allow_html=True,
-  )
+  if uploaded_pdf is not None:
+    pdf_text = extract_text_from_pdf(uploaded_pdf)
+    st.success("PDF loaded and text successfully extracted!")
 
+  # gTTS audio generation integration
+  current_lang = st.session_state.get("language", "English")
+  gtts_lang = LANG_CODES.get(current_lang, "en")
+  # tts = gTTS(text=response_text, lang=gtts_lang, slow=False)
 
 # ==============================================================================
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
