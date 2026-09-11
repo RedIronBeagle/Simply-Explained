@@ -1535,6 +1535,26 @@ with tab1:
 # ==============================================================================
 
 is_streamlit = True
+# Define or load localization texts safely
+lang = st.session_state.get("lang", "en")
+if lang == "es":
+    texts = {
+        "tab1_name": "💡 Simplificador Principal",
+        "tab2_name": "📄 Documentos y Letra Pequeña",
+        "tab3_name": "🚨 Suite de Contingencia"
+    }
+else:
+    texts = {
+        "tab1_name": "💡 Core Simplifier",
+        "tab2_name": "📄 Legal & Fine Print",
+        "tab3_name": "🚨 Contingency Suite"
+    }
+
+is_streamlit = True
+if is_streamlit == True:
+    tab1, tab2, tab3 = st.tabs(
+        [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
+    )
 if is_streamlit==True:
     tab1, tab2, tab3 = st.tabs(
         [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
