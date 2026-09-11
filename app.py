@@ -1535,9 +1535,10 @@ with tab1:
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
 # ==============================================================================
 
-if is_streamlit == True
-    tab1, tab2, tab3 = st.tabs(
+if is_streamlit == True:
+        tab1, tab2, tab3 = st.tabs(
         [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
+	
     )
 
 # ==============================================================================
