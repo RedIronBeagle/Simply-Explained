@@ -1620,10 +1620,16 @@ with tab1:
         unsafe_allow_html=True,
     )
 
-    audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
-    
+    audio_value = st.audio_input(
+        texts.get('voice_record_label', 'Record your voice / Grabe su voz'), 
+        key="main_audio_input"
+    )
+
     st.markdown("")
-    submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
+    submitted = st.button(
+        texts.get("button_label", "Simplify / Simplificar"),
+        key="main_generate_button"
+    )
 
     if submitted:
         if not api_key:
