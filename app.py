@@ -1771,10 +1771,10 @@ with tab1:
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
   # ==============================================================================
 with tab2:
-	st.markdown(
-	    f'<div class="fine-print-title">{texts["fine_print_title"]}</div>',
-	    unsafe_allow_html=True,
-	)
+    st.markdown(
+        f'<div class="fine-print-title">{texts.get("fine_print_title", "Legal & Fine Print Decoder")}</div>',
+        unsafe_allow_html=True,
+    )
 	st.markdown(
 	    f'<div class="app-subtitle">{texts["fine_print_subtitle"]}</div>',
 	    unsafe_allow_html=True,
