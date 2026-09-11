@@ -1894,9 +1894,7 @@ with tab1:
                         ),
                         mime="application/pdf",
                         key="download_topic_pdf",
-		    "Russian": "ru",
-                    )
-
+					)
                     if enable_audio_speech:
                         st.markdown("---")
                         st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
