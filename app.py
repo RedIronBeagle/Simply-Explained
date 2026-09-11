@@ -1702,7 +1702,9 @@ if is_streamlit:
             type="password",
             key="gemini_api_key_input_unique",
             label_visibility="collapsed",
-        )    api_key = (api_key_input or "").strip() or env_api_key
+        )    
+		
+        api_key = (api_key_input or "").strip() or env_api_key
 
     st.sidebar.markdown(
         "<div style='text-align: center; font-size: 0.78rem; font-weight: 700;"
