@@ -1481,7 +1481,7 @@ def extract_text_from_pdf(uploaded_file):
       text += extracted + "\n"
   return text
 
-st.warning("⚠️ EXECUTION REACHED PAST IMPORTS AND INITIALIZATION")
+st.info("ℹ️ EXECUTION REACHED TAB SETUP")
 
 # ==============================================================================
 # [SECTION 5: STREAMLIT APP INITIALIZATION & MAIN LOGIC]
