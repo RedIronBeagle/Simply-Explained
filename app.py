@@ -1602,9 +1602,9 @@ with tab1:
         key="topic_input"
     )    
     st.markdown("---")
-    st.markdown(f"### {texts['voice_section_title']}")
-    st.markdown(texts['voice_instruction'])
-    
+    st.markdown(f"### {texts.get('voice_section_title', 'Voice Input / Entradas de Voz')}")
+    st.markdown(texts.get('voice_instruction', 'Record or speak your query below.'))
+
     # CSS styling to scale the audio recorder input block
     st.markdown(
         """
