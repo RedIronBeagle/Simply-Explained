@@ -1775,7 +1775,7 @@ with tab2:
         f'<div class="fine-print-title">{texts.get("fine_print_title", "Legal & Fine Print Decoder")}</div>',
         unsafe_allow_html=True,
     )
-	st.markdown(
+    st.markdown(
 	    f'<div class="app-subtitle">{texts["fine_print_subtitle"]}</div>',
 	    unsafe_allow_html=True,
 	)
