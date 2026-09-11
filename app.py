@@ -1776,7 +1776,7 @@ with tab1:
 with tab1:
     st.success("✅ EXECUTION ENTERED TAB 1")
 
-
+st.success("✅ REACHED END OF TAB 1 / START OF TAB 2")
 
 # ===================================================================
 # [SECTION 9: DOCUMENT DECODER & FINE PRINT EXECUTION HANDLER]
