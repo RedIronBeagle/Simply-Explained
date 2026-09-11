@@ -1530,7 +1530,6 @@ with tab1:
   gtts_lang = LANG_CODES.get(current_lang, "en")
   # tts = gTTS(text=response_text, lang=gtts_lang, slow=False)
 
-
 # ==============================================================================
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
 # ==============================================================================
@@ -1539,6 +1538,7 @@ if is_streamlit == True:
     tab1, tab2, tab3 = st.tabs(
         [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
     )
+
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
 # ==============================================================================
