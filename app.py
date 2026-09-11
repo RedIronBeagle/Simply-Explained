@@ -24,6 +24,18 @@ import requests
 
 MODEL_ID = "gemini-3.6-flash"
 
+LANG_CODES = {
+    "English": "en",
+    "Spanish": "es",
+    "French": "fr",
+    "German": "de",
+    "Italian": "it",
+    "Portuguese": "pt",
+    "Japanese": "ja",
+    "Mandarin": "zh-CN",
+    "Hindi": "hi",
+    "Korean": "ko"
+}
 
 # ==============================================================================
 # [SECTION 2: LEGAL & TERMS OF SERVICE (EULA) TEXT CONTENT (LOCALIZED)]
@@ -2088,8 +2100,25 @@ with tab2:
 	          st.markdown("---")
 	          st.markdown("### 🔊 Audio Accessibility Feed")
 	          try:
+#-----------------------------------------
 	            from gtts import gTTS
-	
+					st.success(tdict["ready"].get(depth, "Done!"))
+                    st.markdown(result)
+                    
+                    # --- Audio Generation & Playback ---
+                    from gtts import gTTS
+                    import io
+                    
+                    current_lang = selected_lang
+                    gtts_lang = LANG_CODES.get(current_lang, "en")
+                    
+                    tts = gTTS(text=result, lang=gtts_lang, slow=False)
+                    audio_fp = io.BytesIO()
+                    tts.write_to_fp(audio_fp)
+                    audio_fp.seek(0)
+                    
+                    st.audio(audio_fp, format="audio/mp3")
+#----------				  
 	            clean_text_for_speech = output_text
 	            clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
 	            clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
