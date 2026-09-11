@@ -1881,14 +1881,6 @@ with tab3:
         unsafe_allow_html=True,
     )
 
-    st.markdown(
-        f'<div class="escape-header-title">{texts["escape_title"]}</div>',
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        f'<div class="app-subtitle" style="color: #94A3B8; margin-bottom: 20px;">{texts["escape_subtitle"]}</div>',
-        unsafe_allow_html=True,
-    )
     st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
     st.markdown("---")
     
@@ -1897,7 +1889,13 @@ with tab3:
     # 1 - Document Section
     st.markdown(f'<div class="section-card">', unsafe_allow_html=True)
     st.markdown(f"### 📄 {texts['escape_doc_section']}")
-    
+    st.markdown(
+        f'<div class="escape-header-title">{texts.get("escape_title", "Escape & Contingency Plan / Plan de Contingencia")}</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        texts.get("escape_subtitle", "Build realistic exit strategies and tactical plans for high-stakes scenarios."),
+    )
     if "escape_text_area" not in st.session_state:
         st.session_state["escape_text_area"] = st.session_state.get("fetched_fp_text", "")
     
