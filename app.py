@@ -1775,20 +1775,17 @@ with tab1:
     
     st.markdown("")
     submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
-
-    if submitted:
-
-# Define the api_key cleanly right above the form submission check
-    api_key = "AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"
-
-    if submitted:
-        # Initialize the client using that variable
+# -------------------
+if submitted:
+        # Define the api_key and initialize the client cleanly inside the form submission
+        api_key = "AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"
         client = genai.Client(api_key=api_key)
 
         if not api_key:
             st.error(texts["no_api"])
         elif not topic and audio_value is None:
-            st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
+
+    st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
         else:
             spinner_text = texts["spinners"].get(
                 depth_level, texts["simplifying_spinner"]
