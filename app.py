@@ -29,6 +29,8 @@ from google.genai import types
 from google.genai.errors import APIError
 import requests
 from google import genai
+import google.generativeai as genai
+import streamlit as st
 
 MODEL_ID = "gemini-3.6-flash"
 
@@ -1697,11 +1699,11 @@ if is_streamlit:
 
     st.sidebar.markdown("---")
 
-# Define api_key right above the client initialization
-    api_key = "AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"
+    # Configure using your AQ key with the legacy library
+    genai.configure(api_key="AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w")
 
-    # Initialize the client with the explicit key argument
-    client = genai.Client(api_key=api_key)
+    # Initialize the model directly
+    model = genai.GenerativeModel("gemini-1.5-flash")
 
     st.sidebar.markdown(
         "<div style='text-align: center; font-size: 0.78rem; font-weight: 700;"
@@ -1709,13 +1711,7 @@ if is_streamlit:
         " Enabled</div>",
         unsafe_allow_html=True,
     )
-    st.sidebar.markdown("---")
-    st.sidebar.markdown(
-        "<div style='text-align: center; font-size: 0.72rem; font-weight: 600;"
-        " color: #0284C7;'>Powered by SkyNet, we are aware API</div>",
-        unsafe_allow_html=True,
-    )
-
+	
 
 
 # ==============================================================================
