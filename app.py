@@ -1712,22 +1712,6 @@ if is_streamlit:
         unsafe_allow_html=True,
     )
 
-        api_key = (api_key_input or "").strip() or env_api_key
-
-    st.sidebar.markdown(
-        "<div style='text-align: center; font-size: 0.78rem; font-weight: 700;"
-        " opacity: 0.9; margin: 4px 0 2px 0;'>♿ Universal Accessibility"
-        " Enabled</div>",
-        unsafe_allow_html=True,
-    )
-    st.sidebar.markdown("---")
-    st.sidebar.markdown(
-        "<div style='text-align: center; font-size: 0.72rem; font-weight: 600;"
-        " color: #0284C7;'>Powered by SkyNet, we are aware API</div>",
-        unsafe_allow_html=True,
-    )
-
-
 # ==============================================================================
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
 # ==============================================================================
