@@ -1695,15 +1695,23 @@ if is_streamlit:
         show_terms_dialog()
 
     st.sidebar.markdown("---")
-    with st.sidebar.expander("🔑 ", expanded=False):
-        api_key_input = st.text_input(
-            texts.get("api_label", "Gemini API Key"),
-            value=env_api_key,
-            type="password",
-            key="gemini_api_key_input_unique",
-            label_visibility="collapsed",
-        )    
-		
+    
+    # Hidden behind-the-scenes auto-loading using your secrets (no input box needed)
+    api_key = env_api_key or st.secrets.get("GEMINI_API_KEY", "")
+
+    st.sidebar.markdown(
+        "<div style='text-align: center; font-size: 0.78rem; font-weight: 700;"
+        " opacity: 0.9; margin: 4px 0 2px 0;'>♿ Universal Accessibility"
+        " Enabled</div>",
+        unsafe_allow_html=True,
+    )
+    st.sidebar.markdown("---")
+    st.sidebar.markdown(
+        "<div style='text-align: center; font-size: 0.72rem; font-weight: 600;"
+        " color: #0284C7;'>Powered by SkyNet, we are aware API</div>",
+        unsafe_allow_html=True,
+    )
+
         api_key = (api_key_input or "").strip() or env_api_key
 
     st.sidebar.markdown(
