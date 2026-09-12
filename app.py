@@ -1694,25 +1694,15 @@ if is_streamlit:
     if st.sidebar.button(texts["terms_button"], key="terms_button_sidebar"):
         show_terms_dialog()
 
-    st.sidebar.markdown("---")
+st.sidebar.markdown("---")
 
-	# Explicitly pull the API key from Streamlit secrets
+    # Replace with your actual Google AI Studio API key (it must start with "AIzaSy")
+    # Note: Keys starting with "AQ." are OAuth/service tokens, which trigger the OAuth error.
     api_key = "AQ.Ab8RN6Knj5erLrfqJbQdz15npx8XUJl3fMoCeiS9HX4Y47hRXA"
-	
-    # Initialize the client with the explicit key argument
+
+    # Initialize the client with your hardcoded key directly
     client = genai.Client(api_key=api_key)
 
-	# Ensure api_key falls back to environment variable if secrets.toml is missing it
-    api_key = st.secrets.get("GEMINI_API_KEY", "") or os.getenv("GEMINI_API_KEY", "")
-
-    # Diagnostic check to catch empty keys before hitting the client initialization
-    if not api_key:
-        st.error("Error: GEMINI_API_KEY is missing from Streamlit secrets and environment variables.")
-        st.stop()
-
-    # Initialize the client with the explicitly validated key
-    client = genai.Client(api_key=api_key)
-	
     st.sidebar.markdown(
         "<div style='text-align: center; font-size: 0.78rem; font-weight: 700;"
         " opacity: 0.9; margin: 4px 0 2px 0;'>♿ Universal Accessibility"
