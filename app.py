@@ -1697,9 +1697,8 @@ if is_streamlit:
 
     st.sidebar.markdown("---")
 
-    # Hardcoded API key for your demonstration
-#    api_key = "AQ.Ab8RN6IfEhogyVxH03Vri-vyVrymqWliVNnELrxgLDaaFSA84A"
-#   Api_key = "AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"
+# Define api_key right above the client initialization
+    api_key = "AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"
 
     # Initialize the client with the explicit key argument
     client = genai.Client(api_key=api_key)
