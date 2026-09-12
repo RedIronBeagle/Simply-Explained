@@ -1665,7 +1665,7 @@ if is_streamlit:
         key="enable_audio_speech_unique_key",
     )
 
-    st.sidebar.markdown("---")
+st.sidebar.markdown("---")
 
     depth_level = st.sidebar.radio(
         texts["depth_label"], texts["depth_options"], key="depth_radio_key"
@@ -1704,7 +1704,7 @@ if is_streamlit:
             spinner_text = texts["spinners"].get(
                 depth_level, texts["simplifying_spinner"]
             )
-            with st.spinner(spinner_text):
+    with st.spinner(spinner_text):
 
     st.sidebar.markdown(
         "<div style='text-align: center; font-size: 0.78rem; font-weight: 700;"
