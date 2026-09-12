@@ -1778,12 +1778,13 @@ with tab1:
 
     if submitted:
 
-	# Define api_key explicitly right here so any later checks (like line 1780) find it
+# Define the api_key cleanly right above the form submission check
     api_key = "AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"
 
-    # Initialize the client using that variable
-    client = genai.Client(api_key=api_key)
-	
+    if submitted:
+        # Initialize the client using that variable
+        client = genai.Client(api_key=api_key)
+
         if not api_key:
             st.error(texts["no_api"])
         elif not topic and audio_value is None:
