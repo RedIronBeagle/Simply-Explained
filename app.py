@@ -7,14 +7,6 @@
 # ==============================================================================
 # [SECTION 1: IMPORTS & ENVIRONMENT SETUP]
 # ==============================================================================
-import streamlit as st
-import google.genai as genai
-from google.genai import types
-import os
-import io
-import datetime
-import re
-import contextlib
 import datetime
 import io
 import os
@@ -24,16 +16,13 @@ import time
 from bs4 import BeautifulSoup
 from fpdf import FPDF
 from fpdf.enums import XPos, YPos
+import requests
+import streamlit as st
 from google import genai
 from google.genai import types
 from google.genai.errors import APIError
-import requests
-from google import genai
-import google.generativeai as genai
-import streamlit as st
 
-MODEL_ID = "gemini-3.6-flash"
-
+MODEL_ID = "gemini-2.5-flash"
 
 # ==============================================================================
 # [SECTION 2: LEGAL & TERMS OF SERVICE (EULA) TEXT CONTENT (LOCALIZED)]
