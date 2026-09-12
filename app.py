@@ -1696,12 +1696,25 @@ if is_streamlit:
 
     st.sidebar.markdown("---")
 
+    env_api_key = os.getenv("GEMINI_API_KEY", "")
+
 	# Explicitly pull the API key from Streamlit secrets
     api_key = st.secrets.get("GEMINI_API_KEY", "")
 	
     # Initialize the client with the explicit key argument
     client = genai.Client(api_key=api_key)
 
+# Ensure api_key falls back to environment variable if secrets.toml is missing it
+    api_key = st.secrets.get("GEMINI_API_KEY", "") or os.getenv("GEMINI_API_KEY", "")
+
+    # Diagnostic check to catch empty keys before hitting the client initialization
+    if not api_key:
+        st.error("Error: GEMINI_API_KEY is missing from Streamlit secrets and environment variables.")
+        st.stop()
+
+    # Initialize the client with the explicitly validated key
+    client = genai.Client(api_key=api_key)
+	
     st.sidebar.markdown(
         "<div style='text-align: center; font-size: 0.78rem; font-weight: 700;"
         " opacity: 0.9; margin: 4px 0 2px 0;'>♿ Universal Accessibility"
