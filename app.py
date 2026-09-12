@@ -1667,7 +1667,7 @@ if is_streamlit:
 
 st.sidebar.markdown("---")
 
-        depth_level = st.sidebar.radio(
+depth_level = st.sidebar.radio(
         texts["depth_label"], texts["depth_options"], key="depth_radio_key"
     )
 
