@@ -1698,7 +1698,7 @@ st.sidebar.markdown("---")
 
     # Replace with your actual Google AI Studio API key (it must start with "AIzaSy")
     # Note: Keys starting with "AQ." are OAuth/service tokens, which trigger the OAuth error.
-    api_key = "AQ.Ab8RN6Knj5erLrfqJbQdz15npx8XUJl3fMoCeiS9HX4Y47hRXA"
+    api_key ="AQ.Ab8RN6Knj5erLrfqJbQdz15npx8XUJl3fMoCeiS9HX4Y47hRXA"
 
     # Initialize the client with your hardcoded key directly
     client = genai.Client(api_key=api_key)
