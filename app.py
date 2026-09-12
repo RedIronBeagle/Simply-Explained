@@ -1696,8 +1696,6 @@ if is_streamlit:
 
     st.sidebar.markdown("---")
 
-    env_api_key = os.getenv("GEMINI_API_KEY", "")
-
 	# Explicitly pull the API key from Streamlit secrets
     api_key = st.secrets.get("GEMINI_API_KEY", "")
 	
