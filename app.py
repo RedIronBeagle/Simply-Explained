@@ -1689,7 +1689,22 @@ if is_streamlit:
     st.sidebar.markdown("---")
 
     # Initialize the modern Google GenAI client correctly (genai.configure() belongs to the legacy package)
-    client = genai.Client(api_key="AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w")
+
+    if submitted:
+        # Initialize the client in Vertex AI mode to accept your AQ access token
+        client = genai.Client(
+            vertexai=True,
+            project="your-google-cloud-project-id",  # Replace with your actual GCP Project ID
+            location="us-central1"
+        )
+
+        if not topic and audio_value is None:
+            st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
+        else:
+            spinner_text = texts["spinners"].get(
+                depth_level, texts["simplifying_spinner"]
+            )
+            with st.spinner(spinner_text):
 
     st.sidebar.markdown(
         "<div style='text-align: center; font-size: 0.78rem; font-weight: 700;"
