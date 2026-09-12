@@ -1694,13 +1694,12 @@ if is_streamlit:
     if st.sidebar.button(texts["terms_button"], key="terms_button_sidebar"):
         show_terms_dialog()
 
-st.sidebar.markdown("---")
+    st.sidebar.markdown("---")
 
-    # Replace with your actual Google AI Studio API key (it must start with "AIzaSy")
-    # Note: Keys starting with "AQ." are OAuth/service tokens, which trigger the OAuth error.
-    api_key ="AQ.Ab8RN6Knj5erLrfqJbQdz15npx8XUJl3fMoCeiS9HX4Y47hRXA"
-
-    # Initialize the client with your hardcoded key directly
+    # Hardcoded API key for your demonstration
+    api_key = "AIzaSy_YOUR_REAL_API_KEY_HERE"
+    
+    # Initialize the client with the explicit key argument
     client = genai.Client(api_key=api_key)
 
     st.sidebar.markdown(
@@ -1715,6 +1714,8 @@ st.sidebar.markdown("---")
         " color: #0284C7;'>Powered by SkyNet, we are aware API</div>",
         unsafe_allow_html=True,
     )
+
+
 
 # ==============================================================================
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
