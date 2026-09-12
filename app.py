@@ -1688,16 +1688,19 @@ if is_streamlit:
 
     st.sidebar.markdown("---")
 
-    # Configure using your AQ key with the legacy library
-    genai.configure(api_key="AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w")
-
-    # Initialize the model directly
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    # Initialize the modern Google GenAI client correctly (genai.configure() belongs to the legacy package)
+    client = genai.Client(api_key="AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w")
 
     st.sidebar.markdown(
         "<div style='text-align: center; font-size: 0.78rem; font-weight: 700;"
         " opacity: 0.9; margin: 4px 0 2px 0;'>♿ Universal Accessibility"
         " Enabled</div>",
+        unsafe_allow_html=True,
+    )
+    st.sidebar.markdown("---")
+    st.sidebar.markdown(
+        "<div style='text-align: center; font-size: 0.72rem; font-weight: 600;"
+        " color: #0284C7;'>Powered by SkyNet, we are aware API</div>",
         unsafe_allow_html=True,
     )
 	
