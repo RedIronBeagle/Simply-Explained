@@ -1784,7 +1784,7 @@ if submitted:
         if not api_key:
             st.error(texts["no_api"])
         elif not topic and audio_value is None:
-        st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
+    st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
         else:
             spinner_text = texts["spinners"].get(
                 depth_level, texts["simplifying_spinner"]
