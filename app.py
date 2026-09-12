@@ -1671,7 +1671,7 @@ depth_level = st.sidebar.radio(
         texts["depth_label"], texts["depth_options"], key="depth_radio_key"
     )
 
-    st.sidebar.markdown("---")
+st.sidebar.markdown("---")
 
     if st.sidebar.button(texts["start_over"], key="reset_app_button"):
         current_lang = st.session_state.get("selected_lang", "English")
