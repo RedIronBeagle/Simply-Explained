@@ -1695,14 +1695,11 @@ if is_streamlit:
         show_terms_dialog()
 
     st.sidebar.markdown("---")
-    
-    # Hidden behind-the-scenes auto-loading using your secrets (no input box needed)
-    api_key = env_api_key or st.secrets.get("GEMINI_API_KEY", "")
 
 	# Explicitly pull the API key from Streamlit secrets
     api_key = st.secrets.get("GEMINI_API_KEY", "")
-
-# Initialize the client with the explicit key argument
+	
+    # Initialize the client with the explicit key argument
     client = genai.Client(api_key=api_key)
 
     st.sidebar.markdown(
