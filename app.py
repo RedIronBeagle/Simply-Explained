@@ -1709,7 +1709,7 @@ with st.form("simply_explained_form"):
     # (Your form inputs like topic text input or audio elements go here if they aren't already placed above)
     
     # The submit button creates the 'submitted' boolean when clicked
-    submitted = st.form_submit_button("Generate Explanation")
+# submitted = st.form_submit_button("Generate Explanation")
 
 if submitted:
         # Initialize the modern client using your AQ token as an explicit OAuth Bearer token
@@ -1718,7 +1718,7 @@ if submitted:
         project="238164610704",  # Replace with your actual GCP project ID
         location="us-central1",
         http_options=types.HttpOptions(
-            headers={"Authorization": "Bearer AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"}
+            headers={"Authorization": "AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"}
         )
 	)
   #  topic = st.text_input("Enter a topic or question:")
