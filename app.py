@@ -1719,8 +1719,7 @@ if submitted:
         vertexai=True,
         project="238164610704",  # Replace with your actual GCP project ID
         location="us-central1",
-
-	    )
+    )
 	
   #  topic = st.text_input("Enter a topic or question:")
     topic = st.text_input("Question:")
