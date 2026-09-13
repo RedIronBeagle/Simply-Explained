@@ -1679,7 +1679,7 @@ if st.sidebar.button(texts["start_over"], key="reset_app_button"):
         st.session_state.clear()
         st.rerun()
 	
-    @st.dialog("Terms & Conditions / Términos y Condiciones")
+@st.dialog("Terms & Conditions / Términos y Condiciones")
     def show_terms_dialog():
         st.markdown(TERMS_TEXT.get(selected_lang, TERMS_TEXT["English"]))
 
