@@ -1721,6 +1721,7 @@ if submitted:
             headers={"Authorization": "Bearer AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"}
         )
 	)
+  #  topic = st.text_input("Enter a topic or question:")
 
     if not topic and audio_value is None:
         st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
