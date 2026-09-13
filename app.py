@@ -1715,7 +1715,7 @@ if submitted:
         # Initialize the modern client using your AQ token as an explicit OAuth Bearer token
     client = genai.Client(
         vertexai=True,
-        project="0025952614",  # Replace with your actual GCP project ID
+        project="238164610704",  # Replace with your actual GCP project ID
         location="us-central1",
         http_options=types.HttpOptions(
             headers={"Authorization": "Bearer AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"}
