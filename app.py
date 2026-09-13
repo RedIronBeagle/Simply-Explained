@@ -1722,11 +1722,15 @@ if submitted:
         )
 	)
   #  topic = st.text_input("Enter a topic or question:")
-topic = st.text_input("Question:")
+    topic = st.text_input("Question:")
 
-if not topic and audio_value is None:
-    st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
-else:
+    # Safely initialize audio_value if the audio recorder component isn't active on this view
+    if 'audio_value' not in locals():
+        audio_value = None
+
+    if not topic and audio_value is None:
+        st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
+    else:
         spinner_text = texts["spinners"].get(
             depth_level, texts["simplifying_spinner"]
         )
