@@ -1699,7 +1699,7 @@ if is_streamlit:
     tab1, tab2, tab3 = st.tabs(
         [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
     )
-
+)
 # ==============================================================================
 # [SECTION 5: CORE GENERATION & RESPONSE RENDERING ENGINE]
 # ==============================================================================
@@ -1711,7 +1711,8 @@ if submitted:
     # Initialize the client in Vertex AI mode to support the AQ token
     client = genai.Client(
         vertexai=True,
-        project="your-google-cloud-project-id",  # Replace with your active GCP Project ID
+        project="your-google-cloud-project-id",  
+		# Replace with your active GCP Project ID
         location="us-central1"
     )
 
