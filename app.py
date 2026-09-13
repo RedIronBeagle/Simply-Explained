@@ -1699,13 +1699,15 @@ if is_streamlit:
     tab1, tab2, tab3 = st.tabs(
         [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
     )
-)
+
 # ==============================================================================
 # [SECTION 5: CORE GENERATION & RESPONSE RENDERING ENGINE]
 # ==============================================================================
 # This section handles the primary API request to Gemini using the Vertex AI 
 # configuration required for enterprise/AQ tokens, parses the response, 
 # and manages output rendering across tabs.
+
+st.form()
 
 if submitted:
     # Initialize the client in Vertex AI mode to support the AQ token
