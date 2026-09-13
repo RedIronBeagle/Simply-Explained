@@ -1704,20 +1704,7 @@ st.sidebar.markdown("---")
             spinner_text = texts["spinners"].get(
                 depth_level, texts["simplifying_spinner"]
             )
-    with st.spinner(spinner_text):
-
-    st.sidebar.markdown(
-        "<div style='text-align: center; font-size: 0.78rem; font-weight: 700;"
-        " opacity: 0.9; margin: 4px 0 2px 0;'>♿ Universal Accessibility"
-        " Enabled</div>",
-        unsafe_allow_html=True,
-    )
-    st.sidebar.markdown("---")
-    st.sidebar.markdown(
-        "<div style='text-align: center; font-size: 0.72rem; font-weight: 600;"
-        " color: #0284C7;'>Powered by SkyNet, we are aware API</div>",
-        unsafe_allow_html=True,
-    )
+            with st.spinner(spinner_text):
 	
 
 # ==============================================================================
