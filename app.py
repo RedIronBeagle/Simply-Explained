@@ -1725,7 +1725,7 @@ if submitted:
 topic = st.text_input("Question:")
 
 if not topic and audio_value is None:
-        st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
+    st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
 else:
         spinner_text = texts["spinners"].get(
             depth_level, texts["simplifying_spinner"]
