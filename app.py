@@ -1703,20 +1703,21 @@ if is_streamlit:
 # ==============================================================================
 # [SECTION 5: CORE GENERATION & RESPONSE RENDERING ENGINE]
 # ==============================================================================
-# This section handles the primary API request to Gemini using the Vertex AI 
-# configuration required for enterprise/AQ tokens, parses the response, 
-# and manages output rendering across tabs.
 
-st.form ()
+# Wrap your inputs and submission button inside the form context
+with st.form("simply_explained_form"):
+    # (Your form inputs like topic text input or audio elements go here if they aren't already placed above)
+    
+    # The submit button creates the 'submitted' boolean when clicked
+    submitted = st.form_submit_button("Generate Explanation")
 
 if submitted:
     # Initialize the client in Vertex AI mode to support the AQ token
     client = genai.Client(
         vertexai=True,
-        project="your-google-cloud-project-id",  
-		# Replace with your active GCP Project ID
+        project="your-google-cloud-project-id",
         location="us-central1"
-    )
+    )	
 
     if not topic and audio_value is None:
         st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
