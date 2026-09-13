@@ -1707,7 +1707,7 @@ if is_streamlit:
 # configuration required for enterprise/AQ tokens, parses the response, 
 # and manages output rendering across tabs.
 
-st.form()
+st.form ()
 
 if submitted:
     # Initialize the client in Vertex AI mode to support the AQ token
