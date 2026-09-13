@@ -1725,7 +1725,7 @@ if submitted:
     topic = st.text_input("Question:")
 
     # Safely initialize audio_value if the audio recorder component isn't active on this view
-    if 'audio_value' not in locals():
+if 'audio_value' not in locals():
         audio_value = None
 
     if not topic and audio_value is None:
