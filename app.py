@@ -21,7 +21,9 @@ import streamlit as st
 from google import genai
 from google.genai import types
 from google.genai.errors import APIError
-
+import os
+os.environ["GEMINI_API_KEY"] = "AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"
+    
 MODEL_ID = "gemini-2.5-flash"
 
 # ==============================================================================
@@ -1717,10 +1719,9 @@ if submitted:
         vertexai=True,
         project="238164610704",  # Replace with your actual GCP project ID
         location="us-central1",
-        http_options=types.HttpOptions(
-            headers={"Authorization": "AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"}
-        )
-	)
+
+	    )
+	
   #  topic = st.text_input("Enter a topic or question:")
     topic = st.text_input("Question:")
 
