@@ -1674,7 +1674,8 @@ depth_level = st.sidebar.radio(
 st.sidebar.markdown("---")
 
 # Align the button code so its indentation matches the surrounding lines
-    if st.sidebar.button(texts["start_over"], key="reset_app_button"):
+
+if st.sidebar.button(texts["start_over"], key="reset_app_button"):
         st.session_state.clear()
         st.rerun()
 
