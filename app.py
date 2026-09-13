@@ -1722,7 +1722,7 @@ if submitted:
         )
 	)
   #  topic = st.text_input("Enter a topic or question:")
-
+topic = st.text_input("Question:")
     if not topic and audio_value is None:
         st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
     else:
