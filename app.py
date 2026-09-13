@@ -1680,15 +1680,15 @@ if st.sidebar.button(texts["start_over"], key="reset_app_button"):
         st.rerun()
 	
 @st.dialog("Terms & Conditions / Términos y Condiciones")
-    def show_terms_dialog():
-        st.markdown(TERMS_TEXT.get(selected_lang, TERMS_TEXT["English"]))
+def show_terms_dialog():
+	st.markdown(TERMS_TEXT.get(selected_lang, TERMS_TEXT["English"]))
 
-    if st.sidebar.button(texts["terms_button"], key="terms_button_sidebar"):
-        show_terms_dialog()
+if st.sidebar.button(texts["terms_button"], key="terms_button_sidebar"):
+	show_terms_dialog()
 
-    st.sidebar.markdown("---")
+st.sidebar.markdown("---")
 
-    # Initialize the modern Google GenAI client correctly (genai.configure() belongs to the legacy package)
+# Initialize the modern Google GenAI client correctly (genai.configure() belongs to the legacy package)
 
 	
 
