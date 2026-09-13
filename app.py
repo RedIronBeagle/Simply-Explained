@@ -1673,10 +1673,9 @@ depth_level = st.sidebar.radio(
 
 st.sidebar.markdown("---")
 
+# Align the button code so its indentation matches the surrounding lines
     if st.sidebar.button(texts["start_over"], key="reset_app_button"):
-        current_lang = st.session_state.get("selected_lang", "English")
         st.session_state.clear()
-        st.session_state["selected_lang"] = current_lang
         st.rerun()
 
     @st.dialog("Terms & Conditions / Términos y Condiciones")
