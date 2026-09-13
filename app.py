@@ -1690,21 +1690,6 @@ st.sidebar.markdown("---")
 
     # Initialize the modern Google GenAI client correctly (genai.configure() belongs to the legacy package)
 
-    if submitted:
-        # Initialize the client in Vertex AI mode to accept your AQ access token
-        client = genai.Client(
-            vertexai=True,
-            project="your-google-cloud-project-id",  # Replace with your actual GCP Project ID
-            location="us-central1"
-        )
-
-        if not topic and audio_value is None:
-            st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
-        else:
-            spinner_text = texts["spinners"].get(
-                depth_level, texts["simplifying_spinner"]
-            )
-            with st.spinner(spinner_text):
 	
 
 # ==============================================================================
@@ -1715,6 +1700,51 @@ if is_streamlit:
         [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
     )
 
+# ==============================================================================
+# [SECTION 5: CORE GENERATION & RESPONSE RENDERING ENGINE]
+# ==============================================================================
+# This section handles the primary API request to Gemini using the Vertex AI 
+# configuration required for enterprise/AQ tokens, parses the response, 
+# and manages output rendering across tabs.
+
+if submitted:
+    # Initialize the client in Vertex AI mode to support the AQ token
+    client = genai.Client(
+        vertexai=True,
+        project="your-google-cloud-project-id",  # Replace with your active GCP Project ID
+        location="us-central1"
+    )
+
+    if not topic and audio_value is None:
+        st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
+    else:
+        spinner_text = texts["spinners"].get(
+            depth_level, texts["simplifying_spinner"]
+        )
+        with st.spinner(spinner_text):
+            try:
+                # Construct the prompt payload incorporating persona and depth level
+                full_prompt = f"Explain the following topic as a {persona_choice} with a depth level of {depth_level}: {topic}"
+                
+                # Execute content generation using the modern client model call
+                response = client.models.generate_content(
+                    model=MODEL_ID,
+                    contents=full_prompt,
+                )
+                
+                # Store output in session state for multi-tab persistence
+                st.session_state["last_response"] = response.text
+                st.success(texts.get("success_message", "Explanation generated successfully!"))
+                
+                # Render output container
+                st.markdown("### Explanation")
+                st.markdown(response.text)
+
+            except APIError as e:
+                st.error(f"API Error encountered: {e}")
+            except Exception as e:
+                st.error(f"An unexpected error occurred: {e}")
+			
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
 # ==============================================================================
