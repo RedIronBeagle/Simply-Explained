@@ -1712,12 +1712,16 @@ with st.form("simply_explained_form"):
     submitted = st.form_submit_button("Generate Explanation")
 
 if submitted:
-    # Initialize the client in Vertex AI mode to support the AQ token
+        # Initialize the modern client using your AQ token as an explicit OAuth Bearer token
     client = genai.Client(
         vertexai=True,
-        project="your-google-cloud-project-id",
-        location="us-central1"
-    )	
+        project="gen-lang-client-0025952614
+		",  # Replace with your actual GCP project ID
+        location="us-central1",
+        http_options=types.HttpOptions(
+            headers={"Authorization": "Bearer AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"}
+        )
+    )
 
     if not topic and audio_value is None:
         st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
