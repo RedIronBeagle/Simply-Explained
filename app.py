@@ -1712,7 +1712,7 @@ with st.form("simply_explained_form"):
 # The submit button creates the 'submitted' boolean when clicked
 # submitted = st.form_submit_button("Generate Explanation")
     if submitted:
-    client = genai.Client(AQ.Ab8RN6KawOhVaJ9IPuREdJ-qd2k95nzMNm4mHTF25UvxtbHgNg),
+        client = genai.Client(AQ.Ab8RN6KawOhVaJ9IPuREdJ-qd2k95nzMNm4mHTF25UvxtbHgNg),
         vertexai=True,
         project="238164610704",  # Replace with your actual GCP project ID
         location="us-central1",
