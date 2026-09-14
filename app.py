@@ -19,9 +19,9 @@ from fpdf.enums import XPos, YPos
 import requests
 import streamlit as st
 from google import genai
-from google.genai import types
 from google.genai.errors import APIError
-import os
+from google.genai import types
+
 os.environ["GEMINI_API_KEY"] = "AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"
     
 MODEL_ID = "gemini-2.5-flash"
