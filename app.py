@@ -1703,18 +1703,14 @@ if is_streamlit:
     )
 
 # ==============================================================================
-# [SECTION 6: CORE GENERATION & RESPONSE RENDERING ENGINE (FALLBACK MODE)]
+# [SECTION 6: CORE GENERATION & RESPONSE RENDERING ENGINE]
 # ==============================================================================
 from google.genai import types
 
-# Wrap your inputs and submission button inside the form context
 with st.form("simply_explained_form"):
     topic = st.text_input("Question:")
-    
-    # Define the submit button for the form
     submitted = st.form_submit_button(texts.get("submit_button", "Simplify"))
 
-    # Safely initialize audio_value if the audio recorder component isn't active on this view
     if 'audio_value' not in locals():
         audio_value = None
 
@@ -1722,14 +1718,10 @@ with st.form("simply_explained_form"):
         if not topic and audio_value is None:
             st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
         else:
-            spinner_text = texts["spinners"].get(
-                depth_level, texts["simplifying_spinner"]
-            )
+            spinner_text = texts["spinners"].get(depth_level, texts["simplifying_spinner"])
             with st.spinner(spinner_text):
                 try:
-                    # Attempt live API connection using your AQ token config
-                    try:
-                        client = genai.Client(
+                    client = genai.Client(
                         vertexai=True,
                         project="238164610704",
                         location="us-central1",
@@ -1737,8 +1729,9 @@ with st.form("simply_explained_form"):
                             headers={"Authorization": "Bearer AQ.Ab8RN6KawOhVaJ9IPuREdJ-qd2k95nzMNm4mHTF25UvxtbHgNg"}
                         )
                     )
-						
+
                     full_prompt = f"Explain the following topic as a {persona_choice} with a depth level of {depth_level}: {topic}"
+                    
                     response = client.models.generate_content(
                         model=MODEL_ID,
                         contents=full_prompt,
@@ -1748,23 +1741,12 @@ with st.form("simply_explained_form"):
 
                 except Exception as api_err:
                     output_text = f"Live Error Caught: {api_err}"
-                    # FALLBACK WORKAROUND: Prevents crashes so you can see your UI work instantly
-                    output_text = (
-                        f"### 💡 Simulated Response (Authentication Fallback Active)\n\n"
-                        f"*Note: The remote Streamlit server restricted the enterprise token, but your app logic is fully intact!*\n\n"
-                        f"**Topic:** {topic}\n"
-                        f"**Persona:** {persona_choice}\n"
-                        f"**Depth Level:** {depth_level}\n\n"
-                        f"This is a placeholder breakdown showing that your frontend, layout, tabs, and structure are completely operational. Once you're ready to hook up a standard developer key later, live generations will flow right through here."
-                    )
-                
-                # Store output in session state for multi-tab persistence
+
                 st.session_state["last_response"] = output_text
-                st.success(texts.get("success_message", "Generated successfully!"))
-                
-                # Render output container
                 st.markdown("### Explanation")
                 st.markdown(output_text)
+
+
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
 # ==============================================================================
