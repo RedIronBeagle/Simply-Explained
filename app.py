@@ -1718,10 +1718,12 @@ if submitted:
         vertexai=True,
         project="238164610704",  # Replace with your actual GCP project ID
         location="us-central1",
-)#  topic = st.text_input("Enter a topic or question:")
+)
+
+#  topic = st.text_input("Enter a topic or question:")
     topic = st.text_input("Question:")
 
-    # Safely initialize audio_value if the audio recorder component isn't active on this view
+# Safely initialize audio_value if the audio recorder component isn't active on this view
 if 'audio_value' not in locals():
         audio_value = None
 
