@@ -1537,7 +1537,6 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
 
     return pdf_bytes
 
-
 # ==============================================================================
 # [SECTION 5: STREAMLIT APP INITIALIZATION & STYLING]
 # ==============================================================================
@@ -1547,9 +1546,6 @@ if is_streamlit:
     import streamlit as st
 
     st.set_page_config(page_title="Simply Explained", page_icon="💡", layout="wide")
-
-    # [Ensure UI_TEXT is fully defined above this point in your file]
-#-----------
 
     st.markdown(
         """
@@ -1628,7 +1624,7 @@ if is_streamlit:
         """,
         unsafe_allow_html=True,
     )
-#----------------
+
     env_api_key = os.getenv("GEMINI_API_KEY", "")
 
     if "selected_lang" not in st.session_state:
@@ -1651,8 +1647,6 @@ if is_streamlit:
     # CRITICAL: Re-assign texts immediately after capturing selected_lang
     texts = UI_TEXT.get(selected_lang, UI_TEXT["English"])
 
-#-----------------
-
     tone_level = st.sidebar.selectbox(
         texts["tone_label"], texts["tone_options"], key="tone_radio_key"
     )
@@ -1667,33 +1661,39 @@ if is_streamlit:
         key="enable_audio_speech_unique_key",
     )
 
-st.sidebar.markdown("---")
+    st.sidebar.markdown("---")
 
-depth_level = st.sidebar.radio(
+    depth_level = st.sidebar.radio(
         texts["depth_label"], texts["depth_options"], key="depth_radio_key"
     )
 
-st.sidebar.markdown("---")
+    st.sidebar.markdown("---")
 
-# Align the button code so its indentation matches the surrounding lines
-
-if st.sidebar.button(texts["start_over"], key="reset_app_button"):
+    if st.sidebar.button(texts["start_over"], key="reset_app_button"):
         st.session_state.clear()
         st.rerun()
-	
-@st.dialog("Terms & Conditions / Términos y Condiciones")
-def show_terms_dialog():
-	st.markdown(TERMS_TEXT.get(selected_lang, TERMS_TEXT["English"]))
+        
+    @st.dialog("Terms & Conditions / Términos y Condiciones")
+    def show_terms_dialog():
+        st.markdown(TERMS_TEXT.get(selected_lang, TERMS_TEXT["English"]))
 
-if st.sidebar.button(texts["terms_button"], key="terms_button_sidebar"):
-	show_terms_dialog()
+    if st.sidebar.button(texts["terms_button"], key="terms_button_sidebar"):
+        show_terms_dialog()
 
-st.sidebar.markdown("---")
+    st.sidebar.markdown("---")
 
-# Initialize the modern Google GenAI client correctly (genai.configure() belongs to the legacy package)
+    # Initialize the modern Google GenAI client correctly using Vertex AI mode for AQ tokens
+    from google import genai
+    from google.genai import types
 
-	
-
+    client = genai.Client(
+        vertexai=True,
+        project="your-google-cloud-project-id",  # Replace with your GCP project ID
+        location="us-central1",
+        http_options=types.HttpOptions(
+            headers={"Authorization": "Bearer AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"}
+        )
+    )
 # ==============================================================================
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
 # ==============================================================================
