@@ -1728,6 +1728,7 @@ with st.form("simply_explained_form"):
             with st.spinner(spinner_text):
                 try:
                     # Attempt live API connection using your AQ token config
+                    try:
                     client = genai.Client(
                         vertexai=True,
                         project="238164610704",
@@ -1738,14 +1739,16 @@ with st.form("simply_explained_form"):
                     )
 
                     full_prompt = f"Explain the following topic as a {persona_choice} with a depth level of {depth_level}: {topic}"
-                    
+
                     response = client.models.generate_content(
                         model=MODEL_ID,
                         contents=full_prompt,
                     )
                     output_text = response.text
-                    
+                    st.success("Live API Connected Successfully!")
+
                 except Exception as api_err:
+                    output_text = f"Live Error Caught: {api_err}"
                     # FALLBACK WORKAROUND: Prevents crashes so you can see your UI work instantly
                     output_text = (
                         f"### 💡 Simulated Response (Authentication Fallback Active)\n\n"
