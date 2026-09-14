@@ -1688,10 +1688,10 @@ if is_streamlit:
 
     client = genai.Client(
         vertexai=True,
-        project="your-google-cloud-project-id",  # Replace with your GCP project ID
+        project="sunny-incentive-387017",  # Replace with your GCP project ID
         location="us-central1",
         http_options=types.HttpOptions(
-            headers={"Authorization": "Bearer AQ.Ab8RN6LYdiAWsGvz3TjOpIHojhGeCupe0QrFcBgIevqz9G6v1A"}
+            headers={"Authorization": "Bearer AQ.Ab8RN6IA6w-SHLR-F0ls36vdUaPx52g6P-k1lRE1MQeKN-y9hw"}
         )
     )
 # ==============================================================================
@@ -1726,7 +1726,7 @@ with st.form("simply_explained_form"):
                         project="238164610704",
                         location="us-central1",
                         http_options=types.HttpOptions(
-                            headers={"Authorization": "Bearer AQ.Ab8RN6LYdiAWsGvz3TjOpIHojhGeCupe0QrFcBgIevqz9G6v1A"}
+                            headers={"Authorization": "Bearer AQ.Ab8RN6IA6w-SHLR-F0ls36vdUaPx52g6P-k1lRE1MQeKN-y9hw"}
                         )
                     )
 
