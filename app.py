@@ -1729,7 +1729,7 @@ with st.form("simply_explained_form"):
                             headers={"Authorization": "Bearer AQ.Ab8RN6LYdiAWsGvz3TjOpIHojhGeCupe0QrFcBgIevqz9G6v1A"}
                         )
                     )
-AQ.Ab8RN6LYdiAWsGvz3TjOpIHojhGeCupe0QrFcBgIevqz9G6v1A
+
                     full_prompt = f"Explain the following topic as a {persona_choice} with a depth level of {depth_level}: {topic}"
                     
                     response = client.models.generate_content(
