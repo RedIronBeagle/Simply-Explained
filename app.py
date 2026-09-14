@@ -1708,9 +1708,8 @@ if is_streamlit:
 
 # Wrap your inputs and submission button inside the form context
 with st.form("simply_explained_form"):
-    # (Your form inputs like topic text input or audio elements go here if they aren't already placed above)
-    
-    # The submit button creates the 'submitted' boolean when clicked
+# (Your form inputs like topic text input or audio elements go here if they aren't already placed above)
+# The submit button creates the 'submitted' boolean when clicked
 # submitted = st.form_submit_button("Generate Explanation")
 
 if submitted:
