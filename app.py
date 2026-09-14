@@ -1703,57 +1703,60 @@ if is_streamlit:
     )
 
 # ==============================================================================
-# [SECTION 5: CORE GENERATION & RESPONSE RENDERING ENGINE]
+# [SECTION 6: CORE GENERATION & RESPONSE RENDERING ENGINE]
 # ==============================================================================
+from google.genai import types
 
 # Wrap your inputs and submission button inside the form context
 with st.form("simply_explained_form"):
-# (Your form inputs like topic text input or audio elements go here if they aren't already placed above)
-# The submit button creates the 'submitted' boolean when clicked
-# submitted = st.form_submit_button("Generate Explanation")
-    if submitted:
-        client = genai.Client(AQ.Ab8RN6KawOhVaJ9IPuREdJ-qd2k95nzMNm4mHTF25UvxtbHgNg),
-            vertexai=True,
-            project="238164610704",  # Replace with your actual GCP project ID
-            location="us-central1",
-
-#  topic = st.text_input("Enter a topic or question:")
     topic = st.text_input("Question:")
+    
+    # Define the submit button for the form
+    submitted = st.form_submit_button(texts.get("submit_button", "Simplify"))
 
-# Safely initialize audio_value if the audio recorder component isn't active on this view
-if 'audio_value' not in locals():
+    # Safely initialize audio_value if the audio recorder component isn't active on this view
+    if 'audio_value' not in locals():
         audio_value = None
 
-    if not topic and audio_value is None:
-        st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
-    else:
-        spinner_text = texts["spinners"].get(
-            depth_level, texts["simplifying_spinner"]
-        )
-        with st.spinner(spinner_text):
-            try:
-                # Construct the prompt payload incorporating persona and depth level
-                full_prompt = f"Explain the following topic as a {persona_choice} with a depth level of {depth_level}: {topic}"
-                
-                # Execute content generation using the modern client model call
-                response = client.models.generate_content(
-                    model=MODEL_ID,
-                    contents=full_prompt,
+    if submitted:
+        if not topic and audio_value is None:
+            st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
+        else:
+            # Initialize client with your AQ token via HTTP authorization headers and your project ID
+            client = genai.Client(
+                vertexai=True,
+                project="238164610704",
+                location="us-central1",
+                http_options=types.HttpOptions(
+                    headers={"Authorization": "Bearer AQ.Ab8RN6KawOhVaJ9IPuREdJ-qd2k95nzMNm4mHTF25UvxtbHgNg"}
                 )
-                
-                # Store output in session state for multi-tab persistence
-                st.session_state["last_response"] = response.text
-                st.success(texts.get("success_message", "Explanation generated successfully!"))
-                
-                # Render output container
-                st.markdown("### Explanation")
-                st.markdown(response.text)
+            )
 
-            except APIError as e:
-                st.error(f"API Error encountered: {e}")
-            except Exception as e:
-                st.error(f"An unexpected error occurred: {e}")
-			
+            spinner_text = texts["spinners"].get(
+                depth_level, texts["simplifying_spinner"]
+            )
+            with st.spinner(spinner_text):
+                try:
+                    # Construct the prompt payload incorporating persona and depth level
+                    full_prompt = f"Explain the following topic as a {persona_choice} with a depth level of {depth_level}: {topic}"
+                    
+                    # Execute content generation using the modern client model call
+                    response = client.models.generate_content(
+                        model=MODEL_ID,
+                        contents=full_prompt,
+                    )
+                    
+                    # Store output in session state for multi-tab persistence
+                    st.session_state["last_response"] = response.text
+                    st.success(texts.get("success_message", "Explanation generated successfully!"))
+                    
+                    # Render output container
+                    st.markdown("### Explanation")
+                    st.markdown(response.text)
+
+                except Exception as e:
+                    st.error(f"An error occurred: {e}")
+
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
 # ==============================================================================
