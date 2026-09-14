@@ -1729,7 +1729,7 @@ with st.form("simply_explained_form"):
                 try:
                     # Attempt live API connection using your AQ token config
                     try:
-						client = genai.Client(
+                        client = genai.Client(
                         vertexai=True,
                         project="238164610704",
                         location="us-central1",
