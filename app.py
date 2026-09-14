@@ -1691,7 +1691,7 @@ if is_streamlit:
         project="your-google-cloud-project-id",  # Replace with your GCP project ID
         location="us-central1",
         http_options=types.HttpOptions(
-            headers={"Authorization": "Bearer AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"}
+            headers={"Authorization": "Bearer AQ.Ab8RN6LYdiAWsGvz3TjOpIHojhGeCupe0QrFcBgIevqz9G6v1A"}
         )
     )
 # ==============================================================================
@@ -1726,10 +1726,10 @@ with st.form("simply_explained_form"):
                         project="238164610704",
                         location="us-central1",
                         http_options=types.HttpOptions(
-                            headers={"Authorization": "Bearer AQ.Ab8RN6KawOhVaJ9IPuREdJ-qd2k95nzMNm4mHTF25UvxtbHgNg"}
+                            headers={"Authorization": "Bearer AQ.Ab8RN6LYdiAWsGvz3TjOpIHojhGeCupe0QrFcBgIevqz9G6v1A"}
                         )
                     )
-
+AQ.Ab8RN6LYdiAWsGvz3TjOpIHojhGeCupe0QrFcBgIevqz9G6v1A
                     full_prompt = f"Explain the following topic as a {persona_choice} with a depth level of {depth_level}: {topic}"
                     
                     response = client.models.generate_content(
