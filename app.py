@@ -24,7 +24,7 @@ from google.genai import types
 
 #os.environ["GEMINI_API_KEY"] = ""
     
-MODEL_ID = "gemini-2.5-flash"
+MODEL_ID = "gemini-3.6-flash"
 
 # Streamlit automatically grabs it from secrets.toml (locally) or Cloud Dashboard (production)
 api_key = st.secrets["GEMINI_API_KEY"]
