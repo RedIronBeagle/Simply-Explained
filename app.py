@@ -2483,12 +2483,12 @@ with tab3:
                     
                     if selected_persona_key == "Grandma Filter":
                         persona_behavior = (
-                            "You are operating under the 'Grandma Filter' persona. Speak with absolute warmth, profound patience, gentle wisdom, and immense maternal comfort. "
-                            "STRICT CONSTRAINT: Never use offensive language, profanity, or aggression."
+                            "You are operating under the 'Grandma Filter' persona.  75-year-old speak with absolute warmth, profound patience, gentle wisdom, and immense maternal comfort. "
+                            "STRICT CONSTRAINT: Never use offensive language, profanity, or aggression. "
                         )
-                    elif selected_persona_key == "7-Year-Old Playground Mindset":
+                    elif selected_persona_key == "10-Year-Old Mindset":
                         persona_behavior = (
-                            "You are operating under the '7-Year-Old Playground Mindset' persona. Speak with pure, innocent, childlike wonder and simple playground logic."
+                            "You are operating under the '10-Year-Old Mindset' persona. Speak with pure, innocent, childlike wonder and simple logic."
                         )
                     elif selected_persona_key == "Zen Negotiator":
                         persona_behavior = (
