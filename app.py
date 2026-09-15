@@ -22,9 +22,15 @@ from google import genai
 from google.genai.errors import APIError
 from google.genai import types
 
-os.environ["GEMINI_API_KEY"] = "AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"
+#os.environ["GEMINI_API_KEY"] = ""
     
 MODEL_ID = "gemini-2.5-flash"
+
+# Streamlit automatically grabs it from secrets.toml (locally) or Cloud Dashboard (production)
+api_key = st.secrets["GEMINI_API_KEY"]
+
+# Initialize the client securely
+client = genai.Client(api_key=api_key)
 
 # ==============================================================================
 # [SECTION 2: LEGAL & TERMS OF SERVICE (EULA) TEXT CONTENT (LOCALIZED)]
@@ -1691,7 +1697,7 @@ if is_streamlit:
         project="sunny-incentive-387017",  # Replace with your GCP project ID
         location="us-central1",
         http_options=types.HttpOptions(
-            headers={"Authorization": "Bearer AQ.Ab8RN6IA6w-SHLR-F0ls36vdUaPx52g6P-k1lRE1MQeKN-y9hw"}
+            headers={"Authorization": ""}
         )
     )
 # ==============================================================================
@@ -1726,7 +1732,7 @@ with st.form("simply_explained_form"):
                         project="238164610704",
                         location="us-central1",
                         http_options=types.HttpOptions(
-                            headers={"Authorization": "Bearer AQ.Ab8RN6IA6w-SHLR-F0ls36vdUaPx52g6P-k1lRE1MQeKN-y9hw"}
+#                            headers={"Authorization": ""}
                         )
                     )
 
@@ -1811,7 +1817,7 @@ with tab1:
 # -------------------
     if submitted:
         # Define the api_key and initialize the client cleanly inside the form submission
-        api_key = "AQ.Ab8RN6J_zSV-o_Lr40ZE_UtiBW-0HolcWgXRWTccqCzOlsbX9w"
+#        api_key = ""
         client = genai.Client(api_key=api_key)
 
         if not api_key:
