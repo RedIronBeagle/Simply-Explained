@@ -1839,12 +1839,12 @@ with tab1:
                         )
                     elif depth_level in ["Balanced", "Equilibrado", "Ausgewogen", "Équilibré", "संतुलित", "平衡", "バランス", "균형"]:
                         depth_instruction = (
-                            f"Complexity Tier: BALANCED. Provide a balanced, professional"
+                            f"Complexity Tier: BALANCED. Provide a balanced, professional, well educated"
                             f" overview in {selected_lang}."
                         )
                     else:
                         depth_instruction = (
-                            f"Complexity Tier: HARD. Provide an advanced, academically"
+                            f"Complexity Tier: HARD. Provide an advanced, academically, PHD"
                             f" rigorous, deeply technical breakdown in {selected_lang}. You MUST use Google Search grounding (tools=[types.Tool(google_search=types.GoogleSearch())]) to query live authoritative references and official documentation matching the topic. In the 8th pillar ('Where Do We Find It (Verification & Sources)'), explicitly list these grounding sources as clickable markdown links."
                         )
 
