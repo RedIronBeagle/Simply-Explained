@@ -1708,10 +1708,50 @@ if is_streamlit:
         [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
     )
 
-import os
+# ==============================================================================
+# [SECTION 6: CORE GENERATION & RESPONSE RENDERING ENGINE]
+# ==============================================================================
+from google.genai import types
 
-# Pull API key from Streamlit secrets or environment variables automatically
-api_key = st.secrets.get("GEMINI_API_KEY", os.environ.get("GEMINI_API_KEY", ""))
+with st.form("simply_explained_form"):
+    topic = st.text_input("Question:")
+    submitted = st.form_submit_button(texts.get("submit_button", "Simplify"))
+
+    if 'audio_value' not in locals():
+        audio_value = None
+
+    if submitted:
+        if not topic and audio_value is None:
+            st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
+        else:
+            spinner_text = texts["spinners"].get(depth_level, texts["simplifying_spinner"])
+            with st.spinner(spinner_text):
+                try:
+                    client = genai.Client(
+                        vertexai=True,
+                        project="238164610704",
+                        location="us-central1",
+                        http_options=types.HttpOptions(
+#                            headers={"Authorization": ""}
+                        )
+                    )
+
+                    full_prompt = f"Explain the following topic as a {persona_choice} with a depth level of {depth_level}: {topic}"
+                    
+                    response = client.models.generate_content(
+                        model=MODEL_ID,
+                        contents=full_prompt,
+                    )
+                    output_text = response.text
+                    st.success("Live API Connected Successfully!")
+
+                except Exception as api_err:
+                    output_text = f"Live Error Caught: {api_err}"
+
+                st.session_state["last_response"] = output_text
+                st.markdown("### Explanation")
+                st.markdown(output_text)
+
 
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
@@ -1774,9 +1814,11 @@ with tab1:
     
     st.markdown("")
     submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
-
+# -------------------
     if submitted:
-        api_key = "" # Update if managed via secrets/env
+        # Define the api_key and initialize the client cleanly inside the form submission
+#        api_key = ""
+        client = genai.Client(api_key=api_key)
 
         if not api_key:
             st.error(texts["no_api"])
@@ -1881,7 +1923,7 @@ with tab1:
                         ),
                         mime="application/pdf",
                         key="download_topic_pdf",
-                    )
+					)
                     if enable_audio_speech:
                         st.markdown("---")
                         st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
@@ -1910,6 +1952,7 @@ with tab1:
                     st.error(f"API Error: {e.message}")
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {str(e)}")
+
 
 # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
@@ -2501,4 +2544,3 @@ with tab3:
 
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
-
