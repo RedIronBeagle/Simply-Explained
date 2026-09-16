@@ -1711,14 +1711,6 @@ if is_streamlit:
 # ==============================================================================
 # [SECTION 6: CORE GENERATION & RESPONSE RENDERING ENGINE]
 # ==============================================================================
-from google.genai import types
-
-with st.form("simply_explained_form"):
-    topic = st.text_input("Question:")
-    submitted = st.form_submit_button(texts.get("submit_button", "Simplify"))
-
-    if 'audio_value' not in locals():
-        audio_value = None
 
     if submitted:
         if not topic and audio_value is None:
