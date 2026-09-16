@@ -1910,32 +1910,24 @@ with tab1:
                     st.markdown("---")
                     st.markdown(output_text)
                     
-                    st.session_state["history_log"].insert(
-                        0,
-                        {
-                            "timestamp": datetime.datetime.now().strftime(
-                                "%Y-%m-%d %H:%M:%S"
-                            ),
-                            "type": f"Topic Explanation ({depth_level})",
-                            "title": display_title,
-                            "content": output_text,
-                        },
-                    )
-
+                    # --- PDF GENERATION PLACEMENT ---
+                    # Keep this right here, where depth_level, display_title, and output_text are all active!
+                    current_depth = depth_level if 'depth_level' in locals() and depth_level else "Balanced"
+                    pdf_title = f"Topic ({current_depth}): {display_title}"
+                    
                     pdf_data = generate_pdf_bytes(
-                        f"Topic ({depth_level}): {display_title}",
+                        pdf_title,
                         output_text,
-                        texts["footer_text"],
+                        texts.get("footer_text", "Simply Explained Report"),
                     )
+                    
                     st.download_button(
                         label=texts.get("pdf_button", "📥 Download PDF Report"),
                         data=pdf_data,
-                        file_name=(
-                            f"Simply_Explained_{depth_level}_{display_title.replace(' ', '_')}.pdf"
-                        ),
+                        file_name=f"Simply_Explained_{current_depth}_{display_title.replace(' ', '_')}.pdf",
                         mime="application/pdf",
                         key="download_topic_pdf",
-					)
+                    )
                     if enable_audio_speech:
                         st.markdown("---")
                         st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
