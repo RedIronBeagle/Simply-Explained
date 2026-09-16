@@ -32,6 +32,17 @@ api_key = st.secrets["GEMINI_API_KEY"]
 # Initialize the client securely
 client = genai.Client(api_key=api_key)
 
+TTS_LANG_MAP = {
+    "English": "en",
+    "Spanish": "es",
+    "French": "fr",
+    "German": "de",
+    "Italian": "it",
+    "Portuguese": "pt",
+    "Japanese": "ja",
+    "Mandarin": "zh-cn",
+    "Hindi": "hi"
+}
 # ==============================================================================
 # [SECTION 2: LEGAL & TERMS OF SERVICE (EULA) TEXT CONTENT (LOCALIZED)]
 # ==============================================================================
