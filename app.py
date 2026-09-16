@@ -1555,7 +1555,7 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     return pdf_bytes
 
 			# Ensure depth_level and display_title are valid before building PDF
-					pdf_title = f"Topic ({depth_level}): {display_title}"
+	        pdf_title = f"Topic ({depth_level}): {display_title}"
 					
 					pdf_data = generate_pdf_bytes(
 						pdf_title,
