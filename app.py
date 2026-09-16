@@ -1554,24 +1554,6 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
 
     return pdf_bytes
 
-			# Ensure depth_level and display_title are valid before building PDF
-        pdf_title = f"Topic ({depth_level}): {display_title}"
-					
-				pdf_data = generate_pdf_bytes(
-					pdf_title,
-					output_text,
-					texts.get("footer_text", "Simply Explained Report"),
-				)
-				
-				st.download_button(
-					label=texts.get("pdf_button", "📥 Download PDF Report"),
-					data=pdf_data,
-					file_name=f"Simply_Explained_{display_title.replace(' ', '_')}.pdf",
-					mime="application/pdf",
-					key="download_topic_pdf",
-				)
-
-
 
 # ==============================================================================
 # [SECTION 5: STREAMLIT APP INITIALIZATION & STYLING]
