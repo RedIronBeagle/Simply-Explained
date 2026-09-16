@@ -1708,6 +1708,11 @@ if is_streamlit:
         [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
     )
 
+import os
+
+# Pull API key from Streamlit secrets or environment variables automatically
+api_key = st.secrets.get("GEMINI_API_KEY", os.environ.get("GEMINI_API_KEY", ""))
+
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
 # ==============================================================================
