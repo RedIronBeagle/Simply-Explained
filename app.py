@@ -1911,23 +1911,23 @@ with tab1:
                     st.markdown(output_text)
                     
                     # --- PDF GENERATION PLACEMENT ---
-                    # Keep this right here, where depth_level, display_title, and output_text are all active!
-                    current_depth = depth_level if 'depth_level' in locals() and depth_level else "Balanced"
-                    pdf_title = f"Topic ({current_depth}): {display_title}"
-                    
-                    pdf_data = generate_pdf_bytes(
-                        pdf_title,
-                        output_text,
-                        texts.get("footer_text", "Simply Explained Report"),
-                    )
-                    
-                    st.download_button(
-                        label=texts.get("pdf_button", "📥 Download PDF Report"),
-                        data=pdf_data,
-                        file_name=f"Simply_Explained_{current_depth}_{display_title.replace(' ', '_')}.pdf",
-                        mime="application/pdf",
-                        key="download_topic_pdf",
-                    )
+# Clean the text for PDF generation to prevent FPDF from dropping characters
+safe_title = ''.join(c for c in pdf_title if ord(c) < 128) # Keeps standard printable ASCII for the PDF header
+safe_output = output_text.encode('ascii', 'ignore').decode('ascii') # Removes unprintable multi-byte characters safely
+
+pdf_data = generate_pdf_bytes(
+    safe_title,
+    safe_output,
+    texts.get("footer_text", "Simply Explained Report"),
+)
+
+st.download_button(
+    label=texts.get("pdf_button", "📥 Download PDF Report"),
+    data=pdf_data,
+    file_name=f"Simply_Explained_{display_title.replace(' ', '_')}.pdf",
+    mime="application/pdf",
+    key="download_topic_pdf",
+)
                     if enable_audio_speech:
                         st.markdown("---")
                         st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
