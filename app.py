@@ -1800,10 +1800,10 @@ with tab1:
         """
         <style>
         div[data-testid="stAudioInput"] {
-            transform: scale(1.35);
+            transform: scale(1.15);
             transform-origin: top left;
-            margin-top: 10px;
-            margin-bottom: 25px;
+            margin-top: 5px;
+            margin-bottom: 5px;
         }
         </style>
         """,
