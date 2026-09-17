@@ -1943,8 +1943,8 @@ with tab1:
 							)
                             audio_bytes_obj = io.BytesIO()
                             tts.write_to_fp(audio_bytes_obj)
-							audio_bytes_obj.seek(0)
-							st.audio(audio_bytes_obj, format="audio/mp3")
+                            audio_bytes_obj.seek(0)
+                            st.audio(audio_bytes_obj, format="audio/mp3")
 						except Exception as tts_err:
 							st.warning(
 								f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
