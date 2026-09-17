@@ -1918,8 +1918,7 @@ with tab1:
                         safe_output,
                         texts.get("footer_text", "Simply Explained Report"),
                     )
-
-                    st.download_button(
+					st.download_button(
                         label=texts.get("pdf_button", "📥 Download PDF Report"),
                         data=pdf_data,
                         file_name=f"Simply_Explained_{display_title.replace(' ', '_')}.pdf",
@@ -1927,13 +1926,8 @@ with tab1:
                         key="download_topic_pdf",
                     )
 
-                except APIError as e:
-                    st.error(f"API Error: {e.message}")
-                except Exception as e:
-                    st.error(f"An unexpected error occurred: {str(e)}")
-					
                     if enable_audio_speech:
-						st.markdown("---")
+                        st.markdown("---")
                         st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
                         try:
                             from gtts import gTTS
@@ -1955,27 +1949,6 @@ with tab1:
                             st.warning(
                                 f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
                             )
-                    safe_title = ''.join(c for c in pdf_title if ord(c) < 128)
-                    safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
-
-                    pdf_data = generate_pdf_bytes(
-                        safe_title,
-                        safe_output,
-                        texts.get("footer_text", "Simply Explained Report"),
-                    )
-
-                    st.download_button(
-                        label=texts.get("pdf_button", "📥 Download PDF Report"),
-                        data=pdf_data,
-                        file_name=f"Simply_Explained_{display_title.replace(' ', '_')}.pdf",
-                        mime="application/pdf",
-                        key="download_topic_pdf",
-                    )
-
-                except APIError as e:
-                    st.error(f"API Error: {e.message}")
-                except Exception as e:
-                    st.error(f"An unexpected error occurred: {str(e)}")
 
 
 # ==============================================================================
