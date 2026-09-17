@@ -1933,8 +1933,8 @@ with tab1:
                             from gtts import gTTS
 							
                             clean_text_for_speech = output_text
-							clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-							clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+                            clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+                            clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
 
 							tts = gTTS(
 								text=clean_text_for_speech,
