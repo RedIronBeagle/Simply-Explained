@@ -1941,8 +1941,8 @@ with tab1:
 								lang=TTS_LANG_MAP.get(selected_lang, "en"),
 								slow=False,
 							)
-							audio_bytes_obj = io.BytesIO()
-							tts.write_to_fp(audio_bytes_obj)
+                            audio_bytes_obj = io.BytesIO()
+                            tts.write_to_fp(audio_bytes_obj)
 							audio_bytes_obj.seek(0)
 							st.audio(audio_bytes_obj, format="audio/mp3")
 						except Exception as tts_err:
