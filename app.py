@@ -1940,15 +1940,15 @@ with tab1:
 								text=clean_text_for_speech,
 								lang=TTS_LANG_MAP.get(selected_lang, "en"),
 								slow=False,
-						)
-						audio_bytes_obj = io.BytesIO()
-						tts.write_to_fp(audio_bytes_obj)
-						audio_bytes_obj.seek(0)
-						st.audio(audio_bytes_obj, format="audio/mp3")
-					except Exception as tts_err:
-						st.warning(
-							f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
-						)
+							)
+							audio_bytes_obj = io.BytesIO()
+							tts.write_to_fp(audio_bytes_obj)
+							audio_bytes_obj.seek(0)
+							st.audio(audio_bytes_obj, format="audio/mp3")
+						except Exception as tts_err:
+							st.warning(
+								f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
+							)
 
 # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
