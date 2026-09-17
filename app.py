@@ -1935,6 +1935,7 @@ with tab1:
                             clean_text_for_speech = output_text
                             clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
                             clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+							
 							tts = gTTS(
 								text=clean_text_for_speech,
 								lang=TTS_LANG_MAP.get(selected_lang, "en"),
