@@ -1935,45 +1935,45 @@ with tab1:
                         key="download_topic_pdf",
                     )
 
-                    if enable_audio_speech:
-                        st.markdown("---")
-                        st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
-                        try:
-                            from gtts import gTTS
-                            import base64
+                if enable_audio_speech:
+					st.markdown("---")
+					st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
+					try:
+						from gtts import gTTS
+						import base64
 
-                            clean_text_for_speech = output_text
-                            clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-                            clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+						clean_text_for_speech = output_text
+						clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+						clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
 
-                            tts = gTTS(
-                                text=clean_text_for_speech,
-                                lang=TTS_LANG_MAP.get(selected_lang, "en"),
-                                slow=False,
-                            )
-                            audio_bytes_obj = io.BytesIO()
-                            tts.write_to_fp(audio_bytes_obj)
-                            audio_bytes_obj.seek(0)
-                            
-                            # Encode audio bytes to base64 for the HTML player
-                            audio_base64 = base64.b64encode(audio_bytes_obj.read()).decode()
-                            
-                            # Custom HTML audio element forcing 1.25x speed by default
-                            audio_html = f"""
-                                <audio id="speechAudio" controls autoplay style="width: 100%;">
-                                    <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
-                                    Your browser does not support the audio element.
-                                </audio>
-                                <script>
-                                    document.getElementById('speechAudio').playbackRate = 1.25;
-                                </script>
-                            """
-                            st.markdown(audio_html, unsafe_allow_html=True)
+						tts = gTTS(
+							text=clean_text_for_speech,
+							lang=TTS_LANG_MAP.get(selected_lang, "en"),
+							slow=False,
+						)
+						audio_bytes_obj = io.BytesIO()
+						tts.write_to_fp(audio_bytes_obj)
+						audio_bytes_obj.seek(0)
+						
+						# Encode audio bytes to base64 for the HTML player
+						audio_base64 = base64.b64encode(audio_bytes_obj.read()).decode()
+						
+						# Custom HTML audio element forcing 1.25x speed by default
+						audio_html = f"""
+							<audio id="speechAudio" controls autoplay style="width: 100%;">
+								<source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
+								Your browser does not support the audio element.
+							</audio>
+							<script>
+								document.getElementById('speechAudio').playbackRate = 1.25;
+							</script>
+						"""
+						st.markdown(audio_html, unsafe_allow_html=True)
 
-                        except Exception as tts_err:
-                            st.warning(
-                                f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
-                            )
+					except Exception as tts_err:
+						st.warning(
+							f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
+						)
 
 # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
