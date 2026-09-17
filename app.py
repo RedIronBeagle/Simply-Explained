@@ -1932,15 +1932,15 @@ with tab1:
                     try:
                         from gtts import gTTS
 
-								clean_text_for_speech = output_text
-								clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-								clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
-
-								tts = gTTS(
-									text=clean_text_for_speech,
-									lang=TTS_LANG_MAP.get(selected_lang, "en"),
-									slow=False,
-								)
+                            clean_text_for_speech = output_text
+                            clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+                            clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+	
+							tts = gTTS(
+                            text=clean_text_for_speech,
+								lang=TTS_LANG_MAP.get(selected_lang, "en"),
+								slow=False,
+							)
 								audio_bytes_obj = io.BytesIO()
 								tts.write_to_fp(audio_bytes_obj)
 								audio_bytes_obj.seek(0)
