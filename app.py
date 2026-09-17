@@ -1927,8 +1927,8 @@ with tab1:
 					)
 
                     if enable_audio_speech:
-							st.markdown("---")
-							st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
+                        st.markdown("---")
+                        st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
 							try:
 								from gtts import gTTS
 	
