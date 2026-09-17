@@ -1807,7 +1807,6 @@ with tab1:
     st.markdown(f"### {texts['voice_section_title']}")
     st.markdown(texts['voice_instruction'])
     
-    # CSS styling to scale the audio recorder input block
     st.markdown(
         """
         <style>
@@ -1826,11 +1825,9 @@ with tab1:
     
     st.markdown("")
     submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
-# -------------------
+
     if submitted:
-        # Define the api_key and initialize the client cleanly inside the form submission
-#        api_key = ""
-        client = genai.Client(api_key=api_key)
+        api_key = st.secrets.get("GEMINI_API_KEY", "")
 
         if not api_key:
             st.error(texts["no_api"])
@@ -1909,8 +1906,20 @@ with tab1:
                     )
                     st.markdown("---")
                     st.markdown(output_text)
+                    
+                    st.session_state["history_log"].insert(
+                        0,
+                        {
+                            "timestamp": datetime.datetime.now().strftime(
+                                "%Y-%m-%d %H:%M:%S"
+                            ),
+                            "type": f"Topic Explanation ({depth_level})",
+                            "title": display_title,
+                            "content": output_text,
+                        },
+                    )
 
-                    safe_title = ''.join(c for c in pdf_title if ord(c) < 128)
+                    safe_title = ''.join(c for c in f"Topic ({depth_level}): {display_title}" if ord(c) < 128)
                     safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
 
                     pdf_data = generate_pdf_bytes(
@@ -1919,36 +1928,42 @@ with tab1:
                         texts.get("footer_text", "Simply Explained Report"),
                     )
                     st.download_button(
-						label=texts.get("pdf_button", "📥 Download PDF Report"),
-						data=pdf_data,
-						file_name=f"Simply_Explained_{display_title.replace(' ', '_')}.pdf",
-						mime="application/pdf",
-						key="download_topic_pdf",
-					)
+                        label=texts.get("pdf_button", "📥 Download PDF Report"),
+                        data=pdf_data,
+                        file_name=f"Simply_Explained_{display_title.replace(' ', '_')}.pdf",
+                        mime="application/pdf",
+                        key="download_topic_pdf",
+                    )
 
-	                    if enable_audio_speech:
-	                        st.markdown("---")
-	                        st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
-	                        try:
-	                            from gtts import gTTS
-								
-	                            clean_text_for_speech = output_text
-	                            clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-	                            clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
-	
-	                            tts = gTTS(
-									text=clean_text_for_speech,
-									lang=TTS_LANG_MAP.get(selected_lang, "en"),
-									slow=False,
-								)
-	                            audio_bytes_obj = io.BytesIO()
-	                            tts.write_to_fp(audio_bytes_obj)
-	                            audio_bytes_obj.seek(0)
-	                            st.audio(audio_bytes_obj, format="audio/mp3")
-	                        except Exception as tts_err:
-	                             st.warning(
-	                                  f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
-								)
+                    if enable_audio_speech:
+                        st.markdown("---")
+                        st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
+                        try:
+                            from gtts import gTTS
+
+                            clean_text_for_speech = output_text
+                            clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+                            clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+
+                            tts = gTTS(
+                                text=clean_text_for_speech,
+                                lang=TTS_LANG_MAP.get(selected_lang, "en"),
+                                slow=False,
+                            )
+                            audio_bytes_obj = io.BytesIO()
+                            tts.write_to_fp(audio_bytes_obj)
+                            audio_bytes_obj.seek(0)
+                            st.audio(audio_bytes_obj, format="audio/mp3")
+                        except Exception as tts_err:
+                            st.warning(
+                                f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
+                            )
+
+                except APIError as e:
+                    st.error(f"API Error: {e.message}")
+                except Exception as e:
+                    st.error(f"An unexpected error occurred: {str(e)}")
+
 
 # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
