@@ -1929,7 +1929,7 @@ with tab1:
                     if enable_audio_speech:
                         st.markdown("---")
                         st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
-                            try:
+						try:
 								from gtts import gTTS
 	
 								clean_text_for_speech = output_text
