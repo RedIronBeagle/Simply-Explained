@@ -1932,8 +1932,8 @@ with tab1:
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {str(e)}")
 					
-					if enable_audio_speech:
-                        st.markdown("---")
+                    if enable_audio_speech:
+						st.markdown("---")
                         st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
                         try:
                             from gtts import gTTS
