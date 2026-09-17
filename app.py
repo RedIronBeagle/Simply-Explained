@@ -1910,9 +1910,9 @@ with tab1:
                     st.markdown("---")
                     st.markdown(output_text)
 
-	# Clean the text for PDF generation to prevent FPDF from dropping characters
-	safe_title = ''.join(c for c in pdf_title if ord(c) < 128) # Keeps standard printable ASCII for the PDF header
-	safe_output = output_text.encode('ascii', 'ignore').decode('ascii') # Removes unprintable multi-byte characters safely
+	# Clean the text for PDF generation to prevent FPDF from dropping character
+    safe_title = ''.join(c for c in pdf_title if ord(c) < 128) # Keeps standard printable ASCII for the PDF header
+    safe_output = output_text.encode('ascii', 'ignore').decode('ascii') # Removes unprintable multi-byte characters safely
 
 	pdf_data = generate_pdf_bytes(
 	    safe_title,
