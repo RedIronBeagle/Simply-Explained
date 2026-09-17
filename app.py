@@ -1926,7 +1926,7 @@ with tab1:
 						key="download_topic_pdf",
 					)
 
-						if enable_audio_speech:
+                    if enable_audio_speech:
 							st.markdown("---")
 							st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
 							try:
