@@ -21,9 +21,8 @@ from google import genai
 from google.genai.errors import APIError
 from google.genai import types
 import os
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 except ImportError:
     pass # Safely skipped on cloud environments like Streamlit Community Cloud
 #os.environ["GEMINI_API_KEY"] = ""
