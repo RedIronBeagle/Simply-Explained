@@ -21,8 +21,11 @@ from google import genai
 from google.genai.errors import APIError
 from google.genai import types
 import os
-from dotenv import load_dotenv
-load_dotenv()  # Loads variables from .env
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass # Safely skipped on cloud environments like Streamlit Community Cloud
 #os.environ["GEMINI_API_KEY"] = ""
     
 MODEL_ID = "gemini-3.6-flash"
