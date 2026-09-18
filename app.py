@@ -32,6 +32,17 @@ api_key = st.secrets["GEMINI_API_KEY"]
 # Initialize the client securely
 client = genai.Client(api_key=api_key)
 
+TTS_LANG_MAP = {
+    "English": "en",
+    "Spanish": "es",
+    "French": "fr",
+    "German": "de",
+    "Italian": "it",
+    "Portuguese": "pt",
+    "Japanese": "ja",
+    "Mandarin": "zh-cn",
+    "Hindi": "hi"
+}
 # ==============================================================================
 # [SECTION 2: LEGAL & TERMS OF SERVICE (EULA) TEXT CONTENT (LOCALIZED)]
 # ==============================================================================
@@ -1455,13 +1466,6 @@ UI_TEXT = {
 
 LANGUAGES = list(UI_TEXT.keys())
 
-import os
-import sys
-import datetime
-from bs4 import BeautifulSoup
-import requests
-from fpdf import FPDF
-from fpdf.enums import XPos, YPos
 
 # ==============================================================================
 # [SECTION 4: UTILITY FUNCTIONS (PDF EXPORT & FETCHERS)]
@@ -1483,14 +1487,14 @@ def prepare_media_part(uploaded_file):
         data=uploaded_file.getvalue(), mime_type=uploaded_file.type
     )
 
-
 def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     import re
-     
+    
     pdf = FPDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
 
+    # Aggressively strip out any non-standard/non-ASCII characters that break core fonts
     def sanitize(text: str) -> str:
         if not text:
             return ""
@@ -1558,8 +1562,6 @@ is_streamlit = "streamlit" in sys.modules or os.getenv("SERVER_PORT") == "8501"
 
 if is_streamlit:
     import streamlit as st
-    from google import genai
-    from google.genai import types
 
     st.set_page_config(page_title="Simply Explained", page_icon="💡", layout="wide")
 
@@ -1641,6 +1643,8 @@ if is_streamlit:
         unsafe_allow_html=True,
     )
 
+    env_api_key = os.getenv("GEMINI_API_KEY", "")
+
     if "selected_lang" not in st.session_state:
         st.session_state["selected_lang"] = "English"
     if "history_log" not in st.session_state:
@@ -1658,6 +1662,7 @@ if is_streamlit:
     )
     st.session_state["selected_lang"] = selected_lang
     
+    # CRITICAL: Re-assign texts immediately after capturing selected_lang
     texts = UI_TEXT.get(selected_lang, UI_TEXT["English"])
 
     tone_level = st.sidebar.selectbox(
@@ -1667,7 +1672,10 @@ if is_streamlit:
     enable_audio_speech = st.sidebar.checkbox(
         texts["read_aloud_label"],
         value=False,
-        help="Generates an audio player for each simplified response in the selected language.",
+        help=(
+            "Generates an audio player for each simplified response in the"
+            " selected language."
+        ),
         key="enable_audio_speech_unique_key",
     )
 
@@ -1682,7 +1690,7 @@ if is_streamlit:
     if st.sidebar.button(texts["start_over"], key="reset_app_button"):
         st.session_state.clear()
         st.rerun()
-         
+        
     @st.dialog("Terms & Conditions / Términos y Condiciones")
     def show_terms_dialog():
         st.markdown(TERMS_TEXT.get(selected_lang, TERMS_TEXT["English"]))
@@ -1692,15 +1700,31 @@ if is_streamlit:
 
     st.sidebar.markdown("---")
 
-    # Global Client Initialization (Vertex AI)
+    # Initialize the modern Google GenAI client correctly using Vertex AI mode for AQ tokens
+    from google import genai
+    from google.genai import types
+
     client = genai.Client(
         vertexai=True,
-        project="sunny-incentive-387017",
+        project="sunny-incentive-387017",  # Replace with your GCP project ID
         location="us-central1",
+        http_options=types.HttpOptions(
+            headers={"Authorization": ""}
+        )
     )
 
+# --- FULL RESET START OVER BUTTON ---
+if st.button("🔄 Start Over (Reset All)", use_container_width=True, key="global_full_reset_btn"):
+    # Clear every single key stored in session state
+    for key in list(st.session_state.keys()):
+        del st.session_state[key]
+    
+    # Force the app to completely reload from scratch
+    st.rerun()
+
+
 # ==============================================================================
-# [SECTION 7: MAIN TAB NAVIGATION SETUP]
+# [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
 # ==============================================================================
 if is_streamlit:
     tab1, tab2, tab3 = st.tabs(
@@ -1710,41 +1734,50 @@ if is_streamlit:
 # ==============================================================================
 # [SECTION 6: CORE GENERATION & RESPONSE RENDERING ENGINE]
 # ==============================================================================
-if is_streamlit:
-    with tab1:
-        with st.form("simply_explained_form"):
-            topic = st.text_input("Question:")
-            submitted = st.form_submit_button(texts.get("submit_button", "Simplify"))
+from google.genai import types
 
-            if 'audio_value' not in locals():
-                audio_value = None
+with st.form("simply_explained_form"):
+    topic = st.text_input("Question:")
+    submitted = st.form_submit_button(texts.get("submit_button", "Simplify"))
 
-            if submitted:
-                if not topic and audio_value is None:
-                    st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
-                else:
-                    spinner_text = texts["spinners"].get(depth_level, texts["simplifying_spinner"])
-                    with st.spinner(spinner_text):
-                        try:
-                            full_prompt = f"Explain the following topic with a tone of {tone_level} and a depth level of {depth_level}: {topic}"
-                            
-                            response = client.models.generate_content(
-                                model=MODEL_ID,
-                                contents=full_prompt,
-                            )
-                            output_text = response.text
-                            st.success("Live API Connected Successfully!")
+    if 'audio_value' not in locals():
+        audio_value = None
 
-                        except Exception as api_err:
-                            output_text = f"Live Error Caught: {api_err}"
+    if submitted:
+        if not topic and audio_value is None:
+            st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
+        else:
+            spinner_text = texts["spinners"].get(depth_level, texts["simplifying_spinner"])
+            with st.spinner(spinner_text):
+                try:
+                    client = genai.Client(
+                        vertexai=True,
+                        project="238164610704",
+                        location="us-central1",
+                        http_options=types.HttpOptions(
+#                            headers={"Authorization": ""}
+                        )
+                    )
 
-                        st.session_state["last_response"] = output_text
-                        st.markdown("### Explanation")
-                        st.markdown(output_text)
+                    full_prompt = f"Explain the following topic as a {persona_choice} with a depth level of {depth_level}: {topic}"
+                    
+                    response = client.models.generate_content(
+                        model=MODEL_ID,
+                        contents=full_prompt,
+                    )
+                    output_text = response.text
+                    st.success("Live API Connected Successfully!")
+
+                except Exception as api_err:
+                    output_text = f"Live Error Caught: {api_err}"
+
+                st.session_state["last_response"] = output_text
+                st.markdown("### Explanation")
+                st.markdown(output_text)
 
 
 # ==============================================================================
-# [SECTION 8: TAB 1 - MAIN INTERFACE (TEXT BOX RESTORED, AUDIO REMOVED)]
+# [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
 # ==============================================================================
 with tab1:
     title_map = {
@@ -1774,29 +1807,51 @@ with tab1:
         unsafe_allow_html=True,
     )
     st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
-    
-    st.markdown("---")
 
-    # Restored "Question:" Text Input Box & Simplify Button
-    user_topic = st.text_input(
-        texts["topic_label"], 
-        placeholder=texts["topic_placeholder"], 
-        key="main_topic_input_field"
+    topic = st.text_input(
+        texts["topic_label"],
+        placeholder=texts["topic_placeholder"],
+        key="main_topic_input_field",
     )
     
-    submitted = st.button(texts["button_label"], key="main_generate_btn")
+    st.markdown("---")
+    st.markdown(f"### {texts['voice_section_title']}")
+    st.markdown(texts['voice_instruction'])
+    
+    st.markdown(
+        """
+        <style>
+        div[data-testid="stAudioInput"] {
+            transform: scale(1.00);
+            transform-origin: top left;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
+    
+    st.markdown("")
+    submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
 
     if submitted:
-        api_key = os.getenv("GEMINI_API_KEY", "")
+        api_key = st.secrets.get("GEMINI_API_KEY", "")
 
-        if not user_topic:
-            st.error(texts["no_topic"])
+        if not api_key:
+            st.error(texts["no_api"])
+        elif not topic and audio_value is None:
+            st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
         else:
             spinner_text = texts["spinners"].get(
                 depth_level, texts["simplifying_spinner"]
             )
             with st.spinner(spinner_text):
                 try:
+                    client = genai.Client(api_key=api_key)
+
                     if depth_level in ["Easy", "Fácil", "Einfach", "Facile", "आसान", "简单", "簡単", "쉬움"]:
                         depth_instruction = (
                             f"Complexity Tier: EASY. Explain using ultra-plain,"
@@ -1813,7 +1868,18 @@ with tab1:
                             f" rigorous, deeply technical breakdown in {selected_lang}. You MUST use Google Search grounding (tools=[types.Tool(google_search=types.GoogleSearch())]) to query live authoritative references and official documentation matching the topic. In the 8th pillar ('Where Do We Find It (Verification & Sources)'), explicitly list these grounding sources as clickable markdown links."
                         )
 
-                    display_title = user_topic
+                    if audio_value is not None:
+                        input_payload = [
+                            f"Listen to this audio inquiry and explain the topic in {selected_lang} at the {depth_level} tier, following all system instructions:",
+                            types.Part.from_bytes(data=audio_value.getvalue(), mime_type="audio/wav")
+                        ]
+                        display_title = "Voice Inquiry Audio"
+                    else:
+                        input_payload = (
+                            f"Explain or simplify this topic in {selected_lang} at"
+                            f" the {depth_level} tier: {topic}"
+                        )
+                        display_title = topic
 
                     system_instruction = (
                         f"You are an expert educator. Respond entirely and strictly"
@@ -1834,14 +1900,15 @@ with tab1:
 
                     gen_config_kwargs = {
                         "system_instruction": system_instruction,
-                        "temperature": 0.7
+                        "temperature": 0.8
                     }
                     if depth_level in ["Hard", "Difícil", "Schwierig", "Difficile", "कठिन", "困难", "高難度", "어려움"]:
                         gen_config_kwargs["tools"] = [types.Tool(google_search=types.GoogleSearch())]
 
+                    # 1. GENERATE CONTENT
                     response = client.models.generate_content(
                         model=MODEL_ID,
-                        contents=user_topic,
+                        contents=input_payload,
                         config=types.GenerateContentConfig(**gen_config_kwargs),
                     )
 
@@ -1851,296 +1918,296 @@ with tab1:
                     )
                     st.markdown("---")
                     st.markdown(output_text)
-                    
-                    st.session_state["history_log"].insert(
-                        0,
-                        {
-                            "timestamp": datetime.datetime.now().strftime(
-                                "%Y-%m-%d %H:%M:%S"
-                            ),
-                            "type": f"Topic Explanation ({depth_level})",
-                            "title": display_title,
-                            "content": output_text,
-                        },
-                    )
+
+                    # 2. PDF GENERATION
+                    safe_title = ''.join(c for c in f"Topic ({depth_level}): {display_title}" if ord(c) < 128)
+                    safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
 
                     pdf_data = generate_pdf_bytes(
-                        f"Topic ({depth_level}): {display_title}",
-                        output_text,
-                        texts["footer_text"],
+                        safe_title,
+                        safe_output,
+                        texts.get("footer_text", "Simply Explained Report"),
                     )
                     st.download_button(
                         label=texts.get("pdf_button", "📥 Download PDF Report"),
                         data=pdf_data,
-                        file_name=(
-                            f"Simply_Explained_{depth_level}_{display_title.replace(' ', '_')}.pdf"
-                        ),
+                        file_name=f"Simply_Explained_{display_title.replace(' ', '_')}.pdf",
                         mime="application/pdf",
                         key="download_topic_pdf",
                     )
-                    
-                    if enable_audio_speech:
-                        st.markdown("---")
-                        st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
-                        try:
-                            from gtts import gTTS
 
-                            clean_text_for_speech = output_text
-                            clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-                            clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
-
-                            tts = gTTS(
-                                text=clean_text_for_speech,
-                                lang=TTS_LANG_MAP.get(selected_lang, "en"),
-                                slow=False,
-                            )
-                            audio_bytes_obj = io.BytesIO()
-                            tts.write_to_fp(audio_bytes_obj)
-                            audio_bytes_obj.seek(0)
-                            st.audio(audio_bytes_obj, format="audio/mp3")
-                        except Exception as tts_err:
-                            st.warning(
-                                f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
-                            )
-
+                # --- CLOSE THE MAIN API TRY BLOCK HERE BEFORE AUDIO ---
+                except APIError as e:
+                    st.error(f"API Error: {e.message}")
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {str(e)}")
-					
+
+                # 3. AUDIO ACCESSIBILITY (OUTSIDE THE API TRY/EXCEPT BLOCK)
+                if enable_audio_speech:
+                    st.markdown("---")
+                    st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
+                    try:
+                        from gtts import gTTS
+
+                        clean_text_for_speech = output_text
+                        clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+                        clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+
+                        tts = gTTS(
+                            text=clean_text_for_speech,
+                            lang=TTS_LANG_MAP.get(selected_lang, "en"),
+                            slow=False,
+                        )
+                        audio_bytes_obj = io.BytesIO()
+                        tts.write_to_fp(audio_bytes_obj)
+                        audio_bytes_obj.seek(0)
+                        st.audio(audio_bytes_obj, format="audio/mp3")
+                    except Exception as tts_err:
+                        st.warning(
+                            f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
+                        )
+						
+
 # ==============================================================================
-# [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
-# ==============================================================================
+  # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
+  # ==============================================================================
 with tab2:
-    st.markdown(
-        f'<div class="fine-print-title">{texts["fine_print_title"]}</div>',
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        f'<div class="app-subtitle">{texts["fine_print_subtitle"]}</div>',
-        unsafe_allow_html=True,
-    )
-    st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
-    
-    mode_options = texts["input_modes"]
-    selected_mode_label = st.radio(
-        texts["choose_input_mode"], mode_options, key="fp_input_mode", horizontal=True
-    )
+	st.markdown(
+	    f'<div class="fine-print-title">{texts["fine_print_title"]}</div>',
+	    unsafe_allow_html=True,
+	)
+	st.markdown(
+	    f'<div class="app-subtitle">{texts["fine_print_subtitle"]}</div>',
+	    unsafe_allow_html=True,
+	)
+	st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
+	
+	mode_options = texts["input_modes"]
+	selected_mode_label = st.radio(
+	    texts["choose_input_mode"], mode_options, key="fp_input_mode", horizontal=True
+	)
 
-    fine_print_content = None
-    uploaded_media_part = None
-    
-    if selected_mode_label == mode_options[0]:
-        fine_print_content = st.text_area(
-            texts["paste_label"], key="fp_text", height=200
-        )
-    elif selected_mode_label == mode_options[1]:
-        fine_print_url = st.text_input(
-            texts["url_label"],
-            placeholder="https://example.com/terms",
-            key="fp_url",
-        )
-        if fine_print_url and st.button("Fetch URL Content"):
-            with st.spinner(texts["simplifying_spinner"]):
-                try:
-                    st.session_state["fetched_fp_text"] = fetch_url_text(
-                        fine_print_url
-                    )[:15000]
-                    st.success("Successfully fetched webpage text!")
-                except Exception as e:
-                    st.error(f"Could not fetch URL content: {str(e)}")
-        fine_print_content = st.session_state.get("fetched_fp_text", "")
-        if fine_print_content:
-            st.text_area(
-                "Fetched Text Preview:",
-                fine_print_content,
-                height=150,
-                disabled=True,
-            )
-    elif selected_mode_label == mode_options[2]:
-        uploaded_file = st.file_uploader(
-            texts["upload_label"], type=["png", "jpg", "jpeg", "webp"]
-        )
-        if uploaded_file:
-            st.image(
-                uploaded_file, caption="Uploaded Image Preview", use_container_width=True
-            )
-            uploaded_media_part = prepare_media_part(uploaded_file)
-    elif selected_mode_label == mode_options[3]:
-        uploaded_file = st.file_uploader(
-            texts["upload_pdf_label"], type=["pdf"]
-        )
-        if uploaded_file:
-            st.info(
-                f"📄 PDF Uploaded: **{uploaded_file.name}**"
-                f" ({round(uploaded_file.size / 1024, 1)} KB)"
-            )
-            uploaded_media_part = prepare_media_part(uploaded_file)
-    
-    if st.button(texts["decode_button"], key="fine_print_btn"):
-        if (
-            selected_mode_label in [mode_options[0], mode_options[1]]
-            and not fine_print_content
-        ):
-            st.warning("Please provide valid text or a URL before decoding.")
-        elif (
-            selected_mode_label in [mode_options[2], mode_options[3]]
-            and not uploaded_media_part
-        ):
-            st.warning("Please upload a file before decoding.")
-        else:
-            with st.spinner(texts["simplifying_spinner"]):
-                try:
-                    system_instruction = (
-                        f"You are a skilled legal analyst. Respond entirely and"
-                        f" strictly in: {selected_lang}. Structure your analysis"
-                        f" using these exact headers: 1)"
-                        f" {texts['fine_print_headers'][0]}, 2)"
-                        f" {texts['fine_print_headers'][1]}, 3)"
-                        f" {texts['fine_print_headers'][2]}, 4)"
-                        f" {texts['fine_print_headers'][3]}, 5)"
-                        f" {texts['fine_print_headers'][4]}, 6)"
-                        f" {texts['fine_print_headers'][5]}, and 7)"
-                        f" {texts['fine_print_headers'][6]}."
-                    )
-                
-                    contents = (
-                        [
-                            uploaded_media_part,
-                            (
-                                "Please analyze and decode the provided document in"
-                                f" {selected_lang}."
-                            ),
-                        ]
-                        if uploaded_media_part
-                        else [
-                            (
-                                "Please analyze and decode the following document text"
-                                f" in {selected_lang}:\n\n{fine_print_content}"
-                            )
-                        ]
-                    )
-                
-                    response = client.models.generate_content(
-                        model=MODEL_ID,
-                        contents=contents,
-                        config=types.GenerateContentConfig(
-                            system_instruction=system_instruction, temperature=0.3
-                        ),
-                    )
-                
-                    output_text = response.text + f"\n\n{texts['footer_text']}"
-                    st.success(
-                        texts["ready"].get(depth_level, "Your response is ready")
-                    )
-                
-                    output_lower = output_text.lower()
-                    if any(
-                        kw in output_lower
-                        for kw in [
-                            "high risk",
-                            "severe",
-                            "penalty",
-                            "red",
-                            "alto riesgo",
-                            "severo",
-                        ]
-                    ):
-                        risk_level = "High"
-                    elif any(
-                        kw in output_lower
-                        for kw in [
-                            "medium risk",
-                            "caution",
-                            "moderate",
-                            "yellow",
-                            "riesgo medio",
-                        ]
-                    ):
-                        risk_level = "Medium"
-                    else:
-                        risk_level = "Low"
-                
-                    st.markdown("---")
-                    st.markdown("### 🚦 Document Risk Summary Stoplight")
-                    if risk_level == "High":
-                        st.markdown(
-                            '<div style="padding: 12px; border-radius: 6px;'
-                            " background-color: rgba(255, 0, 0, 0.1); border: 1px solid"
-                            ' red; font-weight: 600;">🔴 High Risk: Severe penalties or'
-                            " heavy exit barriers identified!</div>",
-                            unsafe_allow_html=True,
-                        )
-                    elif risk_level == "Medium":
-                        st.markdown(
-                            '<div style="padding: 12px; border-radius: 6px;'
-                            " background-color: rgba(255, 255, 0, 0.1); border: 1px"
-                            ' solid orange; font-weight: 600;">🟡 Medium Risk: Proceed'
-                            " with caution. Notice periods or restrictive clauses"
-                            " detected.</div>",
-                            unsafe_allow_html=True,
-                        )
-                    else:
-                        st.markdown(
-                            '<div style="padding: 12px; border-radius: 6px;'
-                            " background-color: rgba(0, 255, 0, 0.1); border: 1px solid"
-                            ' green; font-weight: 600;">🟢 Low Risk: Document terms'
-                            " appear standard.</div>",
-                            unsafe_allow_html=True,
-                        )
-                
-                    st.markdown("---")
-                    st.markdown(output_text)
-                
-                    st.session_state["history_log"].insert(
-                        0,
-                        {
-                            "timestamp": datetime.datetime.now().strftime(
-                                "%Y-%m-%d %H:%M:%S"
-                            ),
-                            "type": "Document Decode",
-                            "title": "Document / Contract Analysis",
-                            "content": output_text,
-                        },
-                    )
-                
-                    pdf_data = generate_pdf_bytes(
-                        "Document / Contract Analysis",
-                        output_text,
-                        texts["footer_text"],
-                    )
-                    st.download_button(
-                        label="📥 Download Legal Decoding PDF",
-                        data=pdf_data,
-                        file_name="Document_Decoding_Report.pdf",
-                        mime="application/pdf",
-                        key="download_doc_pdf",
-                    )
-                
-                    if enable_audio_speech:
-                        st.markdown("---")
-                        st.markdown("### 🔊 Audio Accessibility Feed")
-                        try:
-                            from gtts import gTTS
-                
-                            clean_text_for_speech = output_text
-                            clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-                            clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
-                
-                            tts = gTTS(
-                                text=clean_text_for_speech,
-                                lang=TTS_LANG_MAP.get(selected_lang, "en"),
-                                slow=False,
-                            )
-                            audio_bytes = io.BytesIO()
-                            tts.write_to_fp(audio_bytes)
-                            audio_bytes.seek(0)
-                            st.audio(audio_bytes, format="audio/mp3")
-                        except Exception as tts_err:
-                            st.warning(
-                                f"Could not generate audio stream: {str(tts_err)}"
-                            )
-                
-                except Exception as e:
-                    st.error(f"An unexpected error occurred: {str(e)}")
+	fine_print_content = None
+	uploaded_media_part = None
+	
+	if selected_mode_label == mode_options[0]:
+	  fine_print_content = st.text_area(
+	      texts["paste_label"], key="fp_text", height=200
+	  )
+	elif selected_mode_label == mode_options[1]:
+	  fine_print_url = st.text_input(
+	      texts["url_label"],
+	      placeholder="https://example.com/terms",
+	      key="fp_url",
+	  )
+	  if fine_print_url and st.button("Fetch URL Content"):
+	    with st.spinner(texts["simplifying_spinner"]):
+	      try:
+	        st.session_state["fetched_fp_text"] = fetch_url_text(
+	            fine_print_url
+	        )[:15000]
+	        st.success("Successfully fetched webpage text!")
+	      except Exception as e:
+	        st.error(f"Could not fetch URL content: {str(e)}")
+	  fine_print_content = st.session_state.get("fetched_fp_text", "")
+	  if fine_print_content:
+	    st.text_area(
+	        "Fetched Text Preview:",
+	        fine_print_content,
+	        height=150,
+	        disabled=True,
+	    )
+	elif selected_mode_label == mode_options[2]:
+	  uploaded_file = st.file_uploader(
+	      texts["upload_label"], type=["png", "jpg", "jpeg", "webp"]
+	  )
+	  if uploaded_file:
+	    st.image(
+	        uploaded_file, caption="Uploaded Image Preview", use_container_width=True
+	    )
+	    uploaded_media_part = prepare_media_part(uploaded_file)
+	elif selected_mode_label == mode_options[3]:
+	  uploaded_file = st.file_uploader(
+	      texts["upload_pdf_label"], type=["pdf"]
+	  )
+	  if uploaded_file:
+	    st.info(
+	        f"📄 PDF Uploaded: **{uploaded_file.name}**"
+	        f" ({round(uploaded_file.size / 1024, 1)} KB)"
+	    )
+	    uploaded_media_part = prepare_media_part(uploaded_file)
+	
+	if st.button(texts["decode_button"], key="fine_print_btn"):
+	  if not api_key:
+	    st.error(texts["no_api"])
+	  elif (
+	      selected_mode_label in [mode_options[0], mode_options[1]]
+	      and not fine_print_content
+	  ):
+	    st.warning("Please provide valid text or a URL before decoding.")
+	  elif (
+	      selected_mode_label in [mode_options[2], mode_options[3]]
+	      and not uploaded_media_part
+	  ):
+	    st.warning("Please upload a file before decoding.")
+	  else:
+	    with st.spinner(texts["simplifying_spinner"]):
+	      try:
+	        client = genai.Client(api_key=api_key)
+	        system_instruction = (
+	            f"You are a skilled legal analyst. Respond entirely and"
+	            f" strictly in: {selected_lang}. Structure your analysis"
+	            f" using these exact headers: 1)"
+	            f" {texts['fine_print_headers'][0]}, 2)"
+	            f" {texts['fine_print_headers'][1]}, 3)"
+	            f" {texts['fine_print_headers'][2]}, 4)"
+	            f" {texts['fine_print_headers'][3]}, 5)"
+	            f" {texts['fine_print_headers'][4]}, 6)"
+	            f" {texts['fine_print_headers'][5]}, and 7)"
+	            f" {texts['fine_print_headers'][6]}."
+	        )
+	
+	        contents = (
+	            [
+	                uploaded_media_part,
+	                (
+	                    "Please analyze and decode the provided document in"
+	                    f" {selected_lang}."
+	                ),
+	            ]
+	            if uploaded_media_part
+	            else [
+	                (
+	                    "Please analyze and decode the following document text"
+	                    f" in {selected_lang}:\n\n{fine_print_content}"
+	                )
+	            ]
+	        )
+	
+	        response = client.models.generate_content(
+	            model=MODEL_ID,
+	            contents=contents,
+	            config=types.GenerateContentConfig(
+	                system_instruction=system_instruction, temperature=0.3
+	            ),
+	        )
+	
+	        output_text = response.text + f"\n\n{texts['footer_text']}"
+	        st.success(
+	            texts["ready"].get(depth_level, "Your response is ready")
+	        )
+	
+	        output_lower = output_text.lower()
+	        if any(
+	            kw in output_lower
+	            for kw in [
+	                "high risk",
+	                "severe",
+	                "penalty",
+	                "red",
+	                "alto riesgo",
+	                "severo",
+	            ]
+	        ):
+	          risk_level = "High"
+	        elif any(
+	            kw in output_lower
+	            for kw in [
+	                "medium risk",
+	                "caution",
+	                "moderate",
+	                "yellow",
+	                "riesgo medio",
+	            ]
+	        ):
+	          risk_level = "Medium"
+	        else:
+	          risk_level = "Low"
+	
+	        st.markdown("---")
+	        st.markdown("### 🚦 Document Risk Summary Stoplight")
+	        if risk_level == "High":
+	          st.markdown(
+	              '<div style="padding: 12px; border-radius: 6px;'
+	              " background-color: rgba(255, 0, 0, 0.1); border: 1px solid"
+	              ' red; font-weight: 600;">🔴 High Risk: Severe penalties or'
+	              " heavy exit barriers identified!</div>",
+	              unsafe_allow_html=True,
+	          )
+	        elif risk_level == "Medium":
+	          st.markdown(
+	              '<div style="padding: 12px; border-radius: 6px;'
+	              " background-color: rgba(255, 255, 0, 0.1); border: 1px"
+	              ' solid orange; font-weight: 600;">🟡 Medium Risk: Proceed'
+	              " with caution. Notice periods or restrictive clauses"
+	              " detected.</div>",
+	              unsafe_allow_html=True,
+	          )
+	        else:
+	          st.markdown(
+	              '<div style="padding: 12px; border-radius: 6px;'
+	              " background-color: rgba(0, 255, 0, 0.1); border: 1px solid"
+	              ' green; font-weight: 600;">🟢 Low Risk: Document terms'
+	              " appear standard.</div>",
+	              unsafe_allow_html=True,
+	          )
+	
+	        st.markdown("---")
+	        st.markdown(output_text)
+	
+	        st.session_state["history_log"].insert(
+	            0,
+	            {
+	                "timestamp": datetime.datetime.now().strftime(
+	                    "%Y-%m-%d %H:%M:%S"
+	                ),
+	                "type": "Document Decode",
+	                "title": "Document / Contract Analysis",
+	                "content": output_text,
+	            },
+	        )
+	
+	        pdf_data = generate_pdf_bytes(
+	            "Document / Contract Analysis",
+	            output_text,
+	            texts["footer_text"],
+	        )
+	        st.download_button(
+	            label="📥 Download Legal Decoding PDF",
+	            data=pdf_data,
+	            file_name="Document_Decoding_Report.pdf",
+	            mime="application/pdf",
+	            key="download_doc_pdf",
+	        )
+	
+	        if enable_audio_speech:
+	          st.markdown("---")
+	          st.markdown("### 🔊 Audio Accessibility Feed")
+	          try:
+	            from gtts import gTTS
+	
+	            clean_text_for_speech = output_text
+	            clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+	            clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+	
+	            tts = gTTS(
+	                text=clean_text_for_speech,
+	                lang=TTS_LANG_MAP.get(selected_lang, "en"),
+	                slow=False,
+	            )
+	            audio_bytes = io.BytesIO()
+	            tts.write_to_fp(audio_bytes)
+	            audio_bytes.seek(0)
+	            st.audio(audio_bytes, format="audio/mp3")
+	          except Exception as tts_err:
+	            st.warning(
+	                f"Could not generate audio stream: {str(tts_err)}"
+	            )
+	
+	      except APIError as e:
+	        st.error(f"API Error: {e.message}")
+	      except Exception as e:
+	        st.error(f"An unexpected error occurred: {str(e)}")
 
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
@@ -2400,8 +2467,8 @@ with tab3:
     def clear_escape_data():
         st.session_state["escape_text_area"] = ""
         st.session_state["fetched_fp_text"] = ""
-        if "escape_extra_hint_input_unique" in st.session_state:
-            st.session_state["escape_extra_hint_input_unique"] = ""
+        if "escape_extra_hint_tab3_unique" in st.session_state:
+            st.session_state["escape_extra_hint_tab3_unique"] = ""
 
     # 6 - Execute Suite
     st.markdown(f'<div class="section-card">', unsafe_allow_html=True)
@@ -2419,9 +2486,8 @@ with tab3:
             active_persona_title_str = "End My Suffering"
             st.session_state["trigger_end_suffering_exec"] = False
 
-        api_key = os.getenv("GEMINI_API_KEY", "")
         if not api_key:
-            st.error(texts.get("no_api", "API key not found."))
+            st.error(texts["no_api"])
         elif not escape_text_input:
             st.warning(texts["escape_no_text"])
         else:
@@ -2431,7 +2497,7 @@ with tab3:
                     
                     if selected_persona_key == "Grandma Filter":
                         persona_behavior = (
-                            "You are operating under the 'Grandma Filter' persona. 75-year-old speak with absolute warmth, profound patience, gentle wisdom, and immense maternal comfort. "
+                            "You are operating under the 'Grandma Filter' persona.  75-year-old speak with absolute warmth, profound patience, gentle wisdom, and immense maternal comfort. "
                             "STRICT CONSTRAINT: Never use offensive language, profanity, or aggression. "
                         )
                     elif selected_persona_key == "10-Year-Old Mindset":
@@ -2492,4 +2558,3 @@ with tab3:
 
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
-	
