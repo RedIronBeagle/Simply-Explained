@@ -21,14 +21,16 @@ from google import genai
 from google.genai.errors import APIError
 from google.genai import types
 import os
+
 # Safely grab the API key from Streamlit secrets or environment variables
-api_key = os.getenv("GEMINI_API_KEY") or st.secrets.get("GEMINI_API_KEY", "")
+try:
+    api_key = os.getenv("GEMINI_API_KEY") or st.secrets.get("GEMINI_API_KEY", "")
+except Exception:
+    api_key = os.getenv("GEMINI_API_KEY", "")
+
 if api_key:
     os.environ["GEMINI_API_KEY"] = api_key
-except ImportError:
-    pass # Safely skipped on cloud environments like Streamlit Community Cloud
-#os.environ["GEMINI_API_KEY"] = ""
-    
+        
 MODEL_ID = "gemini-3.6-flash"
 
 # Streamlit automatically grabs it from secrets.toml (locally) or Cloud Dashboard (production)
