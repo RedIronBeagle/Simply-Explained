@@ -1506,7 +1506,7 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     pdf.cell(
         0,
         10,
-        "The report - Simply Explained",
+        "Simply Explained - The Report",
         new_x=XPos.LMARGIN,
         new_y=YPos.NEXT,
         align="L",
@@ -1855,16 +1855,16 @@ with tab1:
                     if depth_level in ["Easy", "Fácil", "Einfach", "Facile", "आसान", "简单", "簡単", "쉬움"]:
                         depth_instruction = (
                             f"Complexity Tier: EASY. Explain using ultra-plain,"
-                            f" crystal-clear everyday language in {selected_lang} for ages 16 and below."
+                            f" crystal-clear everyday language in {selected_lang} for ages 13 and below."
                         )
                     elif depth_level in ["Balanced", "Equilibrado", "Ausgewogen", "Équilibré", "संतुलित", "平衡", "バランス", "균형"]:
                         depth_instruction = (
-                            f"Complexity Tier: BALANCED. Provide a balanced, professional, well educated"
+                            f"Complexity Tier: BALANCED. Provide a balanced, professional, well educated nerd with a hint of teacher's pet. "
                             f" overview in {selected_lang}."
                         )
                     else:
                         depth_instruction = (
-                            f"Complexity Tier: HARD. Provide an advanced, academically, PHD"
+                            f"Complexity Tier: HARD. Provide an advanced, academically, PHD and quantum physics. all at a level of hate from everyone"
                             f" rigorous, deeply technical breakdown in {selected_lang}. You MUST use Google Search grounding (tools=[types.Tool(google_search=types.GoogleSearch())]) to query live authoritative references and official documentation matching the topic. In the 8th pillar ('Where Do We Find It (Verification & Sources)'), explicitly list these grounding sources as clickable markdown links."
                         )
 
@@ -1926,10 +1926,10 @@ with tab1:
                     pdf_data = generate_pdf_bytes(
                         safe_title,
                         safe_output,
-                        texts.get("footer_text", "Simply Explained Report"),
+                        texts.get("footer_text", "The Report - Simply Explained"),
                     )
                     st.download_button(
-                        label=texts.get("pdf_button", "📥 Download PDF Report"),
+                        label=texts.get("pdf_button", "📥 Press to Download PDF Report"),
                         data=pdf_data,
                         file_name=f"Simply_Explained_{display_title.replace(' ', '_')}.pdf",
                         mime="application/pdf",
