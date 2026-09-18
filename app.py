@@ -2348,7 +2348,7 @@ with tab3:
     st.markdown('<hr class="section-divider-faint">', unsafe_allow_html=True)
 
     # 4 - BS Meter
-    st.markdown(f"**<span style='color: #8B4513;'>💩</span> 4. BS-to-Meter (The more the level, the more the pile):**", unsafe_allow_html=True)
+    st.markdown(f"**<span style='color: #8B4513;'>💩</span> 4. Bullshit-to-Meter (The more the level, the more the pile):**", unsafe_allow_html=True)
     st.markdown(
         "<div style='font-size: 0.8rem; color: #94A3B8; margin-bottom: 4px;'>"
         "📍 <i>Click a tick mark below or drag slider to calibrate corporate BS level:</i>"
@@ -2357,12 +2357,12 @@ with tab3:
     )
     
     bs_options = [
-        "Level 1: Just a Little Poop (Shart)",
-        "Level 2: Light Corporate Spin",
-        "Level 3: Standard Marketing Fluff",
-        "Level 4: Heavy Corporate Jargon",
-        "Level 5: Maximum Enterprise Buzzword Bingo",
-        "Level 6: Peak Corporate Insanity (Total BS Galaxy)",
+        "Level 1: Just a Little Poop - but stincky",
+        "Level 2: Light Corporate billshit, they will forget",
+        "Level 3: Standard Bullshit - Like everyone else Bullshit",
+        "Level 4: Heavy Corporate Bullshit - Just enough hot sauce to burn",
+        "Level 5: Maximum - just about the amount of Bullshit to keep you file, forever",
+        "Level 6: Peak Corporate level - This goes on the wall, respect to this bullshiter",
     ]
     
     bs_level = st.select_slider(
@@ -2512,7 +2512,7 @@ with tab3:
                         persona_behavior = (
                             "You are operating under the 'End My Suffering' persona: A chillingly calm, hypnotic hybrid of Barack Obama's measured cadence and honesty "
                             "('Look...'), Christopher Walken's unpredictable syntax and bizarre emphasis, and Lucifer Morningstar's supreme, amused cosmic arrogance "
-                            "toward human bureaucracy. Deliver absolute psychological annihilation of the corporate text with a tab of elegance."
+                            "toward human bureaucracy. Deliver absolute psychological annihilation of the corporate text with a tab of elegance and love."
                         )
                     else:
                         persona_behavior = f"operating under the '{selected_persona_key}' persona with authentic, realistic tactical depth"
