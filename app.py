@@ -1506,7 +1506,7 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     pdf.cell(
         0,
         10,
-        "Simply Explained - Professional Report",
+        "The report - Simply Explained",
         new_x=XPos.LMARGIN,
         new_y=YPos.NEXT,
         align="L",
@@ -1684,13 +1684,22 @@ if is_streamlit:
     depth_level = st.sidebar.radio(
         texts["depth_label"], texts["depth_options"], key="depth_radio_key"
     )
+#
+#    st.sidebar.markdown("---")
+#
+#    if st.sidebar.button(texts["start_over"], key="reset_app_button"):
+#        st.session_state.clear()
+#        st.rerun()
 
-    st.sidebar.markdown("---")
+# --- FULL RESET START OVER BUTTON ---
+if st.button("🔄 Start Over (Reset All)", use_container_width=True, key="global_full_reset_btn"):
+    # Clear every single key stored in session state
+    for key in list(st.session_state.keys()):
+        del st.session_state[key]
+    
+    # Force the app to completely reload from scratch
+    st.rerun()
 
-    if st.sidebar.button(texts["start_over"], key="reset_app_button"):
-        st.session_state.clear()
-        st.rerun()
-        
     @st.dialog("Terms & Conditions / Términos y Condiciones")
     def show_terms_dialog():
         st.markdown(TERMS_TEXT.get(selected_lang, TERMS_TEXT["English"]))
