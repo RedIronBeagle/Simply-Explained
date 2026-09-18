@@ -1742,8 +1742,9 @@ if is_streamlit:
                         st.markdown("### Explanation")
                         st.markdown(output_text)
 
+
 # ==============================================================================
-# [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
+# [SECTION 8: TAB 1 - MAIN INTERFACE (TEXT BOX REMOVED)]
 # ==============================================================================
 with tab1:
     title_map = {
@@ -1773,18 +1774,11 @@ with tab1:
         unsafe_allow_html=True,
     )
     st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
-
-    topic = st.text_input(
-        texts["topic_label"],
-        placeholder=texts["topic_placeholder"],
-        key="main_topic_input_field",
-    )
     
     st.markdown("---")
     st.markdown(f"### {texts['voice_section_title']}")
     st.markdown(texts['voice_instruction'])
     
-    # CSS styling to scale the audio recorder input block
     st.markdown(
         """
         <style>
@@ -1807,8 +1801,8 @@ with tab1:
     if submitted:
         api_key = os.getenv("GEMINI_API_KEY", "")
 
-        if not topic and audio_value is None:
-            st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
+        if audio_value is None:
+            st.error("Please record an audio inquiry before generating.")
         else:
             spinner_text = texts["spinners"].get(
                 depth_level, texts["simplifying_spinner"]
@@ -1831,18 +1825,11 @@ with tab1:
                             f" rigorous, deeply technical breakdown in {selected_lang}. You MUST use Google Search grounding (tools=[types.Tool(google_search=types.GoogleSearch())]) to query live authoritative references and official documentation matching the topic. In the 8th pillar ('Where Do We Find It (Verification & Sources)'), explicitly list these grounding sources as clickable markdown links."
                         )
 
-                    if audio_value is not None:
-                        input_payload = [
-                            f"Listen to this audio inquiry and explain the topic in {selected_lang} at the {depth_level} tier, following all system instructions:",
-                            types.Part.from_bytes(data=audio_value.getvalue(), mime_type="audio/wav")
-                        ]
-                        display_title = "Voice Inquiry Audio"
-                    else:
-                        input_payload = (
-                            f"Explain or simplify this topic in {selected_lang} at"
-                            f" the {depth_level} tier: {topic}"
-                        )
-                        display_title = topic
+                    input_payload = [
+                        f"Listen to this audio inquiry and explain the topic in {selected_lang} at the {depth_level} tier, following all system instructions:",
+                        types.Part.from_bytes(data=audio_value.getvalue(), mime_type="audio/wav")
+                    ]
+                    display_title = "Voice Inquiry Audio"
 
                     system_instruction = (
                         f"You are an expert educator. Respond entirely and strictly"
@@ -1934,8 +1921,7 @@ with tab1:
 
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {str(e)}")
-
-
+					
 # ==============================================================================
 # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
 # ==============================================================================
