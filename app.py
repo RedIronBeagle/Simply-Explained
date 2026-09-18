@@ -32,17 +32,6 @@ api_key = st.secrets["GEMINI_API_KEY"]
 # Initialize the client securely
 client = genai.Client(api_key=api_key)
 
-TTS_LANG_MAP = {
-    "English": "en",
-    "Spanish": "es",
-    "French": "fr",
-    "German": "de",
-    "Italian": "it",
-    "Portuguese": "pt",
-    "Japanese": "ja",
-    "Mandarin": "zh-cn",
-    "Hindi": "hi"
-}
 # ==============================================================================
 # [SECTION 2: LEGAL & TERMS OF SERVICE (EULA) TEXT CONTENT (LOCALIZED)]
 # ==============================================================================
@@ -1554,7 +1543,6 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
 
     return pdf_bytes
 
-
 # ==============================================================================
 # [SECTION 5: STREAMLIT APP INITIALIZATION & STYLING]
 # ==============================================================================
@@ -1712,17 +1700,6 @@ if is_streamlit:
             headers={"Authorization": ""}
         )
     )
-
-# --- FULL RESET START OVER BUTTON ---
-if st.button("🔄 Start Over (Reset All)", use_container_width=True, key="global_full_reset_btn"):
-    # Clear every single key stored in session state
-    for key in list(st.session_state.keys()):
-        del st.session_state[key]
-    
-    # Force the app to completely reload from scratch
-    st.rerun()
-
-
 # ==============================================================================
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
 # ==============================================================================
@@ -1818,6 +1795,7 @@ with tab1:
     st.markdown(f"### {texts['voice_section_title']}")
     st.markdown(texts['voice_instruction'])
     
+    # CSS styling to scale the audio recorder input block
     st.markdown(
         """
         <style>
@@ -1836,9 +1814,11 @@ with tab1:
     
     st.markdown("")
     submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
-
+# -------------------
     if submitted:
-        api_key = st.secrets.get("GEMINI_API_KEY", "")
+        # Define the api_key and initialize the client cleanly inside the form submission
+#        api_key = ""
+        client = genai.Client(api_key=api_key)
 
         if not api_key:
             st.error(texts["no_api"])
@@ -1900,12 +1880,11 @@ with tab1:
 
                     gen_config_kwargs = {
                         "system_instruction": system_instruction,
-                        "temperature": 0.8
+                        "temperature": 0.7
                     }
                     if depth_level in ["Hard", "Difícil", "Schwierig", "Difficile", "कठिन", "困难", "高難度", "어려움"]:
                         gen_config_kwargs["tools"] = [types.Tool(google_search=types.GoogleSearch())]
 
-                    # 1. GENERATE CONTENT
                     response = client.models.generate_content(
                         model=MODEL_ID,
                         contents=input_payload,
@@ -1918,55 +1897,62 @@ with tab1:
                     )
                     st.markdown("---")
                     st.markdown(output_text)
-
-                    # 2. PDF GENERATION
-                    safe_title = ''.join(c for c in f"Topic ({depth_level}): {display_title}" if ord(c) < 128)
-                    safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
+                    
+                    st.session_state["history_log"].insert(
+                        0,
+                        {
+                            "timestamp": datetime.datetime.now().strftime(
+                                "%Y-%m-%d %H:%M:%S"
+                            ),
+                            "type": f"Topic Explanation ({depth_level})",
+                            "title": display_title,
+                            "content": output_text,
+                        },
+                    )
 
                     pdf_data = generate_pdf_bytes(
-                        safe_title,
-                        safe_output,
-                        texts.get("footer_text", "Simply Explained Report"),
+                        f"Topic ({depth_level}): {display_title}",
+                        output_text,
+                        texts["footer_text"],
                     )
                     st.download_button(
                         label=texts.get("pdf_button", "📥 Download PDF Report"),
                         data=pdf_data,
-                        file_name=f"Simply_Explained_{display_title.replace(' ', '_')}.pdf",
+                        file_name=(
+                            f"Simply_Explained_{depth_level}_{display_title.replace(' ', '_')}.pdf"
+                        ),
                         mime="application/pdf",
                         key="download_topic_pdf",
-                    )
+					)
+                    if enable_audio_speech:
+                        st.markdown("---")
+                        st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
+                        try:
+                            from gtts import gTTS
 
-                # --- CLOSE THE MAIN API TRY BLOCK HERE BEFORE AUDIO ---
+                            clean_text_for_speech = output_text
+                            clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+                            clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+
+                            tts = gTTS(
+                                text=clean_text_for_speech,
+                                lang=TTS_LANG_MAP.get(selected_lang, "en"),
+                                slow=False,
+                            )
+                            audio_bytes_obj = io.BytesIO()
+                            tts.write_to_fp(audio_bytes_obj)
+                            audio_bytes_obj.seek(0)
+                            st.audio(audio_bytes_obj, format="audio/mp3")
+                        except Exception as tts_err:
+                            st.warning(
+                                f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
+                            )
+
                 except APIError as e:
                     st.error(f"API Error: {e.message}")
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {str(e)}")
 
-                # 3. AUDIO ACCESSIBILITY (OUTSIDE THE API TRY/EXCEPT BLOCK)
-                if enable_audio_speech:
-                    st.markdown("---")
-                    st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
-                    try:
-                        from gtts import gTTS
-
-                        clean_text_for_speech = output_text
-                        clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-                        clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
-
-                        tts = gTTS(
-                            text=clean_text_for_speech,
-                            lang=TTS_LANG_MAP.get(selected_lang, "en"),
-                            slow=False,
-                        )
-                        audio_bytes_obj = io.BytesIO()
-                        tts.write_to_fp(audio_bytes_obj)
-                        audio_bytes_obj.seek(0)
-                        st.audio(audio_bytes_obj, format="audio/mp3")
-                    except Exception as tts_err:
-                        st.warning(
-                            f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
-                        )
-						
 
 # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
