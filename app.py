@@ -1744,7 +1744,7 @@ if is_streamlit:
 
 
 # ==============================================================================
-# [SECTION 8: TAB 1 - MAIN INTERFACE (TEXT BOX REMOVED)]
+# [SECTION 8: TAB 1 - MAIN INTERFACE (TEXT BOX RESTORED, AUDIO REMOVED)]
 # ==============================================================================
 with tab1:
     title_map = {
@@ -1776,33 +1776,21 @@ with tab1:
     st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
     
     st.markdown("---")
-    st.markdown(f"### {texts['voice_section_title']}")
-    st.markdown(texts['voice_instruction'])
-    
-    st.markdown(
-        """
-        <style>
-        div[data-testid="stAudioInput"] {
-            transform: scale(1.00);
-            transform-origin: top left;
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
 
-    audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
+    # Restored "Question:" Text Input Box & Simplify Button
+    user_topic = st.text_input(
+        texts["topic_label"], 
+        placeholder=texts["topic_placeholder"], 
+        key="main_topic_input_field"
+    )
     
-    st.markdown("")
-    submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
+    submitted = st.button(texts["button_label"], key="main_generate_btn")
 
     if submitted:
         api_key = os.getenv("GEMINI_API_KEY", "")
 
-        if audio_value is None:
-            st.error("Please record an audio inquiry before generating.")
+        if not user_topic:
+            st.error(texts["no_topic"])
         else:
             spinner_text = texts["spinners"].get(
                 depth_level, texts["simplifying_spinner"]
@@ -1825,11 +1813,7 @@ with tab1:
                             f" rigorous, deeply technical breakdown in {selected_lang}. You MUST use Google Search grounding (tools=[types.Tool(google_search=types.GoogleSearch())]) to query live authoritative references and official documentation matching the topic. In the 8th pillar ('Where Do We Find It (Verification & Sources)'), explicitly list these grounding sources as clickable markdown links."
                         )
 
-                    input_payload = [
-                        f"Listen to this audio inquiry and explain the topic in {selected_lang} at the {depth_level} tier, following all system instructions:",
-                        types.Part.from_bytes(data=audio_value.getvalue(), mime_type="audio/wav")
-                    ]
-                    display_title = "Voice Inquiry Audio"
+                    display_title = user_topic
 
                     system_instruction = (
                         f"You are an expert educator. Respond entirely and strictly"
@@ -1857,7 +1841,7 @@ with tab1:
 
                     response = client.models.generate_content(
                         model=MODEL_ID,
-                        contents=input_payload,
+                        contents=user_topic,
                         config=types.GenerateContentConfig(**gen_config_kwargs),
                     )
 
