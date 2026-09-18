@@ -9,7 +9,6 @@
 # ==============================================================================
 import datetime
 import io
-import os
 import re
 import sys
 import time
@@ -21,7 +20,9 @@ import streamlit as st
 from google import genai
 from google.genai.errors import APIError
 from google.genai import types
-
+import os
+from dotenv import load_dotenv
+load_dotenv()  # Loads variables from .env
 #os.environ["GEMINI_API_KEY"] = ""
     
 MODEL_ID = "gemini-3.6-flash"
