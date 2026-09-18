@@ -1712,6 +1712,17 @@ if is_streamlit:
             headers={"Authorization": ""}
         )
     )
+
+# --- FULL RESET START OVER BUTTON ---
+if st.button("🔄 Start Over (Reset All)", use_container_width=True, key="global_full_reset_btn"):
+    # Clear every single key stored in session state
+    for key in list(st.session_state.keys()):
+        del st.session_state[key]
+    
+    # Force the app to completely reload from scratch
+    st.rerun()
+
+
 # ==============================================================================
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
 # ==============================================================================
