@@ -1889,7 +1889,7 @@ with tab1:
 
                     gen_config_kwargs = {
                         "system_instruction": system_instruction,
-                        "temperature": 0.7
+                        "temperature": 0.8
                     }
                     if depth_level in ["Hard", "Difícil", "Schwierig", "Difficile", "कठिन", "困难", "高難度", "어려움"]:
                         gen_config_kwargs["tools"] = [types.Tool(google_search=types.GoogleSearch())]
