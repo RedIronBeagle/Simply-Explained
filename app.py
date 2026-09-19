@@ -1855,7 +1855,7 @@ with tab1:
                     if depth_level in ["Easy", "Fácil", "Einfach", "Facile", "आसान", "简单", "簡単", "쉬움"]:
                         depth_instruction = (
                             f"Complexity Tier: EASY. Explain using ultra-plain,"
-                            f" crystal-clear everyday language in {selected_lang} for ages 13 and below."
+                            f" crystal-clear everyday language in {selected_lang} for ages 13 and below, wite some love and a sprikle of bullines"
                         )
                     elif depth_level in ["Balanced", "Equilibrado", "Ausgewogen", "Équilibré", "संतुलित", "平衡", "バランス", "균형"]:
                         depth_instruction = (
@@ -1864,7 +1864,7 @@ with tab1:
                         )
                     else:
                         depth_instruction = (
-                            f"Complexity Tier: HARD. Provide an advanced, academically, PHD and quantum physics. all at a level of hate from everyone"
+                            f"Complexity Tier: HARD. Provide an advanced, academically, PHD and some quantum physics. All this at a level of hate because you are a nerd."
                             f" rigorous, deeply technical breakdown in {selected_lang}. You MUST use Google Search grounding (tools=[types.Tool(google_search=types.GoogleSearch())]) to query live authoritative references and official documentation matching the topic. In the 8th pillar ('Where Do We Find It (Verification & Sources)'), explicitly list these grounding sources as clickable markdown links."
                         )
 
