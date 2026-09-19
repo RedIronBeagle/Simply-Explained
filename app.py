@@ -56,7 +56,7 @@ Welcome to Simply Explained ("the Application," "we," "us," or "our"). By access
 If you do not agree to these Terms in their entirety, you must immediately cease all access to the Service, delete your browser cache, and quietly contemplate your life choices.
 
 #### 🔒 Privacy & Sensitive Document Notice
-* **We Keep Nothing:** We do not store, log, archive, or retain any personal documents, sensitive information, contracts, or text you provide to us. Data is processed transiently to deliver your simplified explanation and is discarded immediately after your session.
+* **We Keep Nothing:** Whatever you’re putting in here, trust us: nobody really cares. Your documents aren't special, and we have zero interest in wasting server space or brain cells remembering them. We wipe it out immediately because hoarding your boring clutter is useless to us anyway. Move on.
 * **Your Responsibility:** Please refrain from uploading deeply confidential credentials, financial keys, or restricted personal records. While we keep nothing, protecting your data privacy starts on your end.
 
 #### 1. Acceptance of Terms & Legal Capacity
