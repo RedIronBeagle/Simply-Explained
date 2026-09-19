@@ -382,7 +382,7 @@ UI_TEXT = {
         "button_label": "Let's go get it simplified",
         "start_over": "🧹 Start over",
         "terms_button": "📜 Terms & Conditions",
-        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>Privacy Note:</strong> We keep nothing. Any documents or sensitive information you provide are processed transiently and never stored. We make it simple to understand, securely and privately.</div>',
+        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>Privacy Note:</strong> Whatever you’re putting in here, trust us: nobody really cares. Your documents aren't special, and we have zero interest in wasting server space or brain cells remembering them. We wipe it out immediately because hoarding your boring clutter is useless to us anyway. Move on.</div>',
         "no_api": " Please enter your Gemini API key or set GEMINI_API_KEY environment variable.",
         "no_topic": "Please enter what you need to be explain.",
         "ready": {
@@ -492,7 +492,7 @@ UI_TEXT = {
         "button_label": "Vamos a simplificarlo",
         "start_over": "🧹 Empezar de nuevo",
         "terms_button": "📜 Términos y Condiciones",
-        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>Nota de Privacidad:</strong> No guardamos nada. Cualquier documento o información confidencial que proporciones se procesa de forma transitoria y nunca se almacena. Lo hacemos fácil de entender, de forma segura y privada.</div>',
+        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>Nota de Privacidad:</strong> Sea lo que sea que estés poniendo aquí, confía en nosotros: a nadie le importa realmente. Tus documentos no tienen nada de especial, y no tenemos el menor interés en malgastar espacio en el servidor ni neuronas en recordarlos. Lo borramos de inmediato porque acumular tu aburrido desorden no nos sirve de nada. Siguiente.</div>',
         "no_api": " Por favor ingresa tu clave API de Gemini o configura la variable de entorno GEMINI_API_KEY.",
         "no_topic": "Por favor ingresa lo que necesitas que te expliquemos.",
         "ready": {
@@ -602,7 +602,7 @@ UI_TEXT = {
         "button_label": "Allons simplifier cela",
         "start_over": "🧹 Recommencer",
         "terms_button": "📜 Conditions Générales",
-        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>Avis de confidentialité :</strong> Nous ne conservons rien. Vos documents sont traités de manière transitoire.</div>',
+        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>Avis de confidentialité :</strong> Quoi que vous mettiez ici, croyez-nous : tout le monde s'en fiche complètement. Vos documents n'ont rien de spécial, et nous n'avons aucun intérêt à gaspiller de l'espace serveur ou des neurones pour nous en souvenir. Nous effaçons tout immédiatement, car entasser votre bazar ennuyeux ne nous sert strictement à rien. Circulez.</div>',
         "no_api": " Veuillez entrer votre clé API Gemini.",
         "no_topic": "Veuillez entrer ce que vous souhaitez expliquer.",
         "ready": {
@@ -712,7 +712,7 @@ UI_TEXT = {
         "button_label": "Einfach erklären lassen",
         "start_over": "🧹 Von vorne beginnen",
         "terms_button": "📜 Allgemeine Geschäftsbedingungen",
-        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>Datenschutzhinweis:</strong> Wir speichern nichts.</div>',
+        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>Datenschutzhinweis:</strong> Was auch immer Sie hier eingeben, glauben Sie uns: Es interessiert wirklich niemanden. Ihre Dokumente sind nichts Besonderes, und wir haben kein Interesse daran, Serverspeicher oder Gehirnzellen daran zu verschwenden, uns daran zu erinnern. Wir löschen alles sofort, da das Ansammeln Ihres langweiligen Krams für uns ohnehin nutzlos ist. Weitergehen.</div>',
         "no_api": " Bitte geben Sie Ihren Gemini API-Schlüssel ein.",
         "no_topic": "Bitte geben Sie ein Thema ein.",
         "ready": {
@@ -822,7 +822,7 @@ UI_TEXT = {
         "button_label": "Semplifichiamolo",
         "start_over": "🧹 Ricomincia",
         "terms_button": "📜 Termini e Condizioni",
-        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>Nota sulla privacy:</strong> Non memorizziamo nulla.</div>',
+        "privacy_notice_box": '<div style="font-size: 0.8rem; padding: 10px; border-radius: 6px; background-color: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284C7; margin-bottom: 15px;">🔒 <strong>Nota sulla privacy:</strong> Qualsiasi cosa tu stia inserendo qui, fidati: non importa davvero a nessuno. I tuoi documenti non sono speciali e non abbiamo il minimo interesse a sprecare spazio sul server o neuroni per ricordarli. Cancelliamo tutto immediatamente perché accumulare il tuo noioso disordine non ci serve comunque a niente. Avanti il prossimo.</div>',
         "no_api": " Inserisci la tua chiave API Gemini.",
         "no_topic": "Inserisci ciò che desideri spiegare.",
         "ready": {
