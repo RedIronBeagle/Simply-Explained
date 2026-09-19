@@ -1692,7 +1692,7 @@ if is_streamlit:
 #        st.rerun()
 
 # --- FULL RESET START OVER BUTTON ---
-if st.button("🔄 Start Over (Reset All)", use_container_width=True, key="global_full_reset_btn"):
+if st.sidebar.button("🔄 Start Over (Reset All)", use_container_width=True, key="global_full_reset_btn"):
     # Clear every single key stored in session state
     for key in list(st.session_state.keys()):
         del st.session_state[key]
