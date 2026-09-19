@@ -1737,8 +1737,8 @@ if is_streamlit:
 from google.genai import types
 
 with st.form("simply_explained_form"):
-    topic = st.text_input("Question:")
-    submitted = st.form_submit_button(texts.get("submit_button", "Simplify"))
+    topic = st.text_input("-----")
+    submitted = st.form_submit_button(texts.get("submit_button", "----"))
 
     if 'audio_value' not in locals():
         audio_value = None
