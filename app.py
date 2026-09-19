@@ -2346,9 +2346,9 @@ with tab3:
     )
 
     st.markdown('<hr class="section-divider-faint">', unsafe_allow_html=True)
-
-    # 4 - BS Meter
-    st.markdown(f"**<span style='color: #8B4513;'>💩</span> 4. Bullshit-to-Meter (The more the level, the more the pile):**", unsafe_allow_html=True)
+	
+    # 4 - BS Meter (Multilingual Dynamic Translation)
+    st.markdown(f"**<span style='color: #8B4513;'>💩</span> 4. BS-to-Meter (The more the level, the more the pile):**", unsafe_allow_html=True)
     st.markdown(
         "<div style='font-size: 0.8rem; color: #94A3B8; margin-bottom: 4px;'>"
         "📍 <i>Click a tick mark below or drag slider to calibrate corporate BS level:</i>"
@@ -2356,14 +2356,60 @@ with tab3:
         unsafe_allow_html=True,
     )
     
-    bs_options = [
-        "Level 1: Just a Little Poop - but stincky",
-        "Level 2: Light Corporate billshit, they will forget",
-        "Level 3: Standard Bullshit - Like everyone else Bullshit",
-        "Level 4: Heavy Corporate Bullshit - Just enough hot sauce to burn",
-        "Level 5: Maximum - just about the amount of Bullshit to keep you file, forever",
-        "Level 6: Peak Corporate level - This goes on the wall, respect to this bullshiter",
-    ]
+    # Multilingual BS Meter dictionary
+    localized_bs_options = {
+        "English": [
+            "Level 1: Just a Little Poop - but stinky",
+            "Level 2: Light Corporate bullshit, they will forget",
+            "Level 3: Standard Bullshit - Like everyone else's Bullshit",
+            "Level 4: Heavy Corporate Bullshit - Just enough hot sauce to burn",
+            "Level 5: Maximum - Just about the amount of Bullshit to keep you filed, forever",
+            "Level 6: Peak Corporate level - This goes on the wall, respect to this bullshitter"
+        ],
+        "Spanish": [
+            "Nivel 1: Solo un poquito de popó, pero apestosa",
+            "Nivel 2: Estupidez corporativa ligera, ya se les olvidará",
+            "Nivel 3: Estupidez estándar, la misma de todos",
+            "Nivel 4: Estupidez corporativa pesada, con suficiente salsa picante para quemar",
+            "Nivel 5: Máximo, la cantidad justa de mierda para mantenerte archivado para siempre",
+            "Nivel 6: Nivel corporativo máximo, esto va directo a la pared, mis respetos a este farsante"
+        ],
+        "French": [
+            "Niveau 1: Juste un tout petit peu de caca, mais ça pue",
+            "Niveau 2: Légères conneries d'entreprise, ils vont oublier",
+            "Niveau 3: Conneries standard, comme tout le monde",
+            "Niveau 4: Lourdes conneries d'entreprise, juste assez de sauce piquante pour brûler",
+            "Niveau 5: Maximum, juste ce qu'il faut de foutaises pour vous garder classé pour toujours",
+            "Niveau 6: Sommet corporatif, ça va direct sur le mur, respect à ce baliverneur"
+        ],
+        "German": [
+            "Stufe 1: Nur ein bisschen Kacke – aber stinkend",
+            "Stufe 2: Leichter Firmen-Bullshit, die vergessen das schon",
+            "Stufe 3: Standard-Bullshit – wie der Bullshit von allen anderen auch",
+            "Stufe 4: Schwerer Firmen-Bullshit – gerade genug scharfe Soße zum Brennen",
+            "Stufe 5: Maximum – gerade so viel Bullshit, dass du für immer Akte bleibst",
+            "Stufe 6: Spitzen-Firmenlevel – Das kommt an die Wand, Respekt an diesen Bullshitter"
+        ],
+        "Italian": [
+            "Livello 1: Solo una piccola cacca, ma puzzolente",
+            "Livello 2: Leggere cazzate aziendali, se ne dimenticheranno",
+            "Livello 3: Cazzate standard, le stesse di tutti gli altri",
+            "Livello 4: Pesanti cazzate aziendali, giusto abbastanza salsa piccante per bruciare",
+            "Livello 5: Massimo, più o meno la quantità di cazzate necessaria per tenerti archiviato per sempre",
+            "Livello 6: Livello aziendale supremo, questo va dritto sulla bacheca, rispetto per questo cazzaro"
+        ],
+        "Portuguese": [
+            "Nível 1: Só um pouquinho de cocô, mas fedido",
+            "Nível 2: Bobagem corporativa leve, eles vão esquecer",
+            "Nível 3: Bobagem padrão, igual à de todo mundo",
+            "Nível 4: Bobagem corporativa pesada, pimenta o suficiente para queimar",
+            "Nível 5: Máximo, quase a quantidade certa de besteira para te manter arquivado para sempre",
+            "Nível 6: Pico corporativo, isso vai direto para a parede, respeito a esse embusteiro"
+        ]
+    }
+    
+    # Fallback to English if selected language isn't explicitly pinned here
+    bs_options = localized_bs_options.get(selected_lang, localized_bs_options["English"])
     
     bs_level = st.select_slider(
         "Select BS Level",
@@ -2374,6 +2420,7 @@ with tab3:
     )
     
     current_bs_index = bs_options.index(bs_level) + 1
+
     st.markdown(
         f'<div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #64748B; padding: 0 2px; margin-top: -8px; margin-bottom: 4px;">'
         f'<span>| L1</span><span>| L2</span><span>| L3</span><span>| L4</span><span>| L5</span><span>| L6</span>'
