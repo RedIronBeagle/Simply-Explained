@@ -439,7 +439,7 @@ UI_TEXT = {
         "escape_subtitle": "Explaining the things we need to escape from.",
         "escape_badge": "🚪 **The ultimate * Get me out * Intelligence Lab is Active and ready for use** .",
         "escape_doc_section": "📄 Let's see (read) what you need help with.",
-        "escape_text_label": "Paste any stuff that you need help understanding, simplifying, and get out.",
+        "escape_text_label": "Paste any stuff that you need help understanding, simplifying, and get out of.",
         "escape_text_placeholder": "Paste it here...",
         "escape_hint_label": "Add any detail you need to concentrate in:",
         "escape_hint_placeholder": "e.g., Want to escalate priority immediately...",
