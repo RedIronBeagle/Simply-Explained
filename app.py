@@ -1651,6 +1651,7 @@ if is_streamlit:
     if "history_log" not in st.session_state:
         st.session_state["history_log"] = []
 
+# 1. Language Selector
     selected_lang = st.sidebar.selectbox(
         "🌐 **Language**",
         LANGUAGES,
@@ -1662,24 +1663,27 @@ if is_streamlit:
         key="language_selector",
     )
     st.session_state["selected_lang"] = selected_lang
-    
-    # CRITICAL: Re-assign texts immediately after capturing selected_lang
     texts = UI_TEXT.get(selected_lang, UI_TEXT["English"])
 
+    # 2. Tone Selector
     tone_level = st.sidebar.selectbox(
         texts["tone_label"], texts["tone_options"], key="tone_radio_key"
     )
 
+    # 3. Read Aloud Checkbox
     enable_audio_speech = st.sidebar.checkbox(
         texts["read_aloud_label"],
         value=False,
-        help=(
-            "Generates an audio player for each simplified response in the"
-            " selected language."
-        ),
+        help="Generates an audio player for each simplified response in the selected language.",
         key="enable_audio_speech_unique_key",
     )
 
+    st.sidebar.markdown("---")
+
+    # 4. Depth / Complexity Radio (The Easy, Balanced, Hard setting)
+    depth_level = st.sidebar.radio(
+        texts["depth_label"], texts["depth_options"], key="depth_radio_key"
+    )
 # --- FULL RESET START OVER BUTTON ---
 if st.sidebar.button("🔄 Start Over (Reset All)", use_container_width=True, key="global_full_reset_btn"):
     for key in list(st.session_state.keys()):
