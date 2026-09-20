@@ -1680,19 +1680,10 @@ if is_streamlit:
         key="enable_audio_speech_unique_key",
     )
 
-    st.sidebar.markdown("---")
-
-    depth_level = st.sidebar.radio(
-        texts["depth_label"], texts["depth_options"], key="depth_radio_key"
-    )
-
 # --- FULL RESET START OVER BUTTON ---
 if st.sidebar.button("🔄 Start Over (Reset All)", use_container_width=True, key="global_full_reset_btn"):
-    # Clear every single key stored in session state
     for key in list(st.session_state.keys()):
         del st.session_state[key]
-    
-    # Force the app to completely reload from scratch
     st.rerun()
 
 st.sidebar.markdown("---")
@@ -1711,46 +1702,50 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- TERMS & CONDITIONS MODAL & BUTTON ---
+# --- 1. TERMS & CONDITIONS MODAL & BUTTON ---
 @st.dialog("Terms of Service & EULA")
 def show_terms_dialog():
-    # Dynamically pulls the right language terms text, defaulting to English
     current_terms = TERMS_TEXT.get(selected_lang, TERMS_TEXT["English"])
     st.markdown(current_terms, unsafe_allow_html=True)
-    if st.button("Close Modal", key="close_terms_modal_btn"):
+    if st.button("Close", key="close_terms_modal_btn"):
         st.rerun()
 
-# Use localized text key for the button label
 terms_label = texts.get("terms_button", "📜 Terms & Conditions")
 if st.sidebar.button(terms_label, use_container_width=True, key="terms_button_sidebar_unique"):
     show_terms_dialog()
 
-st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
 
-# --- HELP & DOCUMENTATION EXPANDER ---
-help_title_text = texts.get("help_title", "💡 How to Use This App")
-help_s1_t = texts.get("help_s1_title", "1. Sidebar Settings")
-help_s1_d = texts.get("help_s1_desc", "Select your preferred language, complexity tier, and tone.")
-help_s2_t = texts.get("help_s2_title", "2. Tab 1 (Topic Simplifier)")
-help_s2_d = texts.get("help_s2_desc", "Type or dictate a subject for structured explanations, PDFs, and audio.")
-help_s3_t = texts.get("help_s3_title", "3. Tab 2 & Tab 3")
-help_s3_d = texts.get("help_s3_desc", "Explore document analysis, advanced operational labs, and session logs.")
+# --- 2. HOW TO USE THIS APP MODAL & BUTTON ---
+@st.dialog("💡 How to Use This App")
+def show_help_dialog():
+    help_s1_t = texts.get("help_s1_title", "1. Sidebar Settings")
+    help_s1_d = texts.get("help_s1_desc", "Select your preferred language, complexity tier, and tone.")
+    help_s2_t = texts.get("help_s2_title", "2. Tab 1 (Topic Simplifier)")
+    help_s2_d = texts.get("help_s2_desc", "Type or dictate a subject for structured explanations, PDFs, and audio.")
+    help_s3_t = texts.get("help_s3_title", "3. Tab 2 & Tab 3")
+    help_s3_d = texts.get("help_s3_desc", "Explore document analysis, advanced operational labs, and session logs.")
 
-with st.sidebar:
-    with st.expander(help_title_text):
-        st.markdown(f"""
-        **{help_s1_t}**  
-        {help_s1_d}
+    st.markdown(f"""
+    ### 💡 Quick Start Guide
+    
+    * **{help_s1_t}**  
+      {help_s1_d}
+      
+    * **{help_s2_t}**  
+      {help_s2_d}
+      
+    * **{help_s3_t}**  
+      {help_s3_d}
+    """)
+    if st.button("Close", key="close_help_modal_btn"):
+        st.rerun()
 
-        **{help_s2_t}**  
-        {help_s2_d}
-
-        **{help_s3_t}**  
-        {help_s3_d}
-        """)
+help_button_label = texts.get("help_title", "💡 How to Use This App")
+if st.sidebar.button(help_button_label, use_container_width=True, key="help_button_sidebar_unique"):
+    show_help_dialog()
 
 st.sidebar.markdown("---")
-
 # --- INITIALIZE THE GOOGLE GENAI CLIENT ---
 from google import genai
 from google.genai import types
