@@ -1982,13 +1982,12 @@ with tab1:
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {str(e)}")
 
-                # 3. AUDIO ACCESSIBILITY (OUTSIDE THE API TRY/EXCEPT BLOCK)
+               # 3. AUDIO ACCESSIBILITY (OUTSIDE THE API TRY/EXCEPT BLOCK)
                 if enable_audio_speech:
                     st.markdown("---")
                     st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
                     try:
                         from gtts import gTTS
-                        import base64
 
                         clean_text_for_speech = output_text
                         clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
@@ -2001,26 +2000,8 @@ with tab1:
                         )
                         audio_bytes_obj = io.BytesIO()
                         tts.write_to_fp(audio_bytes_obj)
-                        audio_bytes = audio_bytes_obj.getvalue()
-
-                        # Convert audio bytes to base64 for HTML embedding
-                        b64_audio = base64.b64encode(audio_bytes).decode()
-
-                        # Custom HTML audio element with forced 1.25x playback speed
-                        audio_html = f"""
-                            <audio id="speedAudio_{id(audio_bytes)}" controls style="width: 100%;">
-                                <source src="data:audio/mp3;base64,{b64_audio}" type="audio/mp3">
-                                Your browser does not support the audio element.
-                            </audio>
-                            <script>
-                                var audioElement = document.getElementById('speedAudio_{id(audio_bytes)}');
-                                if (audioElement) {{
-                                    audioElement.playbackRate = 1.25;
-                                }}
-                            </script>
-                        """
-                        st.markdown(audio_html, unsafe_allow_html=True)
-
+                        audio_bytes_obj.seek(0)
+                        st.audio(audio_bytes_obj, format="audio/mp3")
                     except Exception as tts_err:
                         st.warning(
                             f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
