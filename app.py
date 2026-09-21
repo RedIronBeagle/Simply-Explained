@@ -1982,13 +1982,12 @@ with tab1:
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {str(e)}")
 
-               # 3. AUDIO ACCESSIBILITY (HARDCODED 1.25x SPEED)
+               # 3. AUDIO ACCESSIBILITY (BULLETPROOF NATIVE PLAYER)
                 if enable_audio_speech:
                     st.markdown("---")
                     st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
                     try:
                         from gtts import gTTS
-                        import base64
 
                         clean_text_for_speech = output_text
                         clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
@@ -2003,29 +2002,15 @@ with tab1:
                         )
                         audio_bytes_obj = io.BytesIO()
                         tts.write_to_fp(audio_bytes_obj)
-                        audio_bytes = audio_bytes_obj.getvalue()
-                        b64_audio = base64.b64encode(audio_bytes).decode()
-
-                        # HTML audio player with a quick script that forces 1.25x speed on load
-                        audio_html = f"""
-                            <audio id="audio_125" controls style="width: 100%;">
-                                <source src="data:audio/mp3;base64,{b64_audio}" type="audio/mp3">
-                                Your browser does not support the audio element.
-                            </audio>
-                            <script>
-                                const audioEl = document.getElementById('audio_125');
-                                if (audioEl) {{
-                                    audioEl.playbackRate = 1.25;
-                                }}
-                            </script>
-                        """
-                        st.markdown(audio_html, unsafe_allow_html=True)
+                        audio_bytes_obj.seek(0)
+                        
+                        # Native Streamlit audio player (stable and reliable)
+                        st.audio(audio_bytes_obj, format="audio/mp3")
 
                     except Exception as tts_err:
                         st.warning(
                             f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
-                        )
-				
+                        )				
 # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
   # ==============================================================================
