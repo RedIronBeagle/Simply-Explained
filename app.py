@@ -1763,15 +1763,13 @@ client = genai.Client(
     )
 )
 
-
 # ==============================================================================
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
 # ==============================================================================
 if is_streamlit:
-    tab1, tab2, tab3, tab4 = st.tabs(
-        [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"], texts.get("tab4_name", "🎛️ Chaos & Operations Lab")]
+    tab1, tab2, tab3 = st.tabs(
+        [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
     )
-
 
 # ==============================================================================
 # [SECTION 6: CORE GENERATION & RESPONSE RENDERING ENGINE]
