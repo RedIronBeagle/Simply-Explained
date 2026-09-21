@@ -22,16 +22,6 @@ from google import genai
 from google.genai.errors import APIError
 from google.genai import types
 
-#os.environ["GEMINI_API_KEY"] = ""
-    
-MODEL_ID = "gemini-3.6-flash"
-
-# Streamlit automatically grabs it from secrets.toml (locally) or Cloud Dashboard (production)
-api_key = st.secrets["GEMINI_API_KEY"]
-
-# Initialize the client securely
-client = genai.Client(api_key=api_key)
-
 TTS_LANG_MAP = {
     "English": "en",
     "Spanish": "es",
@@ -43,6 +33,16 @@ TTS_LANG_MAP = {
     "Mandarin": "zh-cn",
     "Hindi": "hi"
 }
+#os.environ["GEMINI_API_KEY"] = ""
+    
+MODEL_ID = "gemini-3.6-flash"
+
+# Streamlit automatically grabs it from secrets.toml (locally) or Cloud Dashboard (production)
+api_key = st.secrets["GEMINI_API_KEY"]
+
+# Initialize the client securely
+client = genai.Client(api_key=api_key)
+
 # ==============================================================================
 # [SECTION 2: LEGAL & TERMS OF SERVICE (EULA) TEXT CONTENT (LOCALIZED)]
 # ==============================================================================
