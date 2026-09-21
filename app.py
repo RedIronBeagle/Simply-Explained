@@ -1982,65 +1982,30 @@ with tab1:
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {str(e)}")
 
-               # 3. AUDIO ACCESSIBILITY (LANGUAGE-DYNAMIC COMPACT SPEED CONTROL)
+               # 3. AUDIO ACCESSIBILITY (OUTSIDE THE API TRY/EXCEPT BLOCK)
                 if enable_audio_speech:
                     st.markdown("---")
                     st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
-                    
                     try:
-                        from gTTS import gTTS
-                        import base64
+                        from gtts import gTTS
 
-                        # Unique session state key for this specific output text
-                        audio_cache_key = f"audio_bytes_{abs(hash(output_text))}"
-                        speed_key = f"audio_speed_{abs(hash(output_text))}"
+                        clean_text_for_speech = output_text
+                        clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+                        clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
 
-                        # Initialize default speed if not set
-                        if speed_key not in st.session_state:
-                            st.session_state[speed_key] = 1.0  # Default normal speed
-
-                        # Generate or retrieve cached audio bytes
-                        if audio_cache_key not in st.session_state:
-                            clean_text_for_speech = output_text
-                            clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-                            clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
-
-                            lang_code = TTS_LANG_MAP.get(selected_lang, "en") if 'TTS_LANG_MAP' in globals() else "en"
-
-                            tts = gTTS(
-                                text=clean_text_for_speech,
-                                lang=lang_code,
-                                slow=False,
-                            )
-                            audio_bytes_obj = io.BytesIO()
-                            tts.write_to_fp(audio_bytes_obj)
-                            st.session_state[audio_cache_key] = audio_bytes_obj.getvalue()
-
-                        audio_bytes = st.session_state[audio_cache_key]
-                        current_speed = st.session_state[speed_key]
-
-                        # Render the native audio player
-                        st.audio(audio_bytes, format="audio/mp3")
-
-                        # Small, subtle expander for speed adjustment with dynamic localization text
-                        speed_label = texts.get('audio_speed_label', '⚙️ Change Speed')
-                        with st.expander(speed_label, expanded=False):
-                            selected_speed = st.radio(
-                                "Select multiplier:",
-                                [1.0, 1.25, 1.4],
-                                index=[1.0, 1.25, 1.4].index(current_speed) if current_speed in [1.0, 1.25, 1.4] else 0,
-                                horizontal=True,
-                                key=f"radio_{speed_key}"
-                            )
-                            if selected_speed != current_speed:
-                                st.session_state[speed_key] = selected_speed
-                                st.rerun()
-
+                        tts = gTTS(
+                            text=clean_text_for_speech,
+                            lang=TTS_LANG_MAP.get(selected_lang, "en"),
+                            slow=False,
+                        )
+                        audio_bytes_obj = io.BytesIO()
+                        tts.write_to_fp(audio_bytes_obj)
+                        audio_bytes_obj.seek(0)
+                        st.audio(audio_bytes_obj, format="audio/mp3")
                     except Exception as tts_err:
                         st.warning(
                             f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
                         )
-
 
 # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
