@@ -2008,17 +2008,14 @@ with tab1:
                     )
 
                     output_text = response.text + f"\n\n{texts['footer_text']}"
-                    # --- INSIDE YOUR TRY BLOCK ---
-                    try:
-                    # Your Gemini API call and output generation happens here...
                     
+                    # 2. RENDER OUTPUT & WATERMARKED PDF BUTTON
                     st.success(
                         texts["ready"].get(depth_level, "Your response is ready")
                     )
                     st.markdown("---")
                     st.markdown(output_text)
 
-                    # --- PUT THE PDF DOWNLOAD BUTTON HERE (STILL INSIDE THE TRY BLOCK) ---
                     safe_title = ''.join(c for c in f"Topic ({depth_level}): {display_title}" if ord(c) < 128)
                     safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
 
@@ -2036,28 +2033,10 @@ with tab1:
                         key=f"download_pdf_{abs(hash(output_text))}",
                     )
 
-                # --- NOW CLOSE WITH THE EXCEPT BLOCKS ---
-                except APIError as e:
-                    st.error(f"API Error: {e.message}")
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {str(e)}")
 
-                # --- AUDIO ACCESSIBILITY COMES AFTER ---
-                if enable_audio_speech:
-                    # ... your audio code ...
-    
-    # Build using our custom WatermarkedCanvas
-    doc.build(story, canvasmaker=WatermarkedCanvas)
-    
-    buffer.seek(0)
-    return buffer.getvalue()
-                # --- CLOSE THE MAIN API TRY BLOCK HERE BEFORE AUDIO ---
-                except APIError as e:
-                    st.error(f"API Error: {e.message}")
-                except Exception as e:
-                    st.error(f"An unexpected error occurred: {str(e)}")
-
-               # 3. AUDIO ACCESSIBILITY (OUTSIDE THE API TRY/EXCEPT BLOCK)
+                # 3. AUDIO ACCESSIBILITY
                 if enable_audio_speech:
                     st.markdown("---")
                     st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
@@ -2081,7 +2060,6 @@ with tab1:
                         st.warning(
                             f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
                         )
-
 # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
   # ==============================================================================
