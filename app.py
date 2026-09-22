@@ -28,19 +28,31 @@ from reportlab.pdfgen import canvas
 import io
 
 class WatermarkedCanvas(canvas.Canvas):
-    """Custom canvas to stamp a diagonal watermark on every page."""
+    """Two-pass canvas to stamp a reliable, background diagonal watermark."""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._saved_page_states = []
 
     def showPage(self):
-        self.draw_watermark()
-        super().showPage()
+        self._saved_page_states.append(dict(self.__dict__))
+        self._startPage()
+
+    def save(self):
+        num_pages = len(self._saved_page_states)
+        for state in self._saved_page_states:
+            self.__dict__.update(state)
+            self.draw_watermark()
+            super().showPage()
+        super().save()
 
     def draw_watermark(self):
         self.saveState()
-        self.setFont("Helvetica-Bold", 28)
-        self.setFillColorRGB(0.75, 0.75, 0.75) # Light grey
-        self.translate(300, 400)
+        self.setFont("Helvetica-Bold", 32)
+        # Light grey color so it sits softly in the background
+        self.setFillColorRGB(0.8, 0.8, 0.8)
+        
+        # Center of a standard Letter page (612 x 792 points)
+        self.translate(306, 396)
         self.rotate(45)
         self.drawCentredString(0, 0, "Simply-Explained * The Preview")
         self.restoreState()
