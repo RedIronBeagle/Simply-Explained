@@ -3,6 +3,9 @@ google-genai
 fpdf2
 beautifulsoup4
 requests
-streamlit
-gTTS
 pypdf
+gTTS
+google-generativeai
+streamlit
+dotenv
+reportlab
