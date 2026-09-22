@@ -2013,7 +2013,6 @@ with tab1:
                 )
                 st.markdown("---")
                 st.markdown(output_text)
-
                 # --- ADD THE DOWNLOAD BUTTON HERE ---
                 safe_title = ''.join(c for c in f"Topic ({depth_level}): {display_title}" if ord(c) < 128)
                 safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
