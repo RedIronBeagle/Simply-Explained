@@ -22,27 +22,6 @@ from google import genai
 from google.genai.errors import APIError
 from google.genai import types
 
-TTS_LANG_MAP = {
-    "English": "en",
-    "Spanish": "es",
-    "French": "fr",
-    "German": "de",
-    "Italian": "it",
-    "Portuguese": "pt",
-    "Japanese": "ja",
-    "Mandarin": "zh-cn",
-    "Hindi": "hi"
-}
-#os.environ["GEMINI_API_KEY"] = ""
-    
-MODEL_ID = "gemini-3.6-flash"
-
-# Streamlit automatically grabs it from secrets.toml (locally) or Cloud Dashboard (production)
-api_key = st.secrets["GEMINI_API_KEY"]
-
-# Initialize the client securely
-client = genai.Client(api_key=api_key)
-
 import io
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
@@ -102,6 +81,27 @@ def generate_watermarked_pdf(content_text, title="Escape Clause Document"):
     # Add Title
     story.append(Paragraph(title, title_style))
     story.append(Spacer(1, 10))
+
+TTS_LANG_MAP = {
+    "English": "en",
+    "Spanish": "es",
+    "French": "fr",
+    "German": "de",
+    "Italian": "it",
+    "Portuguese": "pt",
+    "Japanese": "ja",
+    "Mandarin": "zh-cn",
+    "Hindi": "hi"
+}
+#os.environ["GEMINI_API_KEY"] = ""
+    
+MODEL_ID = "gemini-3.6-flash"
+
+# Streamlit automatically grabs it from secrets.toml (locally) or Cloud Dashboard (production)
+api_key = st.secrets["GEMINI_API_KEY"]
+
+# Initialize the client securely
+client = genai.Client(api_key=api_key)
     
     # Clean and add paragraphs safely
     paragraphs = content_text.split('\n')
