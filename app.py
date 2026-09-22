@@ -1959,68 +1959,67 @@ with tab1:
                     st.markdown("---")
                     st.markdown(output_text)
 
-		from reportlab.lib.pagesizes import letter
-		from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-		from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-		from reportlab.pdfgen import canvas
-		import io
-		
-		class WatermarkedCanvas(canvas.Canvas):
-		    """Custom canvas to stamp a diagonal watermark on every page."""
-		    def __init__(self, *args, **kwargs):
-		        super().__init__(*args, **kwargs)
-		
-		    def showPage(self):
-		        self.draw_watermark()
-		        super().showPage()
-		
-		    def draw_watermark(self):
-		        self.saveState()
-		        self.setFont("Helvetica-Bold", 28)
-		        self.setFillColorRGB(0.75, 0.75, 0.75) # Light grey
-		        self.translate(300, 400)
-		        self.rotate(45)
-		        self.drawCentredString(0, 0, "Simply-Explained * The Preview")
-		        self.restoreState()
-		
-		def generate_pdf_bytes(title, content, footer):
-		    """Your existing function name, updated to use the watermark canvas."""
-		    buffer = io.BytesIO()
-		    doc = SimpleDocTemplate(
-		        buffer,
-		        pagesize=letter,
-		        rightMargin=54, leftMargin=54,
-		        topMargin=54, bottomMargin=54
-		    )
-		    
-		    styles = getSampleStyleSheet()
-		    title_style = ParagraphStyle(
-		        'DocTitle',
-		        parent=styles['Heading1'],
-		        fontSize=18,
-		        spaceAfter=15
-		    )
-		    body_style = ParagraphStyle(
-		        'DocBody',
-		        parent=styles['Normal'],
-		        fontSize=11,
-		        leading=16,
-		        spaceAfter=10
-		    )
-		    
-		    story = [Paragraph(title, title_style), Spacer(1, 10)]
-		    
-		    for p in content.split('\n'):
-		        if p.strip():
-		            safe_p = p.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-		            story.append(Paragraph(safe_p, body_style))
-		            
-		    # Build using our custom WatermarkedCanvas
-		    doc.build(story, canvasmaker=WatermarkedCanvas)
-		    
-		    buffer.seek(0)
-		    return buffer.getvalue()
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.pdfgen import canvas
+import io
 
+class WatermarkedCanvas(canvas.Canvas):
+    """Custom canvas to stamp a diagonal watermark on every page."""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def showPage(self):
+        self.draw_watermark()
+        super().showPage()
+
+    def draw_watermark(self):
+        self.saveState()
+        self.setFont("Helvetica-Bold", 28)
+        self.setFillColorRGB(0.75, 0.75, 0.75) # Light grey
+        self.translate(300, 400)
+        self.rotate(45)
+        self.drawCentredString(0, 0, "Simply-Explained * The Preview")
+        self.restoreState()
+
+def generate_pdf_bytes(title, content, footer):
+    """Your existing function name, updated to use the watermark canvas."""
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=letter,
+        rightMargin=54, leftMargin=54,
+        topMargin=54, bottomMargin=54
+    )
+    
+    styles = getSampleStyleSheet()
+    title_style = ParagraphStyle(
+        'DocTitle',
+        parent=styles['Heading1'],
+        fontSize=18,
+        spaceAfter=15
+    )
+    body_style = ParagraphStyle(
+        'DocBody',
+        parent=styles['Normal'],
+        fontSize=11,
+        leading=16,
+        spaceAfter=10
+    )
+    
+    story = [Paragraph(title, title_style), Spacer(1, 10)]
+    
+    for p in content.split('\n'):
+        if p.strip():
+            safe_p = p.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+            story.append(Paragraph(safe_p, body_style))
+            
+    # Build using our custom WatermarkedCanvas
+    doc.build(story, canvasmaker=WatermarkedCanvas)
+    
+    buffer.seek(0)
+    return buffer.getvalue()
                 # --- CLOSE THE MAIN API TRY BLOCK HERE BEFORE AUDIO ---
                 except APIError as e:
                     st.error(f"API Error: {e.message}")
