@@ -102,20 +102,6 @@ api_key = st.secrets["GEMINI_API_KEY"]
 
 # Initialize the client securely
 client = genai.Client(api_key=api_key)
-    
-    # Clean and add paragraphs safely
-    paragraphs = content_text.split('\n')
-    for p in paragraphs:
-        if p.strip():
-            # Escape basic HTML chars for reportlab paragraph safety
-            safe_p = p.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-            story.append(Paragraph(safe_p, body_style))
-            
-    # Build PDF using our custom watermarked canvas
-    doc.build(story, canvasmaker=WatermarkedCanvas)
-    
-    buffer.seek(0)
-    return buffer.getvalue()
 
 # ==============================================================================
 # [SECTION 2: LEGAL & TERMS OF SERVICE (EULA) TEXT CONTENT (LOCALIZED)]
