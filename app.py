@@ -43,6 +43,80 @@ api_key = st.secrets["GEMINI_API_KEY"]
 # Initialize the client securely
 client = genai.Client(api_key=api_key)
 
+import io
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.pdfgen import canvas
+
+class WatermarkedCanvas(canvas.Canvas):
+    """Custom canvas to stamp a diagonal watermark on every page."""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def showPage(self):
+        self.draw_watermark()
+        super().showPage()
+
+    def draw_watermark(self):
+        self.saveState()
+        # Set font and light grey color with transparency
+        self.setFont("Helvetica-Bold", 28)
+        self.setFillColorRGB(0.75, 0.75, 0.75)
+        
+        # Move to center of page, rotate 45 degrees, and draw text
+        self.translate(300, 400)
+        self.rotate(45)
+        self.drawCentredString(0, 0, "Simply-Explained * The Preview")
+        self.restoreState()
+
+def generate_watermarked_pdf(content_text, title="Escape Clause Document"):
+    buffer = io.BytesIO()
+    
+    # Setup document
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=letter,
+        rightMargin=54, leftMargin=54,
+        topMargin=54, bottomMargin=54
+    )
+    
+    styles = getSampleStyleSheet()
+    title_style = ParagraphStyle(
+        'DocTitle',
+        parent=styles['Heading1'],
+        fontSize=18,
+        spaceAfter=15,
+        textColor=styles['Primary'] if 'Primary' in styles else None
+    )
+    body_style = ParagraphStyle(
+        'DocBody',
+        parent=styles['Normal'],
+        fontSize=11,
+        leading=16,
+        spaceAfter=10
+    )
+    
+    story = []
+    
+    # Add Title
+    story.append(Paragraph(title, title_style))
+    story.append(Spacer(1, 10))
+    
+    # Clean and add paragraphs safely
+    paragraphs = content_text.split('\n')
+    for p in paragraphs:
+        if p.strip():
+            # Escape basic HTML chars for reportlab paragraph safety
+            safe_p = p.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+            story.append(Paragraph(safe_p, body_style))
+            
+    # Build PDF using our custom watermarked canvas
+    doc.build(story, canvasmaker=WatermarkedCanvas)
+    
+    buffer.seek(0)
+    return buffer.getvalue()
+
 # ==============================================================================
 # [SECTION 2: LEGAL & TERMS OF SERVICE (EULA) TEXT CONTENT (LOCALIZED)]
 # ==============================================================================
