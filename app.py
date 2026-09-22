@@ -2009,7 +2009,7 @@ with tab1:
 
                     output_text = response.text + f"\n\n{texts['footer_text']}"
                     # --- INSIDE YOUR TRY BLOCK ---
-            try:
+                    try:
                     # Your Gemini API call and output generation happens here...
                     
                     st.success(
