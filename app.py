@@ -1959,7 +1959,7 @@ with tab1:
                     st.markdown("---")
                     st.markdown(output_text)
 
-    from reportlab.lib.pagesizes import letter
+        from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.pdfgen import canvas
