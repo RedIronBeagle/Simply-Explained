@@ -2450,14 +2450,16 @@ with tab3:
     # Fallback to English if selected language isn't explicitly pinned here
     bs_options = localized_bs_options.get(selected_lang, localized_bs_options["English"])
     
+    # Grab the dynamic label based on the selected language
+    bs_label = texts.get("bs_meter_label", "Select BS Level")
+    
     bs_level = st.select_slider(
-        "Select BS Level",
+        bs_label,
         options=bs_options,
         value=bs_options[2],
         key="bs_meter_slider_tab3_unique",
         label_visibility="collapsed"
     )
-    
     current_bs_index = bs_options.index(bs_level) + 1
 
     st.markdown(
