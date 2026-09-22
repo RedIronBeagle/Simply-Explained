@@ -21,6 +21,61 @@ import streamlit as st
 from google import genai
 from google.genai.errors import APIError
 from google.genai import types
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.pdfgen import canvas
+import io
+
+class WatermarkedCanvas(canvas.Canvas):
+    """Custom canvas to stamp a diagonal watermark on every page."""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def showPage(self):
+        self.draw_watermark()
+        super().showPage()
+
+    def draw_watermark(self):
+        self.saveState()
+        self.setFont("Helvetica-Bold", 28)
+        self.setFillColorRGB(0.75, 0.75, 0.75) # Light grey
+        self.translate(300, 400)
+        self.rotate(45)
+        self.drawCentredString(0, 0, "Simply-Explained * The Preview")
+        self.restoreState()
+
+def generate_pdf_bytes(title, content, footer):
+    """Your existing function name, updated to use the watermark canvas."""
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=letter,
+        rightMargin=54, leftMargin=54,
+        topMargin=54, bottomMargin=54
+    )
+    
+    styles = getSampleStyleSheet()
+    title_style = ParagraphStyle(
+        'DocTitle',
+        parent=styles['Heading1'],
+        fontSize=18,
+        spaceAfter=15
+    )
+    body_style = ParagraphStyle(
+        'DocBody',
+        parent=styles['Normal'],
+        fontSize=11,
+        leading=16,
+        spaceAfter=10
+    )
+    
+    story = [Paragraph(title, title_style), Spacer(1, 10)]
+    
+    for p in content.split('\n'):
+        if p.strip():
+            safe_p = p.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+            story.append(Paragraph(safe_p, body_style))
 
 TTS_LANG_MAP = {
     "English": "en",
@@ -1954,67 +2009,29 @@ with tab1:
 
                     output_text = response.text + f"\n\n{texts['footer_text']}"
                     st.success(
-                        texts["ready"].get(depth_level, "Your response is ready")
-                    )
-                    st.markdown("---")
-                    st.markdown(output_text)
+                    texts["ready"].get(depth_level, "Your response is ready")
+                )
+                st.markdown("---")
+                st.markdown(output_text)
 
-        from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.pdfgen import canvas
-import io
+                # --- ADD THE DOWNLOAD BUTTON HERE ---
+                safe_title = ''.join(c for c in f"Topic ({depth_level}): {display_title}" if ord(c) < 128)
+                safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
 
-class WatermarkedCanvas(canvas.Canvas):
-    """Custom canvas to stamp a diagonal watermark on every page."""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def showPage(self):
-        self.draw_watermark()
-        super().showPage()
-
-    def draw_watermark(self):
-        self.saveState()
-        self.setFont("Helvetica-Bold", 28)
-        self.setFillColorRGB(0.75, 0.75, 0.75) # Light grey
-        self.translate(300, 400)
-        self.rotate(45)
-        self.drawCentredString(0, 0, "Simply-Explained * The Preview")
-        self.restoreState()
-
-def generate_pdf_bytes(title, content, footer):
-    """Your existing function name, updated to use the watermark canvas."""
-    buffer = io.BytesIO()
-    doc = SimpleDocTemplate(
-        buffer,
-        pagesize=letter,
-        rightMargin=54, leftMargin=54,
-        topMargin=54, bottomMargin=54
-    )
+                pdf_data = generate_pdf_bytes(
+                    safe_title,
+                    safe_output,
+                    texts.get("footer_text", "The Report - Simply Explained"),
+                )
+                
+                st.download_button(
+                    label=texts.get("pdf_button", "📥 Press to Download PDF Report"),
+                    data=pdf_data,
+                    file_name=f"Simply_Explained_{display_title.replace(' ', '_')}.pdf",
+                    mime="application/pdf",
+                    key=f"download_pdf_{abs(hash(output_text))}",
+                )
     
-    styles = getSampleStyleSheet()
-    title_style = ParagraphStyle(
-        'DocTitle',
-        parent=styles['Heading1'],
-        fontSize=18,
-        spaceAfter=15
-    )
-    body_style = ParagraphStyle(
-        'DocBody',
-        parent=styles['Normal'],
-        fontSize=11,
-        leading=16,
-        spaceAfter=10
-    )
-    
-    story = [Paragraph(title, title_style), Spacer(1, 10)]
-    
-    for p in content.split('\n'):
-        if p.strip():
-            safe_p = p.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-            story.append(Paragraph(safe_p, body_style))
-            
     # Build using our custom WatermarkedCanvas
     doc.build(story, canvasmaker=WatermarkedCanvas)
     
