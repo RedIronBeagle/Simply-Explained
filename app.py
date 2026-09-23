@@ -1891,6 +1891,66 @@ with tab1:
 
     audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
     
+# -----------------------------------------------
+
+# ==============================================================================
+# [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
+# ==============================================================================
+with tab1:
+    title_map = {
+        "English": "Simply Explained",
+        "Spanish": "Simplemente Explicado",
+        "French": "Simplement Expliqué",
+        "German": "Einfach Erklärt",
+        "Italian": "Semplicemente Spiegato",
+        "Portuguese": "Simplesmente Explicado",
+    }
+    subtitle_map = {
+        "English": "What You Need To Know",
+        "Spanish": "Lo Que Necesitas Saber",
+        "French": "Ce Que Vous Devez Savoir",
+        "German": "Was Sie Wissens Muessten",
+        "Italian": "Quello Che Devi Sapere",
+        "Portuguese": "O Que Voce Precisa Saber",
+    }
+    current_title = title_map.get(selected_lang, texts.get("app_main_title", "Simply Explained"))
+    current_subtitle = subtitle_map.get(selected_lang, texts.get("subtitle", "What you need to know"))
+
+    st.markdown(
+        f'<div class="app-title">{current_title}</div>', unsafe_allow_html=True
+    )
+    st.markdown(
+        f'<div class="app-subtitle">{current_subtitle}</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
+
+    topic = st.text_input(
+        texts["topic_label"],
+        placeholder=texts["topic_placeholder"],
+        key="main_topic_input_field",
+    )
+    
+    st.markdown("---")
+    st.markdown(f"### {texts['voice_section_title']}")
+    st.markdown(texts['voice_instruction'])
+    
+    st.markdown(
+        """
+        <style>
+        div[data-testid="stAudioInput"] {
+            transform: scale(1.00);
+            transform-origin: top left;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
+    
     st.markdown("")
     submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
 
@@ -2054,6 +2114,8 @@ with tab1:
                         key=f"download_pdf_{abs(hash(output_text))}",
                     )
                     # -----------------------------------------------
+
+
 # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
   # ==============================================================================
