@@ -1864,11 +1864,11 @@ with tab1:
     )
     st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
 
-    topic = st.text_input(
-        texts["topic_label"],
-        placeholder=texts["topic_placeholder"],
-        key="main_topic_input_field",
-    )
+    #topic = st.text_input(
+     #   texts["topic_label"],
+      #  placeholder=texts["topic_placeholder"],
+       # key="main_topic_input_field",
+   # )
     
     st.markdown("---")
     st.markdown(f"### {texts['voice_section_title']}")
