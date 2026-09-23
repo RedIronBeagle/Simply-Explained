@@ -24,13 +24,6 @@ from google.genai import types
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-#from reportlab.pdfgen import canvas
-#import io
-
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-import io
 
 def add_watermark(canvas_obj, doc):
     """Draws a high-visibility test watermark."""
