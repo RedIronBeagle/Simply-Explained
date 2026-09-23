@@ -1886,29 +1886,46 @@ with tab1:
         unsafe_allow_html=True,
     )
 
+    # 1. Capture Voice Input First
     audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
-
-    # Check if a new audio recording was just made and transcribe it
-    transcribed_topic = ""
+    
+    # 2. Transcribe and Autofill Session State (if new audio is recorded)
     if audio_value is not None:
-        with st.spinner("Transcribing your voice..."):
-            try:
-                # Use the secure API key client specifically for transcription
-                api_key = st.secrets.get("GEMINI_API_KEY", "")
-                trans_client = genai.Client(api_key=api_key)
-                
-                transcript_response = trans_client.models.generate_content(
-                    model=MODEL_ID,
-                    contents=[
-                        "Accurately transcribe this audio recording into plain text. Return only the transcription text, nothing else.",
-                        types.Part.from_bytes(data=audio_value.getvalue(), mime_type="audio/wav")
-                    ]
-                )
-                transcribed_topic = transcript_response.text.strip()
-                st.info(f"🎤 **Transcribed Topic:** {transcribed_topic}")
-            except Exception as e:
-                st.warning(f"Could not transcribe audio: {str(e)}")
-				
+        audio_bytes = audio_value.getvalue()
+        audio_hash = hash(audio_bytes)
+        
+        # Only transcribe if it's a fresh recording
+        if st.session_state.get("last_processed_audio_hash") != audio_hash:
+            with st.spinner("Transcribing your voice..."):
+                try:
+                    api_key = st.secrets.get("GEMINI_API_KEY", "")
+                    trans_client = genai.Client(api_key=api_key)
+                    
+                    transcript_response = trans_client.models.generate_content(
+                        model=MODEL_ID,
+                        contents=[
+                            "Accurately transcribe this audio recording into plain text. Return only the transcription text, nothing else.",
+                            types.Part.from_bytes(data=audio_bytes, mime_type="audio/wav")
+                        ]
+                    )
+                    transcribed_topic = transcript_response.text.strip()
+                    
+                    # Programmatically autofill the text input widget's state
+                    st.session_state["main_topic_input_field"] = transcribed_topic
+                    st.session_state["last_processed_audio_hash"] = audio_hash
+                    
+                    st.success(f"🎤 Autofilled: {transcribed_topic}")
+                except Exception as e:
+                    st.warning(f"Could not transcribe audio: {str(e)}")
+
+    st.markdown("---")
+
+    # 3. Render the Text Input Box (Fully editable and keyboard-friendly)
+    topic = st.text_input(
+        texts["topic_label"],
+        placeholder=texts["topic_placeholder"],
+        key="main_topic_input_field",
+    )
 
     # Use transcribed topic as a fallback if the text input box is left empty
     effective_topic = topic if topic else transcribed_topic
