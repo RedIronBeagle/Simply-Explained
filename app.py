@@ -1493,10 +1493,10 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     
     class PreviewBannerPDF(FPDF):
         def header(self):
-            # Top preview banner stamp
+            # Top preview banner stamp using safe ln=True
             self.set_font("helvetica", "B", 9)
             self.set_text_color(160, 160, 160) # Soft neutral grey
-            self.cell(0, 6, "--- SIMPLY-EXPLAINED * THE PREVIEW ---", align="C", new_x="LLEFT", new_y="NEXT")
+            self.cell(0, 6, "--- SIMPLY-EXPLAINED * THE PREVIEW ---", align="C", ln=True)
             self.ln(4)
 
         def footer(self):
@@ -1569,6 +1569,7 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
         pdf_bytes = bytes(pdf_output)
 
     return pdf_bytes
+
 
 # ==============================================================================
 # [SECTION 5: STREAMLIT APP INITIALIZATION & STYLING]
