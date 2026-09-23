@@ -1542,9 +1542,8 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     
     class WatermarkedPDF(FPDF):
         def header(self):
-            # Stamp a clear watermark header at the top of every page
             self.set_font("helvetica", "B", 10)
-            self.set_text_color(150, 150, 150) # Grey
+            self.set_text_color(150, 150, 150)
             self.cell(0, 5, "--- Simply-Explained * The Preview ---", align="C", new_x="LLEFT", new_y="NEXT")
             self.ln(10)
 
@@ -1552,12 +1551,11 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
     
-    # Reset text color to black for the main body
     pdf.set_text_color(0, 0, 0)
     
     # Title
     pdf.set_font("helvetica", "B", 16)
-    pdf.cell(0, 10, title, new_x="LLEFT", new_y="NEXT")
+    pdf.cell(0, 10, title, new_x="LEFT", new_y="NEXT")
     pdf.ln(5)
     
     # Body content
@@ -1572,6 +1570,7 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     pdf.multi_cell(0, 6, safe_footer)
     
     return bytes(pdf.output())
+
 
 # ==============================================================================
 # [SECTION 5: STREAMLIT APP INITIALIZATION & STYLING]
@@ -1738,6 +1737,7 @@ if st.sidebar.button(terms_label, use_container_width=True, key="terms_button_si
 st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
 
 # --- 2. HOW TO USE THIS APP MODAL & BUTTON ---
+	
 @st.dialog("💡 How to Use This App")
 def show_help_dialog():
     help_s1_t = texts.get("help_s1_title", "1. Sidebar Settings")
