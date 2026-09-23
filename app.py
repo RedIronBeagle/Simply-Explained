@@ -35,42 +35,41 @@ def add_watermark(canvas_obj, doc):
     canvas_obj.drawCentredString(0, 0, "Simply-Explained * The Preview")
     canvas_obj.restoreState()
 
-def generate__bytes(title, content, footer):
-    buffer = io.BytesIO()
-    doc = SimpleDocTemplate(
-        buffer,
-        pagesize=letter,
-        rightMargin=54, leftMargin=54,
-        topMargin=54, bottomMargin=54
-    )
+def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
+    import re
     
-    styles = getSampleStyleSheet()
-    title_style = ParagraphStyle(
-        'DocTitle',
-        parent=styles['Heading1'],
-        fontSize=18,
-        spaceAfter=15
-    )
-    body_style = ParagraphStyle(
-        'DocBody',
-        parent=styles['Normal'],
-        fontSize=11,
-        leading=16,
-        spaceAfter=10
-    )
+    class WatermarkedPDF(FPDF):
+        def header(self):
+            self.set_font("helvetica", "B", 10)
+            self.set_text_color(150, 150, 150)
+            self.cell(0, 5, "--- Simply-Explained * The Preview ---", align="C")
+            self.ln(10)
+
+    pdf = WatermarkedPDF()
+    pdf.add_page()
+    pdf.set_auto_page_break(auto=True, margin=15)
     
-    story = [Paragraph(title, title_style), Spacer(1, 10)]
+    pdf.set_text_color(0, 0, 0)
     
-    for p in content.split('\n'):
-        if p.strip():
-            safe_p = p.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-            story.append(Paragraph(safe_p, body_style))
-            
-    # Build using native page callbacks to stamp the watermark background
-    doc.build(story, onFirstPage=add_watermark, onLaterPages=add_watermark)
+    # Title
+    pdf.set_font("helvetica", "B", 16)
+    pdf.cell(0, 10, title)
+    pdf.ln(10)
     
-    buffer.seek(0)
-    return buffer.getvalue()
+    # Body content
+    pdf.set_font("helvetica", size=11)
+    for line in content.split('\n'):
+        safe_line = line.encode('latin-1', 'ignore').decode('latin-1')
+        pdf.multi_cell(0, 8, safe_line)
+    
+    pdf.ln(10)
+    pdf.set_font("helvetica", "I", 9)
+    safe_footer = footer_signoff.encode('latin-1', 'ignore').decode('latin-1')
+    pdf.multi_cell(0, 6, safe_footer)
+    
+    return bytes(pdf.output())
+	
+	
 TTS_LANG_MAP = {
     "English": "en",
     "Spanish": "es",
