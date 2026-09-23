@@ -1866,8 +1866,7 @@ with tab1:
      #   texts["topic_label"],
       #  placeholder=texts["topic_placeholder"],
         #key="main_topic_input_field",
-    )
-
+    #)
     st.markdown("---")
     st.markdown(f"### {texts['voice_section_title']}")
     st.markdown(texts['voice_instruction'])
