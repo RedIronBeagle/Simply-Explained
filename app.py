@@ -21,55 +21,7 @@ import streamlit as st
 from google import genai
 from google.genai.errors import APIError
 from google.genai import types
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
-def add_watermark(canvas_obj, doc):
-    """Draws a high-visibility test watermark."""
-    canvas_obj.saveState()
-    canvas_obj.setFont("Helvetica-Bold", 36)
-    canvas_obj.setFillColorRGB(0.3, 0.3, 0.3)  # Much darker grey for testing
-    canvas_obj.translate(300, 400)               # Center of letter page
-    canvas_obj.rotate(45)                        # Diagonal angle
-    canvas_obj.drawCentredString(0, 0, "Simply-Explained * The Preview")
-    canvas_obj.restoreState()
-
-def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
-    import re
-    
-    class WatermarkedPDF(FPDF):
-        def header(self):
-            self.set_font("helvetica", "B", 10)
-            self.set_text_color(150, 150, 150)
-            self.cell(0, 5, "--- Simply-Explained * The Preview ---", align="C")
-            self.ln(10)
-
-    pdf = WatermarkedPDF()
-    pdf.add_page()
-    pdf.set_auto_page_break(auto=True, margin=15)
-    
-    pdf.set_text_color(0, 0, 0)
-    
-    # Title
-    pdf.set_font("helvetica", "B", 16)
-    pdf.cell(0, 10, title)
-    pdf.ln(10)
-    
-    # Body content
-    pdf.set_font("helvetica", size=11)
-    for line in content.split('\n'):
-        safe_line = line.encode('latin-1', 'ignore').decode('latin-1')
-        pdf.multi_cell(0, 8, safe_line)
-    
-    pdf.ln(10)
-    pdf.set_font("helvetica", "I", 9)
-    safe_footer = footer_signoff.encode('latin-1', 'ignore').decode('latin-1')
-    pdf.multi_cell(0, 6, safe_footer)
-    
-    return bytes(pdf.output())
-	
-	
 TTS_LANG_MAP = {
     "English": "en",
     "Spanish": "es",
@@ -459,11 +411,11 @@ UI_TEXT = {
         "fine_print_title": "Simply Explained: Clauses, Conditions, Legal stuff, Obligations, and Other Documents ** We ** Need to Understand",
         "fine_print_subtitle": "Simply explaining and understanding stuff we never knew and other unexplained documents.",
         "choose_input_mode": "Choose how would you like to give us the information:",
-        "input_modes": ["Paste Text", "Web Link / URL", "Upload Image", "Upload "],
+        "input_modes": ["Paste Text", "Web Link / URL", "Upload Image", "Upload PDF"],
         "paste_label": "Paste, upload, or give us what you want simplified.",
         "url_label": "Paste URL to Privacy Policy or Terms of Service:",
         "upload_label": "Upload a document image or screenshot:",
-        "upload__label": "Upload a legal document or contract ():",
+        "upload_pdf_label": "Upload a legal document or contract (PDF):",
         "decode_button": "Let's go get it simplified",
         "simplifying_spinner": "Let's get ready to understand...",
         "fine_print_headers": [
@@ -1539,36 +1491,69 @@ def prepare_media_part(uploaded_file):
 def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     import re
     
-    class WatermarkedPDF(FPDF):
-        def header(self):
-            self.set_font("helvetica", "B", 10)
-            self.set_text_color(150, 150, 150)
-            self.cell(0, 5, "--- Simply-Explained * The Preview ---", align="C", new_x="LLEFT", new_y="NEXT")
-            self.ln(10)
-
-    pdf = WatermarkedPDF()
+    pdf = FPDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
-    
-    pdf.set_text_color(0, 0, 0)
-    
-    # Title
+
+    # Aggressively strip out any non-standard/non-ASCII characters that break core fonts
+    def sanitize(text: str) -> str:
+        if not text:
+            return ""
+        return re.sub(r'[^\x00-\x7F]+', '', text)
+
+    # Title Styling
     pdf.set_font("helvetica", "B", 16)
-    pdf.cell(0, 10, title, new_x="LEFT", new_y="NEXT")
-    pdf.ln(5)
-    
-    # Body content
-    pdf.set_font("helvetica", size=11)
-    for line in content.split('\n'):
-        safe_line = line.encode('latin-1', 'ignore').decode('latin-1')
-        pdf.multi_cell(0, 8, safe_line)
-    
-    pdf.ln(10)
+    pdf.set_text_color(2, 132, 199)
+    pdf.cell(
+        0,
+        10,
+        "Simply Explained - The Report",
+        new_x=XPos.LMARGIN,
+        new_y=YPos.NEXT,
+        align="L",
+    )
+
+    # Timestamp
     pdf.set_font("helvetica", "I", 9)
-    safe_footer = footer_signoff.encode('latin-1', 'ignore').decode('latin-1')
-    pdf.multi_cell(0, 6, safe_footer)
-    
-    return bytes(pdf.output())
+    pdf.set_text_color(100, 100, 100)
+    pdf.cell(
+        0,
+        6,
+        f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+        new_x=XPos.LMARGIN,
+        new_y=YPos.NEXT,
+        align="L",
+    )
+    pdf.ln(5)
+
+    # Report Title
+    pdf.set_font("helvetica", "B", 14)
+    pdf.set_text_color(30, 30, 30)
+    pdf.multi_cell(0, 8, sanitize(title))
+    pdf.ln(4)
+
+    # Main Content
+    pdf.set_font("helvetica", "", 10)
+    pdf.set_text_color(50, 50, 50)
+
+    raw_clean = content.replace("##", "").replace("###", "").replace("**", "")
+    pdf.multi_cell(0, 6, sanitize(raw_clean))
+
+    # Footer Signoff
+    pdf.ln(10)
+    pdf.set_font("helvetica", "I", 8)
+    pdf.set_text_color(120, 120, 120)
+
+    raw_signoff = footer_signoff.replace("---", "").strip()
+    pdf.multi_cell(0, 5, sanitize(raw_signoff))
+
+    pdf_output = pdf.output()
+    if isinstance(pdf_output, str):
+        pdf_bytes = pdf_output.encode("latin-1")
+    else:
+        pdf_bytes = bytes(pdf_output)
+
+    return pdf_bytes
 
 
 # ==============================================================================
@@ -1736,7 +1721,6 @@ if st.sidebar.button(terms_label, use_container_width=True, key="terms_button_si
 st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
 
 # --- 2. HOW TO USE THIS APP MODAL & BUTTON ---
-	
 @st.dialog("💡 How to Use This App")
 def show_help_dialog():
     help_s1_t = texts.get("help_s1_title", "1. Sidebar Settings")
@@ -1761,7 +1745,7 @@ def show_help_dialog():
     if st.button("Close", key="close_help_modal_btn"):
         st.rerun()
 
-help_button_label = texts.get("help_title", "💡 How to Use - Simplified")
+help_button_label = texts.get("help_title", "💡 How to Use This App")
 if st.sidebar.button(help_button_label, use_container_width=True, key="help_button_sidebar_unique"):
     show_help_dialog()
 
@@ -1831,66 +1815,6 @@ with st.form("simply_explained_form"):
                 st.markdown("### Explanation")
                 st.markdown(output_text)
 
-
-# ==============================================================================
-# [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
-# ==============================================================================
-with tab1:
-    title_map = {
-        "English": "Simply Explained",
-        "Spanish": "Simplemente Explicado",
-        "French": "Simplement Expliqué",
-        "German": "Einfach Erklärt",
-        "Italian": "Semplicemente Spiegato",
-        "Portuguese": "Simplesmente Explicado",
-    }
-    subtitle_map = {
-        "English": "What You Need To Know",
-        "Spanish": "Lo Que Necesitas Saber",
-        "French": "Ce Que Vous Devez Savoir",
-        "German": "Was Sie Wissens Muessten",
-        "Italian": "Quello Che Devi Sapere",
-        "Portuguese": "O Que Voce Precisa Saber",
-    }
-    current_title = title_map.get(selected_lang, texts.get("app_main_title", "Simply Explained"))
-    current_subtitle = subtitle_map.get(selected_lang, texts.get("subtitle", "What you need to know"))
-
-    st.markdown(
-        f'<div class="app-title">{current_title}</div>', unsafe_allow_html=True
-    )
-    st.markdown(
-        f'<div class="app-subtitle">{current_subtitle}</div>',
-        unsafe_allow_html=True,
-    )
-    st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
-
-    #topic = st.text_input(
-     #   texts["topic_label"],
-      #  placeholder=texts["topic_placeholder"],
-       # key="main_topic_input_field",
-   # )
-    
-    st.markdown("---")
-    st.markdown(f"### {texts['voice_section_title']}")
-    st.markdown(texts['voice_instruction'])
-    
-    st.markdown(
-        """
-        <style>
-        div[data-testid="stAudioInput"] {
-            transform: scale(1.00);
-            transform-origin: top left;
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
-    
-# -----------------------------------------------
 
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
@@ -2029,14 +1953,13 @@ with tab1:
                     )
 
                     output_text = response.text + f"\n\n{texts['footer_text']}"
-                    
-                    # 2. RENDER OUTPUT & WATERMARKED PDF BUTTON
                     st.success(
                         texts["ready"].get(depth_level, "Your response is ready")
                     )
                     st.markdown("---")
                     st.markdown(output_text)
 
+                    # 2. PDF GENERATION
                     safe_title = ''.join(c for c in f"Topic ({depth_level}): {display_title}" if ord(c) < 128)
                     safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
 
@@ -2045,19 +1968,21 @@ with tab1:
                         safe_output,
                         texts.get("footer_text", "The Report - Simply Explained"),
                     )
-                    
                     st.download_button(
                         label=texts.get("pdf_button", "📥 Press to Download PDF Report"),
                         data=pdf_data,
                         file_name=f"Simply_Explained_{display_title.replace(' ', '_')}.pdf",
                         mime="application/pdf",
-                        key=f"download_pdf_{abs(hash(output_text))}",
+                        key="download_topic_pdf",
                     )
 
+                # --- CLOSE THE MAIN API TRY BLOCK HERE BEFORE AUDIO ---
+                except APIError as e:
+                    st.error(f"API Error: {e.message}")
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {str(e)}")
 
-                # 3. AUDIO ACCESSIBILITY
+               # 3. AUDIO ACCESSIBILITY (OUTSIDE THE API TRY/EXCEPT BLOCK)
                 if enable_audio_speech:
                     st.markdown("---")
                     st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
@@ -2081,39 +2006,6 @@ with tab1:
                         st.warning(
                             f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
                         )
-
-# 1. GENERATE CONTENT & DISPLAY
-                    response = client.models.generate_content(
-                        model=MODEL_ID,
-                        contents=input_payload,
-                        config=types.GenerateContentConfig(**gen_config_kwargs),
-                    )
-
-                    output_text = response.text + f"\n\n{texts['footer_text']}"
-                    
-                    st.success(texts["ready"].get(depth_level, "Your response is ready"))
-                    st.markdown("---")
-                    st.markdown(output_text)
-
-                    # --- PLACE THE PDF DOWNLOAD BUTTON RIGHT HERE ---
-                    safe_title = ''.join(c for c in f"Topic ({depth_level}): {display_title}" if ord(c) < 128)
-                    safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
-
-                    pdf_data = generate_pdf_bytes(
-                        safe_title,
-                        safe_output,
-                        texts.get("footer_text", "The Report - Simply Explained"),
-                    )
-                    
-                    st.download_button(
-                        label=texts.get("pdf_button", "📥 Press to Download PDF Report"),
-                        data=pdf_data,
-                        file_name=f"Simply_Explained_{display_title.replace(' ', '_')}.pdf",
-                        mime="application/pdf",
-                        key=f"download_pdf_{abs(hash(output_text))}",
-                    )
-                    # -----------------------------------------------
-
 
 # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
