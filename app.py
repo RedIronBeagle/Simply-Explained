@@ -2022,6 +2022,38 @@ with tab1:
                         st.warning(
                             f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
                         )
+
+# 1. GENERATE CONTENT & DISPLAY
+                    response = client.models.generate_content(
+                        model=MODEL_ID,
+                        contents=input_payload,
+                        config=types.GenerateContentConfig(**gen_config_kwargs),
+                    )
+
+                    output_text = response.text + f"\n\n{texts['footer_text']}"
+                    
+                    st.success(texts["ready"].get(depth_level, "Your response is ready"))
+                    st.markdown("---")
+                    st.markdown(output_text)
+
+                    # --- PLACE THE PDF DOWNLOAD BUTTON RIGHT HERE ---
+                    safe_title = ''.join(c for c in f"Topic ({depth_level}): {display_title}" if ord(c) < 128)
+                    safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
+
+                    pdf_data = generate_pdf_bytes(
+                        safe_title,
+                        safe_output,
+                        texts.get("footer_text", "The Report - Simply Explained"),
+                    )
+                    
+                    st.download_button(
+                        label=texts.get("pdf_button", "📥 Press to Download PDF Report"),
+                        data=pdf_data,
+                        file_name=f"Simply_Explained_{display_title.replace(' ', '_')}.pdf",
+                        mime="application/pdf",
+                        key=f"download_pdf_{abs(hash(output_text))}",
+                    )
+                    # -----------------------------------------------
 # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
   # ==============================================================================
