@@ -35,7 +35,7 @@ def add_watermark(canvas_obj, doc):
     canvas_obj.drawCentredString(0, 0, "Simply-Explained * The Preview")
     canvas_obj.restoreState()
 
-def generate_pdf_bytes(title, content, footer):
+def generate__bytes(title, content, footer):
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(
         buffer,
@@ -460,11 +460,11 @@ UI_TEXT = {
         "fine_print_title": "Simply Explained: Clauses, Conditions, Legal stuff, Obligations, and Other Documents ** We ** Need to Understand",
         "fine_print_subtitle": "Simply explaining and understanding stuff we never knew and other unexplained documents.",
         "choose_input_mode": "Choose how would you like to give us the information:",
-        "input_modes": ["Paste Text", "Web Link / URL", "Upload Image", "Upload PDF"],
+        "input_modes": ["Paste Text", "Web Link / URL", "Upload Image", "Upload "],
         "paste_label": "Paste, upload, or give us what you want simplified.",
         "url_label": "Paste URL to Privacy Policy or Terms of Service:",
         "upload_label": "Upload a document image or screenshot:",
-        "upload_pdf_label": "Upload a legal document or contract (PDF):",
+        "upload__label": "Upload a legal document or contract ():",
         "decode_button": "Let's go get it simplified",
         "simplifying_spinner": "Let's get ready to understand...",
         "fine_print_headers": [
@@ -1540,70 +1540,38 @@ def prepare_media_part(uploaded_file):
 def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     import re
     
-    pdf = FPDF()
+    class WatermarkedPDF(FPDF):
+        def header(self):
+            # Stamp a clear watermark header at the top of every page
+            self.set_font("helvetica", "B", 10)
+            self.set_text_color(150, 150, 150) # Grey
+            self.cell(0, 5, "--- Simply-Explained * The Preview ---", align="C", new_x="LLEFT", new_y="NEXT")
+            self.ln(10)
+
+    pdf = WatermarkedPDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
-
-    # Aggressively strip out any non-standard/non-ASCII characters that break core fonts
-    def sanitize(text: str) -> str:
-        if not text:
-            return ""
-        return re.sub(r'[^\x00-\x7F]+', '', text)
-
-    # Title Styling
+    
+    # Reset text color to black for the main body
+    pdf.set_text_color(0, 0, 0)
+    
+    # Title
     pdf.set_font("helvetica", "B", 16)
-    pdf.set_text_color(2, 132, 199)
-    pdf.cell(
-        0,
-        10,
-        "Simply Explained - The Report",
-        new_x=XPos.LMARGIN,
-        new_y=YPos.NEXT,
-        align="L",
-    )
-
-    # Timestamp
-    pdf.set_font("helvetica", "I", 9)
-    pdf.set_text_color(100, 100, 100)
-    pdf.cell(
-        0,
-        6,
-        f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-        new_x=XPos.LMARGIN,
-        new_y=YPos.NEXT,
-        align="L",
-    )
+    pdf.cell(0, 10, title, new_x="LLEFT", new_y="NEXT")
     pdf.ln(5)
-
-    # Report Title
-    pdf.set_font("helvetica", "B", 14)
-    pdf.set_text_color(30, 30, 30)
-    pdf.multi_cell(0, 8, sanitize(title))
-    pdf.ln(4)
-
-    # Main Content
-    pdf.set_font("helvetica", "", 10)
-    pdf.set_text_color(50, 50, 50)
-
-    raw_clean = content.replace("##", "").replace("###", "").replace("**", "")
-    pdf.multi_cell(0, 6, sanitize(raw_clean))
-
-    # Footer Signoff
+    
+    # Body content
+    pdf.set_font("helvetica", size=11)
+    for line in content.split('\n'):
+        safe_line = line.encode('latin-1', 'ignore').decode('latin-1')
+        pdf.multi_cell(0, 8, safe_line)
+    
     pdf.ln(10)
-    pdf.set_font("helvetica", "I", 8)
-    pdf.set_text_color(120, 120, 120)
-
-    raw_signoff = footer_signoff.replace("---", "").strip()
-    pdf.multi_cell(0, 5, sanitize(raw_signoff))
-
-    pdf_output = pdf.output()
-    if isinstance(pdf_output, str):
-        pdf_bytes = pdf_output.encode("latin-1")
-    else:
-        pdf_bytes = bytes(pdf_output)
-
-    return pdf_bytes
-
+    pdf.set_font("helvetica", "I", 9)
+    safe_footer = footer_signoff.encode('latin-1', 'ignore').decode('latin-1')
+    pdf.multi_cell(0, 6, safe_footer)
+    
+    return bytes(pdf.output())
 
 # ==============================================================================
 # [SECTION 5: STREAMLIT APP INITIALIZATION & STYLING]
