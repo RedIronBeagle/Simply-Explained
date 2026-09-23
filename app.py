@@ -1890,21 +1890,21 @@ audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_record
     
     # Check if a new audio recording was just made
 transcribed_topic = ""
-    if audio_value is not None:
-        with st.spinner("Transcribing your voice..."):
-            try:
-                # Quick transcription call to Gemini using the audio bytes
-                transcript_response = client.models.generate_content(
-                    model=MODEL_ID,
-                    contents=[
-                        "Accurately transcribe this audio recording into plain text. Return only the transcription text, nothing else.",
-                        types.Part.from_bytes(data=audio_value.getvalue(), mime_type="audio/wav")
-                    ]
-                )
-                transcribed_topic = transcript_response.text.strip()
-                st.info(f"🎤 **Transcribed Topic:** {transcribed_topic}")
-            except Exception as e:
-                st.warning(f"Could not transcribe audio: {str(e)}")
+if audio_value is not None:
+	with st.spinner("Transcribing your voice..."):
+		try:
+			# Quick transcription call to Gemini using the audio bytes
+			transcript_response = client.models.generate_content(
+				model=MODEL_ID,
+				contents=[
+					"Accurately transcribe this audio recording into plain text. Return only the transcription text, nothing else.",
+					types.Part.from_bytes(data=audio_value.getvalue(), mime_type="audio/wav")
+				]
+			)
+			transcribed_topic = transcript_response.text.strip()
+			st.info(f"🎤 **Transcribed Topic:** {transcribed_topic}")
+		except Exception as e:
+			st.warning(f"Could not transcribe audio: {str(e)}")
 
     # Use transcribed topic if text input is empty
     effective_topic = topic if topic else transcribed_topic
