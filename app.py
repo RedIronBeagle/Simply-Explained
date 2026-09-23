@@ -1865,7 +1865,7 @@ with tab1:
     topic = st.text_input(
         texts["topic_label"],
         placeholder=texts["topic_placeholder"],
-        key="main_topic_input_field",
+        #key="main_topic_input_field",
     )
 
     st.markdown("---")
