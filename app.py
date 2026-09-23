@@ -1491,7 +1491,22 @@ def prepare_media_part(uploaded_file):
 def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     import re
     
-    pdf = FPDF()
+    class PreviewBannerPDF(FPDF):
+        def header(self):
+            # Top preview banner stamp
+            self.set_font("helvetica", "B", 9)
+            self.set_text_color(160, 160, 160) # Soft neutral grey
+            self.cell(0, 6, "--- SIMPLY-EXPLAINED * THE PREVIEW ---", align="C", new_x="LLEFT", new_y="NEXT")
+            self.ln(4)
+
+        def footer(self):
+            # Bottom preview footer stamp
+            self.set_y(-15)
+            self.set_font("helvetica", "I", 8)
+            self.set_text_color(160, 160, 160)
+            self.cell(0, 10, "PREVIEW DRAFT - FOR EVALUATION ONLY", align="C")
+
+    pdf = PreviewBannerPDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
 
@@ -1554,7 +1569,6 @@ def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
         pdf_bytes = bytes(pdf_output)
 
     return pdf_bytes
-
 
 # ==============================================================================
 # [SECTION 5: STREAMLIT APP INITIALIZATION & STYLING]
