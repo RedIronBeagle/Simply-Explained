@@ -1885,29 +1885,29 @@ with tab1:
         """,
         unsafe_allow_html=True,
     )
-	
-audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
-    
-    # Check if a new audio recording was just made
-transcribed_topic = ""
-if audio_value is not None:
-	with st.spinner("Transcribing your voice..."):
-		try:
-			# Quick transcription call to Gemini using the audio bytes
-			transcript_response = client.models.generate_content(
-				model=MODEL_ID,
-				contents=[
-					"Accurately transcribe this audio recording into plain text. Return only the transcription text, nothing else.",
-					types.Part.from_bytes(data=audio_value.getvalue(), mime_type="audio/wav")
-				]
-			)
-			transcribed_topic = transcript_response.text.strip()
-			st.info(f"🎤 **Transcribed Topic:** {transcribed_topic}")
-		except Exception as e:
-			st.warning(f"Could not transcribe audio: {str(e)}")
 
-    # Use transcribed topic if text input is empty
+    audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
+
+    # Check if a new audio recording was just made and transcribe it
+    transcribed_topic = ""
+    if audio_value is not None:
+        with st.spinner("Transcribing your voice..."):
+            try:
+                transcript_response = client.models.generate_content(
+                    model=MODEL_ID,
+                    contents=[
+                        "Accurately transcribe this audio recording into plain text. Return only the transcription text, nothing else.",
+                        types.Part.from_bytes(data=audio_value.getvalue(), mime_type="audio/wav")
+                    ]
+                )
+                transcribed_topic = transcript_response.text.strip()
+                st.info(f"🎤 **Transcribed Topic:** {transcribed_topic}")
+            except Exception as e:
+                st.warning(f"Could not transcribe audio: {str(e)}")
+
+    # Use transcribed topic as a fallback if the text input box is left empty
     effective_topic = topic if topic else transcribed_topic
+
     st.markdown("")
     submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
 
@@ -1916,7 +1916,7 @@ if audio_value is not None:
 
         if not api_key:
             st.error(texts["no_api"])
-        elif not topic and audio_value is None:
+        elif not effective_topic:
             st.error(texts.get("missing_input_error", "Please enter a topic or record an audio inquiry."))
         else:
             spinner_text = texts["spinners"].get(
@@ -1926,6 +1926,7 @@ if audio_value is not None:
                 try:
                     client = genai.Client(api_key=api_key)
 
+                    # (Your depth instructions remain the same...)
                     if depth_level in ["Easy", "Fácil", "Einfach", "Facile", "आसान", "简单", "簡単", "쉬움"]:
                         depth_instruction = (
                             f"Complexity Tier: EASY. Explain using ultra-plain,"
@@ -1942,18 +1943,12 @@ if audio_value is not None:
                             f" rigorous, deeply technical breakdown in {selected_lang}. You MUST use Google Search grounding (tools=[types.Tool(google_search=types.GoogleSearch())]) to query live authoritative references and official documentation matching the topic. In the 8th pillar ('Where Do We Find It (Verification & Sources)'), explicitly list these grounding sources as clickable markdown links."
                         )
 
-                    if audio_value is not None:
-                        input_payload = [
-                            f"Listen to this audio inquiry and explain the topic in {selected_lang} at the {depth_level} tier, following all system instructions:",
-                            types.Part.from_bytes(data=audio_value.getvalue(), mime_type="audio/wav")
-                        ]
-                        display_title = "Voice Inquiry Audio"
-                    else:
-                        input_payload = (
-                            f"Explain or simplify this topic in {selected_lang} at"
-                            f" the {depth_level} tier: {topic}"
-                        )
-                        display_title = topic
+                    # Use effective_topic so typed text or voice transcription both work seamlessly
+                    input_payload = (
+                        f"Explain or simplify this topic in {selected_lang} at"
+                        f" the {depth_level} tier: {effective_topic}"
+                    )
+                    display_title = effective_topic
 
                     system_instruction = (
                         f"You are an expert educator. Respond entirely and strictly"
@@ -1971,7 +1966,6 @@ if audio_value is not None:
                         f" {texts['pillar_headers'][7]}. End with: ##"
                         f" {texts['bottom_line']}."
                     )
-
                     gen_config_kwargs = {
                         "system_instruction": system_instruction,
                         "temperature": 0.8
