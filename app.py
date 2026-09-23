@@ -1885,8 +1885,8 @@ with tab1:
         """,
         unsafe_allow_html=True,
     )
-
-	audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
+	
+audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
     
     # Check if a new audio recording was just made
     transcribed_topic = ""
