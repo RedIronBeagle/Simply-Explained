@@ -1889,7 +1889,7 @@ with tab1:
 audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
     
     # Check if a new audio recording was just made
-    transcribed_topic = ""
+transcribed_topic = ""
     if audio_value is not None:
         with st.spinner("Transcribing your voice..."):
             try:
