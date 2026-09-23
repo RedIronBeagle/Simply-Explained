@@ -1491,32 +1491,32 @@ def prepare_media_part(uploaded_file):
 def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     import re
     
-class PreviewBannerPDF(FPDF):
-        def header(self):
-            # 1. Draw a light grey background box that extends behind the text (X, Y, Width, Height, Style='F' for filled)
-            self.set_fill_color(245, 245, 245) # Very light neutral grey tint
-            self.rect(10, 10, 190, 25, style='F') # Adjust height (25) to make it larger/thicker
-
-            # 2. Preview banner text on top of the background box
-            self.set_xy(10, 18) # Position inside the box
-            self.set_font("helvetica", "B", 12) # Larger font size
-            self.set_text_color(180, 180, 180) # Soft grey text
-            self.cell(0, 6, "--- SIMPLY-EXPLAINED * THE PREVIEW ---", align="C")
-            self.ln(15)
-
-        def footer(self):
-            # Bottom preview footer box/band
-            self.set_y(-20)
-            self.set_fill_color(245, 245, 245)
-            self.rect(10, self.get_y(), 190, 15, style='F') # Footer background block
-            
-            self.set_xy(10, self.get_y() + 4)
-            self.set_font("helvetica", "I", 9)
-            self.set_text_color(180, 180, 180)
-            self.cell(0, 6, "PREVIEW DRAFT - FOR EVALUATION ONLY", align="C")
-    pdf = PreviewBannerPDF()
-    pdf.add_page()
-    pdf.set_auto_page_break(auto=True, margin=15)
+	class PreviewBannerPDF(FPDF):
+	        def header(self):
+	            # 1. Draw a light grey background box that extends behind the text (X, Y, Width, Height, Style='F' for filled)
+	            self.set_fill_color(245, 245, 245) # Very light neutral grey tint
+	            self.rect(10, 10, 190, 25, style='F') # Adjust height (25) to make it larger/thicker
+	
+	            # 2. Preview banner text on top of the background box
+	            self.set_xy(10, 18) # Position inside the box
+	            self.set_font("helvetica", "B", 12) # Larger font size
+	            self.set_text_color(180, 180, 180) # Soft grey text
+	            self.cell(0, 6, "--- SIMPLY-EXPLAINED * THE PREVIEW ---", align="C")
+	            self.ln(15)
+	
+	        def footer(self):
+	            # Bottom preview footer box/band
+	            self.set_y(-20)
+	            self.set_fill_color(245, 245, 245)
+	            self.rect(10, self.get_y(), 190, 15, style='F') # Footer background block
+	            
+	            self.set_xy(10, self.get_y() + 4)
+	            self.set_font("helvetica", "I", 9)
+	            self.set_text_color(180, 180, 180)
+	            self.cell(0, 6, "PREVIEW DRAFT - FOR EVALUATION ONLY", align="C")
+	    pdf = PreviewBannerPDF()
+	    pdf.add_page()
+	    pdf.set_auto_page_break(auto=True, margin=15)
 
     # Aggressively strip out any non-standard/non-ASCII characters that break core fonts
     def sanitize(text: str) -> str:
