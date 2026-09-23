@@ -1867,11 +1867,11 @@ with tab1:
         placeholder=texts["topic_placeholder"],
         key="main_topic_input_field",
     )
-    
+
     st.markdown("---")
     st.markdown(f"### {texts['voice_section_title']}")
     st.markdown(texts['voice_instruction'])
-    
+
     st.markdown(
         """
         <style>
@@ -1886,21 +1886,20 @@ with tab1:
         unsafe_allow_html=True,
     )
 
-    # 1. Capture Voice Input First
+# 1. Capture Voice Input First
     audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
-    
-    # 2. Transcribe and Autofill Session State (if new audio is recorded)
+
+    # 2. Transcribe and store in a dedicated session state variable (avoiding widget-key locks)
     if audio_value is not None:
         audio_bytes = audio_value.getvalue()
         audio_hash = hash(audio_bytes)
-        
-        # Only transcribe if it's a fresh recording
+
         if st.session_state.get("last_processed_audio_hash") != audio_hash:
             with st.spinner("Transcribing your voice..."):
                 try:
                     api_key = st.secrets.get("GEMINI_API_KEY", "")
                     trans_client = genai.Client(api_key=api_key)
-                    
+
                     transcript_response = trans_client.models.generate_content(
                         model=MODEL_ID,
                         contents=[
@@ -1910,25 +1909,29 @@ with tab1:
                     )
                     transcribed_topic = transcript_response.text.strip()
                     
-                    # Programmatically autofill the text input widget's state
-                    st.session_state["main_topic_input_field"] = transcribed_topic
+                    # Store transcription in a clean session state variable
+                    st.session_state["transcribed_topic_storage"] = transcribed_topic
                     st.session_state["last_processed_audio_hash"] = audio_hash
-                    
+
                     st.success(f"🎤 Autofilled: {transcribed_topic}")
                 except Exception as e:
                     st.warning(f"Could not transcribe audio: {str(e)}")
 
     st.markdown("---")
 
-    # 3. Render the Text Input Box (Fully editable and keyboard-friendly)
+    # 3. Determine default value for text input safely
+    default_topic_value = st.session_state.get("transcribed_topic_storage", "")
+
+    # 4. Render the Text Input Box (Fully editable and keyboard-friendly)
     topic = st.text_input(
         texts["topic_label"],
+        value=default_topic_value,
         placeholder=texts["topic_placeholder"],
         key="main_topic_input_field",
     )
 
     # Use transcribed topic as a fallback if the text input box is left empty
-    effective_topic = topic if topic else transcribed_topic
+    effective_topic = topic if topic else st.session_state.get("transcribed_topic_storage", "")
 
     st.markdown("")
     submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
