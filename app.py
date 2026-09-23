@@ -1491,7 +1491,7 @@ def prepare_media_part(uploaded_file):
 def generate_pdf_bytes(title: str, content: str, footer_signoff: str) -> bytes:
     import re
     class PreviewBannerPDF(FPDF):
-		def header(self):
+        def header(self):
             # 1. Draw a light grey background box that extends behind the text (X, Y, Width, Height, Style='F' for filled)
             self.set_fill_color(245, 245, 245) # Very light neutral grey tint
             self.rect(10, 10, 190, 25, style='F') # Adjust height (25) to make it larger/thicker
