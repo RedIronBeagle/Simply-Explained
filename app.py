@@ -24,41 +24,25 @@ from google.genai import types
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.pdfgen import canvas
+#from reportlab.pdfgen import canvas
+#import io
+
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 import io
 
-class WatermarkedCanvas(canvas.Canvas):
-    """Two-pass canvas to stamp a reliable, background diagonal watermark."""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._saved_page_states = []
-
-    def showPage(self):
-        self._saved_page_states.append(dict(self.__dict__))
-        self._startPage()
-
-    def save(self):
-        num_pages = len(self._saved_page_states)
-        for state in self._saved_page_states:
-            self.__dict__.update(state)
-            self.draw_watermark()
-            super().showPage()
-        super().save()
-
-    def draw_watermark(self):
-        self.saveState()
-        self.setFont("Helvetica-Bold", 32)
-        # Light grey color so it sits softly in the background
-        self.setFillColorRGB(0.8, 0.8, 0.8)
-        
-        # Center of a standard Letter page (612 x 792 points)
-        self.translate(306, 396)
-        self.rotate(45)
-        self.drawCentredString(0, 0, "Simply-Explained * The Preview")
-        self.restoreState()
+def add_watermark(canvas_obj, doc):
+    """Draws a high-visibility test watermark."""
+    canvas_obj.saveState()
+    canvas_obj.setFont("Helvetica-Bold", 36)
+    canvas_obj.setFillColorRGB(0.3, 0.3, 0.3)  # Much darker grey for testing
+    canvas_obj.translate(300, 400)               # Center of letter page
+    canvas_obj.rotate(45)                        # Diagonal angle
+    canvas_obj.drawCentredString(0, 0, "Simply-Explained * The Preview")
+    canvas_obj.restoreState()
 
 def generate_pdf_bytes(title, content, footer):
-    """Your existing function name, updated to use the watermark canvas."""
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(
         buffer,
@@ -88,7 +72,12 @@ def generate_pdf_bytes(title, content, footer):
         if p.strip():
             safe_p = p.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
             story.append(Paragraph(safe_p, body_style))
-
+            
+    # Build using native page callbacks to stamp the watermark background
+    doc.build(story, onFirstPage=add_watermark, onLaterPages=add_watermark)
+    
+    buffer.seek(0)
+    return buffer.getvalue()
 TTS_LANG_MAP = {
     "English": "en",
     "Spanish": "es",
