@@ -1908,7 +1908,6 @@ if audio_value is not None:
 
     # Use transcribed topic if text input is empty
     effective_topic = topic if topic else transcribed_topic
-
     st.markdown("")
     submitted = st.button(texts["button_label"], key="main_generate_btn", use_container_width=True)
 
