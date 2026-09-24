@@ -2329,7 +2329,8 @@ with tab4:
             label="Big Tech 2026 CapEx",
             value="$750+ Billion",
             delta="67% YoY Infrastructure Rush",
-        )    with col2:
+        )
+    with col2:
         st.metric(
             label="Projected 2030 Demand",
             value="~950+ TWh",
