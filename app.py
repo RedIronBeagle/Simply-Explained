@@ -2012,6 +2012,17 @@ with tab1:
                     st.session_state["persistent_output_text"] = response.text + f"\n\n{texts['footer_text']}"
                     st.session_state["persistent_display_title"] = display_title
 
+        # 1. GENERATE CONTENT
+                    response = client.models.generate_content(
+                        model=MODEL_ID,
+                        contents=input_payload,
+                        config=types.GenerateContentConfig(**gen_config_kwargs),
+                    )
+
+                    # Save output text to session state so it persists across reruns
+                    st.session_state["persistent_output_text"] = response.text + f"\n\n{texts['footer_text']}"
+                    st.session_state["persistent_display_title"] = display_title
+
         # --- RENDER OUTPUT & PDF BUTTON OUTSIDE THE SUBMIT TRANSIENT BLOCK ---
         if "persistent_output_text" in st.session_state:
             output_text = st.session_state["persistent_output_text"]
@@ -2037,7 +2048,6 @@ with tab1:
                 mime="application/pdf",
                 key="download_topic_pdf",
             )
-
                     output_text = response.text + f"\n\n{texts['footer_text']}"
                     st.success(
                         texts["ready"].get(depth_level, "Your response is ready")
