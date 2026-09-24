@@ -2310,16 +2310,26 @@ with tab4:
     st.markdown('<div class="app-subtitle">Real-Time Resource Footprint, Energy Demand, & Water Metrics</div>', unsafe_allow_html=True)
     st.markdown("---")
 
-    # Top-Level Summary Metrics (Global Scale)
+	# Top-Level Summary Metrics (Global Scale)
     col1, col2, col3 = st.columns(3)
     with col1:
         st.metric(
-#label="Global Data Center Power",
+            label="Global Data Center Power",
             value="~485 TWh",
-			delta="1.5% - 2.4% of World Supply",
-            delta_value="off",
+            delta="1.5% - 2.4% of World Supply",
         )
     with col2:
+        st.metric(
+            label="Projected 2030 Demand",
+            value="~950+ TWh",
+            delta="Doubling every 3-4 years",
+        )
+    with col3:
+        st.metric(
+            label="Big Tech 2026 CapEx",
+            value="$750+ Billion",
+            delta="67% YoY Infrastructure Rush",
+        )    with col2:
         st.metric(
             label="Projected 2030 Demand",
             value="~950+ TWh",
