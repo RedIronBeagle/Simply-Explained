@@ -1784,8 +1784,14 @@ client = genai.Client(
 # ==============================================================================
 if is_streamlit:
     tab1, tab2, tab3, tab4 = st.tabs(
-        [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"], texts["tab4_name"]]
+        [
+            texts.get("tab1_name", "Simply Explained"),
+            texts.get("tab2_name", "Fine-Print Decoder"),
+            texts.get("tab3_name", "Tactical Lab"),
+            texts.get("tab4_name", "Global AI Dashboard")
+        ]
     )
+
 
 # ==============================================================================
 # [SECTION 6: CORE GENERATION & RESPONSE RENDERING ENGINE]
