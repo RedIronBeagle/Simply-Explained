@@ -2314,7 +2314,7 @@ with tab4:
     col1, col2, col3 = st.columns(3)
     with col1:
         st.metric(
-            label="Global Data Center Power",
+#            label="Global Data Center Power",
             value="~485 TWh",
             delta="1.5% - 2.4% of World Supply",
             delta_value="off",
