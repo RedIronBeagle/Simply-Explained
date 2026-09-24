@@ -1783,8 +1783,8 @@ client = genai.Client(
 # [SECTION 7: MAIN TAB NAVIGATION SETUP & INTERFACES]
 # ==============================================================================
 if is_streamlit:
-    tab1, tab2, tab3 = st.tabs(
-        [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"]]
+    tab1, tab2, tab3, tab4 = st.tabs(
+        [texts["tab1_name"], texts["tab2_name"], texts["tab3_name"], texts["tab4_name"]]
     )
 
 # ==============================================================================
@@ -2297,6 +2297,70 @@ with tab2:
 	        st.error(f"An unexpected error occurred: {str(e)}")
 
 # ==============================================================================
+# [SECTION 9: TAB 4 - GLOBAL AI RESOURCE & INFRASTRUCTURE DASHBOARD]
+# ==============================================================================
+with tab4:
+    st.markdown('<div class="app-title">Global AI Infrastructure Intelligence</div>', unsafe_allow_html=True)
+    st.markdown('<div class="app-subtitle">Real-Time Resource Footprint, Energy Demand, & Water Metrics</div>', unsafe_allow_html=True)
+    st.markdown("---")
+
+    # Top-Level Summary Metrics (Global Scale)
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric(
+            label="Global Data Center Power",
+            value="~485 TWh",
+            delta="1.5% - 2.4% of World Supply",
+            delta_value="off",
+        )
+    with col2:
+        st.metric(
+            label="Projected 2030 Demand",
+            value="~950+ TWh",
+            delta="Doubling every 3-4 years",
+        )
+    with col3:
+        st.metric(
+            label="Big Tech 2026 CapEx",
+            value="$750+ Billion",
+            delta="67% YoY Infrastructure Rush",
+        )
+
+    st.markdown("---")
+    st.markdown("### 💧 Water Consumption & Cooling Footprint")
+    st.markdown("AI data centers utilize direct water for evaporative cooling towers and indirect water through regional power generation grids.")
+
+    # Water Gauge / Progress Indicators
+    w_col1, w_col2 = st.columns(2)
+    with w_col1:
+        st.markdown("**Per-Query Cost Benchmark**")
+        st.write("A typical mid-sized LLM query consumes roughly **10 to 50 milliliters** of water combined (on-site cooling + off-site power generation).")
+        
+        # Visual Gauge using progress bar
+        st.text("Query Impact Scale (Relative)")
+        st.progress(35, text="Single Query Water Draw (~15-20 ml)")
+        
+    with w_col2:
+        st.markdown("**Global Annual Industrial Draw**")
+        st.write("Worldwide data center water withdrawal is projected to scale toward **4.2 to 6.6 billion cubic meters** as hyperscale cluster density accelerates.")
+        st.progress(65, text="Projected Mid-Decade Infrastructure Load")
+
+    st.markdown("---")
+    st.markdown("### ⚡ Regional Power Allocation & Efficiency Trends")
+    
+    # Grid Breakdown
+    r_col1, r_col2, r_col3 = st.columns(3)
+    with r_col1:
+        st.info("**United States Hubs**\n\nData centers consume approx. **6.5% to 6.6%** of total domestic electricity production, with heavy clusters concentrated in Virginia, Texas, and the Midwest.")
+    with r_col2:
+        st.info("**China Infrastructure**\n\nPower demand sits around **1.9%** of total national output, driven by rapid expansion in tier-1 technology hubs like Shenzhen and the Pearl River Delta.")
+    with r_col3:
+        st.info("**Efficiency Vector**\n\nNext-gen closed-loop liquid cooling systems are pushing water usage effectiveness (WUE) down toward **0.12 L/kWh**.")
+
+    st.markdown("---")
+    st.markdown("> **Operational Insight:** As gigawatt-scale clusters expand, future AI developments rely heavily on localized micro-grid integration, sustainable off-grid renewable pairing, and advanced thermodynamic recapture systems.")
+
+# ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
 # ==============================================================================
 with tab3:
@@ -2694,3 +2758,5 @@ with tab3:
 
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
+
+
