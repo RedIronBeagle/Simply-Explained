@@ -2313,10 +2313,10 @@ with tab4:
     # Top-Level Summary Metrics (Global Scale)
     col1, col2, col3 = st.columns(3)
     with col1:
-            st.metric(
-#            label="Global Data Center Power",
+        st.metric(
+#label="Global Data Center Power",
             value="~485 TWh",
-            delta="1.5% - 2.4% of World Supply",
+			delta="1.5% - 2.4% of World Supply",
             delta_value="off",
         )
     with col2:
