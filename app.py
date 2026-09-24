@@ -2024,30 +2024,30 @@ with tab1:
                     st.session_state["persistent_display_title"] = display_title
 
         # --- RENDER OUTPUT & PDF BUTTON OUTSIDE THE SUBMIT TRANSIENT BLOCK ---
-        if "persistent_output_text" in st.session_state:
-            output_text = st.session_state["persistent_output_text"]
-            disp_title = st.session_state.get("persistent_display_title", "Report")
-
-            st.success(texts["ready"].get(depth_level, "Your response is ready"))
-            st.markdown("---")
-            st.markdown(output_text)
-
-            # 2. PDF GENERATION
-            safe_title = ''.join(c for c in f"Topic ({depth_level}): {disp_title}" if ord(c) < 128)
-            safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
-
-            pdf_data = generate_pdf_bytes(
-                safe_title,
-                safe_output,
-                texts.get("footer_text", "The Report - Simply Explained"),
-            )
-            st.download_button(
-                label=texts.get("pdf_button", "📥 Press to Download PDF Report"),
-                data=pdf_data,
-                file_name=f"Simply_Explained_{disp_title.replace(' ', '_')}.pdf",
-                mime="application/pdf",
-                key="download_topic_pdf",
-            )
+		        if "persistent_output_text" in st.session_state:
+		            output_text = st.session_state["persistent_output_text"]
+		            disp_title = st.session_state.get("persistent_display_title", "Report")
+		
+		            st.success(texts["ready"].get(depth_level, "Your response is ready"))
+		            st.markdown("---")
+		            st.markdown(output_text)
+		
+		            # 2. PDF GENERATION
+		            safe_title = ''.join(c for c in f"Topic ({depth_level}): {disp_title}" if ord(c) < 128)
+		            safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
+		
+		            pdf_data = generate_pdf_bytes(
+		                safe_title,
+		                safe_output,
+		                texts.get("footer_text", "The Report - Simply Explained"),
+		            )
+		            st.download_button(
+		                label=texts.get("pdf_button", "📥 Press to Download PDF Report"),
+		                data=pdf_data,
+		                file_name=f"Simply_Explained_{disp_title.replace(' ', '_')}.pdf",
+		                mime="application/pdf",
+		                key="download_topic_pdf",
+		            )
                     output_text = response.text + f"\n\n{texts['footer_text']}"
                     st.success(
                         texts["ready"].get(depth_level, "Your response is ready")
