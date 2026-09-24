@@ -2012,7 +2012,7 @@ with tab1:
                     st.session_state["persistent_output_text"] = response.text + f"\n\n{texts['footer_text']}"
                     st.session_state["persistent_display_title"] = display_title
 
-        # 1. GENERATE CONTENT
+                    # 1. GENERATE CONTENT
                     response = client.models.generate_content(
                         model=MODEL_ID,
                         contents=input_payload,
