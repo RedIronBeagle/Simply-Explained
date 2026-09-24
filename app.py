@@ -1788,7 +1788,7 @@ if is_streamlit:
             texts.get("tab1_name", "Simply Explained"),
             texts.get("tab2_name", "Fine-Print Decoder"),
             texts.get("tab3_name", "Tactical Lab"),
-            texts.get("tab4_name", "Simply Explained -⏱️ Global AI Dashboard")
+            texts.get("tab4_name", "Simply Explained -⏱️ AI Bad News Dashboard")
         ]
     )
 
