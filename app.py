@@ -2330,18 +2330,6 @@ with tab4:
             value="$750+ Billion",
             delta="67% YoY Infrastructure Rush",
         )
-    with col2:
-        st.metric(
-            label="Projected 2030 Demand",
-            value="~950+ TWh",
-            delta="Doubling every 3-4 years",
-        )
-    with col3:
-        st.metric(
-            label="Big Tech 2026 CapEx",
-            value="$750+ Billion",
-            delta="67% YoY Infrastructure Rush",
-        )
 
     st.markdown("---")
     st.markdown("### 💧 Water Consumption & Cooling Footprint")
