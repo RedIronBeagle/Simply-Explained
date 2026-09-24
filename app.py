@@ -1831,7 +1831,6 @@ with st.form("simply_explained_form"):
                 st.markdown("### Explanation")
                 st.markdown(output_text)
 
-
 # ==============================================================================
 # [SECTION 8: TAB 1 - MAIN TOPIC SIMPLIFIER INTERFACE]
 # ==============================================================================
@@ -1864,11 +1863,6 @@ with tab1:
     )
     st.markdown(texts["privacy_notice_box"], unsafe_allow_html=True)
 
-    #topic = st.text_input(
-     #   texts["topic_label"],
-      #  placeholder=texts["topic_placeholder"],
-        #key="main_topic_input_field",
-    #)
     st.markdown("---")
     st.markdown(f"### {texts['voice_section_title']}")
     st.markdown(texts['voice_instruction'])
@@ -1887,12 +1881,11 @@ with tab1:
         unsafe_allow_html=True,
     )
 
-# 1. Capture Voice Input First
-    # Use a dynamic key suffix so it resets to a clean slate on "Start Over"
+    # 1. Capture Voice Input First (with reset counter support)
     audio_counter = st.session_state.get("audio_reset_counter", 0)
     audio_value = st.audio_input(texts['voice_record_label'], key=f"main_audio_recorder_field_{audio_counter}")
 
-    # 2. Transcribe and store in a dedicated session state variable (avoiding widget-key locks)
+    # 2. Transcribe and store in session state
     if audio_value is not None:
         audio_bytes = audio_value.getvalue()
         audio_hash = hash(audio_bytes)
@@ -1912,7 +1905,6 @@ with tab1:
                     )
                     transcribed_topic = transcript_response.text.strip()
                     
-                    # Store transcription in a clean session state variable
                     st.session_state["transcribed_topic_storage"] = transcribed_topic
                     st.session_state["last_processed_audio_hash"] = audio_hash
 
@@ -1922,10 +1914,8 @@ with tab1:
 
     st.markdown("---")
 
-    # 3. Determine default value for text input safely
+    # 3. Text Input Box
     default_topic_value = st.session_state.get("transcribed_topic_storage", "")
-
-    # 4. Render the Text Input Box (Fully editable and keyboard-friendly)
     topic = st.text_input(
         texts["topic_label"],
         value=default_topic_value,
@@ -1933,7 +1923,6 @@ with tab1:
         key="main_topic_input_field",
     )
 
-    # Use transcribed topic as a fallback if the text input box is left empty
     effective_topic = topic if topic else st.session_state.get("transcribed_topic_storage", "")
 
     st.markdown("")
@@ -1954,7 +1943,6 @@ with tab1:
                 try:
                     client = genai.Client(api_key=api_key)
 
-                    # (Your depth instructions remain the same...)
                     if depth_level in ["Easy", "Fácil", "Einfach", "Facile", "आसान", "简单", "簡単", "쉬움"]:
                         depth_instruction = (
                             f"Complexity Tier: EASY. Explain using ultra-plain,"
@@ -1971,7 +1959,6 @@ with tab1:
                             f" rigorous, deeply technical breakdown in {selected_lang}. You MUST use Google Search grounding (tools=[types.Tool(google_search=types.GoogleSearch())]) to query live authoritative references and official documentation matching the topic. In the 8th pillar ('Where Do We Find It (Verification & Sources)'), explicitly list these grounding sources as clickable markdown links."
                         )
 
-                    # Use effective_topic so typed text or voice transcription both work seamlessly
                     input_payload = (
                         f"Explain or simplify this topic in {selected_lang} at"
                         f" the {depth_level} tier: {effective_topic}"
@@ -2001,84 +1988,72 @@ with tab1:
                     if depth_level in ["Hard", "Difícil", "Schwierig", "Difficile", "कठिन", "困难", "高難度", "어려움"]:
                         gen_config_kwargs["tools"] = [types.Tool(google_search=types.GoogleSearch())]
 
-                    # 1. GENERATE CONTENT
                     response = client.models.generate_content(
                         model=MODEL_ID,
                         contents=input_payload,
                         config=types.GenerateContentConfig(**gen_config_kwargs),
                     )
 
-                    # Save output text to session state so it persists across reruns
+                    # Save to session state so it persists when clicking download
                     st.session_state["persistent_output_text"] = response.text + f"\n\n{texts['footer_text']}"
                     st.session_state["persistent_display_title"] = display_title
 
-                    # 1. GENERATE CONTENT
-                    response = client.models.generate_content(
-                        model=MODEL_ID,
-                        contents=input_payload,
-                        config=types.GenerateContentConfig(**gen_config_kwargs),
-                    )
-
-                    # Save output text to session state so it persists across reruns
-                    st.session_state["persistent_output_text"] = response.text + f"\n\n{texts['footer_text']}"
-                    st.session_state["persistent_display_title"] = display_title
-
-        # --- RENDER OUTPUT & PDF BUTTON OUTSIDE THE SUBMIT TRANSIENT BLOCK ---
-        if "persistent_output_text" in st.session_state:
-            output_text = st.session_state["persistent_output_text"]
-            disp_title = st.session_state.get("persistent_display_title", "Report")
-
-            st.success(texts["ready"].get(depth_level, "Your response is ready"))
-            st.markdown("---")
-            st.markdown(output_text)
-
-            # 2. PDF GENERATION
-            safe_title = ''.join(c for c in f"Topic ({depth_level}): {disp_title}" if ord(c) < 128)
-            safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
-
-            pdf_data = generate_pdf_bytes(
-                safe_title,
-                safe_output,
-                texts.get("footer_text", "The Report - Simply Explained"),
-            )
-            st.download_button(
-                label=texts.get("pdf_button", "📥 Press to Download PDF Report"),
-                data=pdf_data,
-                file_name=f"Simply_Explained_{disp_title.replace(' ', '_')}.pdf",
-                mime="application/pdf",
-                key="download_topic_pdf",
-            )
-
-                # --- CLOSE THE MAIN API TRY BLOCK HERE BEFORE AUDIO ---
                 except APIError as e:
                     st.error(f"API Error: {e.message}")
                 except Exception as e:
                     st.error(f"An unexpected error occurred: {str(e)}")
 
-               # 3. AUDIO ACCESSIBILITY (OUTSIDE THE API TRY/EXCEPT BLOCK)
-                if enable_audio_speech:
-                    st.markdown("---")
-                    st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
-                    try:
-                        from gtts import gTTS
+    # --- PERSISTENT RENDER BLOCK (Outside the submit button click) ---
+    if "persistent_output_text" in st.session_state:
+        output_text = st.session_state["persistent_output_text"]
+        disp_title = st.session_state.get("persistent_display_title", "Report")
 
-                        clean_text_for_speech = output_text
-                        clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-                        clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+        st.success(texts["ready"].get(depth_level, "Your response is ready"))
+        st.markdown("---")
+        st.markdown(output_text)
 
-                        tts = gTTS(
-                            text=clean_text_for_speech,
-                            lang=TTS_LANG_MAP.get(selected_lang, "en"),
-                            slow=False,
-                        )
-                        audio_bytes_obj = io.BytesIO()
-                        tts.write_to_fp(audio_bytes_obj)
-                        audio_bytes_obj.seek(0)
-                        st.audio(audio_bytes_obj, format="audio/mp3")
-                    except Exception as tts_err:
-                        st.warning(
-                            f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
-                        )
+        # PDF Download Button
+        safe_title = ''.join(c for c in f"Topic ({depth_level}): {disp_title}" if ord(c) < 128)
+        safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
+
+        pdf_data = generate_pdf_bytes(
+            safe_title,
+            safe_output,
+            texts.get("footer_text", "The Report - Simply Explained"),
+        )
+        st.download_button(
+            label=texts.get("pdf_button", "📥 Press to Download PDF Report"),
+            data=pdf_data,
+            file_name=f"Simply_Explained_{disp_title.replace(' ', '_')}.pdf",
+            mime="application/pdf",
+            key="download_topic_pdf",
+        )
+
+        # Audio Accessibility Feed
+        if enable_audio_speech:
+            st.markdown("---")
+            st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
+            try:
+                from gtts import gTTS
+
+                clean_text_for_speech = output_text
+                clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+                clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+
+                tts = gTTS(
+                    text=clean_text_for_speech,
+                    lang=TTS_LANG_MAP.get(selected_lang, "en"),
+                    slow=False,
+                )
+                audio_bytes_obj = io.BytesIO()
+                tts.write_to_fp(audio_bytes_obj)
+                audio_bytes_obj.seek(0)
+                st.audio(audio_bytes_obj, format="audio/mp3")
+            except Exception as tts_err:
+                st.warning(
+                    f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
+                )
+
 
 # ==============================================================================
   # [SECTION 9: TAB 2 - DOCUMENT DECODER INTERFACE]
