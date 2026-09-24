@@ -1698,10 +1698,12 @@ if is_streamlit:
     depth_level = st.sidebar.radio(
         texts["depth_label"], texts["depth_options"], key="depth_radio_key"
     )
+	
 # --- FULL RESET START OVER BUTTON ---
 if st.sidebar.button("🔄 Start Over (Reset All)", use_container_width=True, key="global_full_reset_btn"):
-    for key in list(st.session_state.keys()):
-        del st.session_state[key]
+    audio_counter = st.session_state.get("audio_reset_counter", 0) + 1
+    st.session_state.clear()
+    st.session_state["audio_reset_counter"] = audio_counter
     st.rerun()
 
 st.sidebar.markdown("---")
@@ -1886,7 +1888,9 @@ with tab1:
     )
 
 # 1. Capture Voice Input First
-    audio_value = st.audio_input(texts['voice_record_label'], key="main_audio_recorder_field")
+    # Use a dynamic key suffix so it resets to a clean slate on "Start Over"
+    audio_counter = st.session_state.get("audio_reset_counter", 0)
+    audio_value = st.audio_input(texts['voice_record_label'], key=f"main_audio_recorder_field_{audio_counter}")
 
     # 2. Transcribe and store in a dedicated session state variable (avoiding widget-key locks)
     if audio_value is not None:
