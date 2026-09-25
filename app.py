@@ -2425,7 +2425,7 @@ with tab4:
         )
 
     st.markdown("")
-    
+
     # Scale comparison visual box
     st.info(
         "**Telemetry Note:** As reasoning models, multi-modal video generation, and autonomous agent loops scale, "
