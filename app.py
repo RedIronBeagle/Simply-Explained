@@ -2433,7 +2433,7 @@ with tab4:
         "the effective electrical load per user prompt by 5x to 10x."
     )
 
-st.markdown("---")
+    st.markdown("---")
     st.markdown("### 📈 Live Grid Deficit & Forecast Trajectory (2026–2030)")
     st.markdown("Tracking regional power supply shortfalls, transmission bottlenecks, and projected capacity deficits as AI cluster densities outpace utility buildouts.")
 
