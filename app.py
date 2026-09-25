@@ -1918,7 +1918,7 @@ with tab1:
                 except Exception as e:
                     st.warning(f"Could not transcribe audio: {str(e)}")
 
-    #st.markdown("---")
+    st.markdown("---")
 
     # 3. Text Input Box
     default_topic_value = st.session_state.get("transcribed_topic_storage", "")
