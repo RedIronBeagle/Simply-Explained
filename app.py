@@ -2035,6 +2035,47 @@ with tab1:
             key="download_topic_pdf",
         )
 
+# ==============================================================================
+# [GLOBAL PERMANENT WATERMARK & PRINT BURN-IN]
+# ==============================================================================
+st.markdown("""
+    <style>
+        /* 1. PERMANENT ON-SCREEN WATERMARK */
+        .corporate-watermark {
+            position: fixed;
+            top: 40%;
+            left: 20%;
+            transform: rotate(-25deg);
+            font-size: 4rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.035);
+            z-index: 999999;
+            pointer-events: none;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        /* 2. FORCE WATERMARK TO BURN INTO PRINT / PDF EXPORTS */
+        @media print {
+            .corporate-watermark {
+                display: block !important;
+                position: fixed !important;
+                top: 50% !important;
+                left: 15% !important;
+                font-size: 5rem !important;
+                color: rgba(200, 0, 0, 0.25) !important;
+                z-index: 999999 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+
+    <!-- Permanent Watermark Layer -->
+    <div class="corporate-watermark">CONFIDENTIAL // RESTRICTED TELEMETRY</div>
+""", unsafe_allow_html=True)
+
+
 # Audio Accessibility Feed
 if enable_audio_speech:
 	st.markdown("---")
