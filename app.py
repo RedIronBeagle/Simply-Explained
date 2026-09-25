@@ -2313,7 +2313,7 @@ with tab4:
     # --- COMPLEXITY TIER SELECTOR FOR TAB 4 ---
     dash_tier = st.radio(
         "Select Dashboard Complexity Tier:",
-        ["🟢 Easy (Really Easy)", "🟡 Balanced (Well Balanced)", "🔴 Hard (Damn the Devil Hard)"],
+        ["🟢 Easy (Really Easy)", "🟡 Balanced (Really Balanced)", "🔴 Hard (Damn the Devil)"],
         horizontal=True,
         key="tab4_unique_complexity_tier_selector"
     )
@@ -2337,7 +2337,7 @@ with tab4:
             "The race for AI supremacy is no longer about who has the best code—it's a brutal cage match for raw power and cooling capacity."
         )
     else:
-        st.markdown("### 🔴 What Does All This Mean? (Damn the Devil Hard)")
+        st.markdown("### 🔴 What Does All This Mean? (Damn the Devil Harded)")
         st.error(
             "**The Thermodynamic Apocalypse:** Hyperscale cluster densities are officially breaking regional power distribution matrices. "
             "When individual server campuses draw continuous Gigawatt-scale loads—equivalent to heavy industrial manufacturing metropoli—they cause catastrophic voltage sags and phase imbalances on public transmission lines. "
@@ -2432,6 +2432,60 @@ with tab4:
         "token generation is shifting from simple text completions to dense, multi-step chain-of-thought outputs—multiplying "
         "the effective electrical load per user prompt by 5x to 10x."
     )
+
+st.markdown("---")
+    st.markdown("### 📈 Live Grid Deficit & Forecast Trajectory (2026–2030)")
+    st.markdown("Tracking regional power supply shortfalls, transmission bottlenecks, and projected capacity deficits as AI cluster densities outpace utility buildouts.")
+
+    # Forecast and Deficit Metrics Columns
+    f_col1, f_col2, f_col3 = st.columns(3)
+    
+    with f_col1:
+        st.metric(
+            label="US Grid Capacity Deficit",
+            value="~50 - 80 GW",
+            delta="Projected shortfall by 2030",
+            delta_color="inverse"
+        )
+    with f_col2:
+        st.metric(
+            label="Grid Interconnection Backlog",
+            value="3 - 7 Years",
+            delta="Average wait time for transmission approval",
+            delta_color="inverse"
+        )
+    with f_col3:
+        st.metric(
+            label="Global Data Center Power Growth",
+            value="565 TWh (2026)",
+            delta="+26% Year-over-Year Surge",
+            delta_color="off"
+        )
+
+    st.markdown("")
+
+    # Interactive or Visual Deficit Breakdown based on Complexity Tier
+    if "Easy" in dash_tier:
+        st.info(
+            "**The Forecast Translation:** Think of the power grid like a highway system. "
+            "AI data centers are like adding millions of massive semi-trucks all at once, but the roads (transmission lines) "
+            "aren't wide enough. By 2030, experts forecast a major traffic jam—meaning there won't be enough electricity "
+            "produced fast enough to keep up with the demand."
+        )
+    elif "Balanced" in dash_tier:
+        st.warning(
+            "**The Regional Bottleneck:** The crisis isn't just generating power; it's *delivering* it. "
+            "Grid operators in high-concentration zones (like the PJM Interconnection and ERCOT in Texas) are facing unprecedented margin tightening. "
+            "Because building new transmission lines takes up to 7 years, hyperscalers are being forced to fund on-site generation "
+            "just to bridge the power deficit."
+        )
+    else:
+        st.error(
+            "**Damn the Devil Hard — The Transmission Collapse:** We are looking at a systemic structural deficit. "
+            "With regional grids facing a 50–80 GW capacity shortfall by decade's end, public utilities are hitting thermal limits on substations and step-down transformers. "
+            "This forces a permanent decoupling from public transmission lines: data center developers are bypassing regional utility queues entirely, "
+            "deploying behind-the-meter gas turbines and dedicated SMR nuclear plants to avoid localized grid blackouts."
+        )
 
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
