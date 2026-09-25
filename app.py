@@ -44,49 +44,6 @@ api_key = st.secrets["GEMINI_API_KEY"]
 client = genai.Client(api_key=api_key)
 
 # ==============================================================================
-# [GLOBAL SECURITY & WATERMARK OVERLAY INJECTION]
-# ==============================================================================
-st.markdown("""
-    <style>
-        /* 1. DISABLE PRINTING ENTIRELY VIA CSS */
-        @media print {
-            body {
-                display: none !important;
-            }
-        }
-
-        /* 2. PERSISTENT GLOBAL SCREEN WATERMARK STYLING */
-        .global-watermark-overlay {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-30deg);
-            font-size: 5rem;
-            font-weight: 900;
-            color: rgba(255, 255, 255, 0.025); /* Extremely faint, non-intrusive background mark */
-            z-index: 999999;
-            pointer-events: none; /* Allows users to click right through it normally */
-            white-space: nowrap;
-            user-select: none;
-        }
-    </style>
-
-    <!-- Global Watermark Text Overlay -->
-    <div class="global-watermark-overlay">CONFIDENTIAL // SYSTEM TELEMETRY</div>
-
-    <script>
-        /* 3. BLOCK KEYBOARD PRINT SHORTCUTS GLOBALLY (Ctrl+P / Cmd+P) */
-        window.addEventListener('keydown', function(e) {
-            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
-                e.preventDefault();
-                console.warn("Print action blocked by system security.");
-            }
-        });
-    </script>
-""", unsafe_allow_html=True)
-
-
-# ==============================================================================
 # [SECTION 2: LEGAL & TERMS OF SERVICE (EULA) TEXT CONTENT (LOCALIZED)]
 # ==============================================================================
 TERMS_TEXT = {
@@ -1961,7 +1918,7 @@ with tab1:
                 except Exception as e:
                     st.warning(f"Could not transcribe audio: {str(e)}")
 
-    st.markdown("---")
+    #st.markdown("---")
 
     # 3. Text Input Box
     default_topic_value = st.session_state.get("transcribed_topic_storage", "")
