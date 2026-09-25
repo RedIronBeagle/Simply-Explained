@@ -2303,67 +2303,141 @@ with tab2:
 	        st.error(f"An unexpected error occurred: {str(e)}")
 
 # ==============================================================================
-# [SECTION 9: TAB 4 - THE FAST & THE AI (GRID STREET WARS EDITION)]
+# [SECTION 9: TAB 4 - SPACEX-STYLE AI MISSION CONTROL DASHBOARD]
 # ==============================================================================
 with tab4:
-    st.markdown('<div class="app-title">🏁 The Fast & The AI: Grid Tokyo Drift</div>', unsafe_allow_html=True)
-    st.markdown('<div class="app-subtitle">“I live my life a quarter-gigawatt at a time. For those ten seconds or less, I’m free of utility queues.”</div>', unsafe_allow_html=True)
+    # Custom Mission Control Header Styling
+    st.markdown("""
+        <style>
+            .mission-header {
+                font-family: 'Courier New', monospace;
+                font-weight: bold;
+                color: #00ffcc;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+            }
+            .telemetry-badge-nominal {
+                background-color: #0d2818;
+                color: #2ecc71;
+                padding: 4px 10px;
+                border-radius: 4px;
+                font-family: monospace;
+                font-weight: bold;
+                font-size: 0.85rem;
+                border: 1px solid #2ecc71;
+            }
+            .telemetry-badge-warning {
+                background-color: #3b200b;
+                color: #f39c12;
+                padding: 4px 10px;
+                border-radius: 4px;
+                font-family: monospace;
+                font-weight: bold;
+                font-size: 0.85rem;
+                border: 1px solid #f39c12;
+            }
+            .telemetry-badge-critical {
+                background-color: #3d0c0f;
+                color: #e74c3c;
+                padding: 4px 10px;
+                border-radius: 4px;
+                font-family: monospace;
+                font-weight: bold;
+                font-size: 0.85rem;
+                border: 1px solid #e74c3c;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="app-title">🚀 MISSION CONTROL: GLOBAL AI TELEMETRY</div>', unsafe_allow_html=True)
+    st.markdown('<div class="app-subtitle">Flight Director Infrastructure & Resource Load Matrix</div>', unsafe_allow_html=True)
     st.markdown("---")
 
-    # --- DOM TORETTO TIER SELECTOR ---
+    # --- MISSION CONTROL TELEMETRY STATUS BAR ---
+    col_status1, col_status2, col_status3, col_status4 = st.columns(4)
+    with col_status1:
+        st.markdown("SYSTEM STATUS")
+        st.markdown('<span class="telemetry-badge-nominal">● NOMINAL</span>', unsafe_allow_html=True)
+    with col_status2:
+        st.markdown("GRID STABILITY")
+        st.markdown('<span class="telemetry-badge-warning">▲ MARGINAL (78%)</span>', unsafe_allow_html=True)
+    with col_status3:
+        st.markdown("COOLING LOOPS")
+        st.markdown('<span class="telemetry-badge-nominal">● CLOSED-LOOP 1.18</span>', unsafe_allow_html=True)
+    with col_status4:
+        st.markdown("TRANSMISSION QUEUE")
+        st.markdown('<span class="telemetry-badge-critical">■ DEFICIT (-65 GW)</span>', unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # --- COMPLEXITY TIER SELECTION (FLIGHT LEVEL) ---
     dash_tier = st.radio(
-        "Select Vehicle Tuning Spec:",
-        ["🟢 Stock Civic (Laptop Daily Driver)", "🟡 Dom's 70 Charger (Balanced Micro-Grid)", "🔴 F9 Space Charger (Damn the Devil / Nuclear NOS)"],
+        "Select Telemetry Complexity Mode:",
+        ["🟢 Level 1: Subsystem Overview (Easy)", "🟡 Level 2: Regional Grid Dynamics (Balanced)", "🔴 Level 3: Flight Director Critical Analysis (Hard)"],
         horizontal=True,
-        key="ff_tuning_spec_selector"
+        key="spacex_telemetry_tier_selector"
     )
     st.markdown("---")
 
-    # --- DYNAMIC F&F EXPLANATIONS ---
-    if "Civic" in dash_tier:
-        st.markdown("### 🟢 Stock Civic Level: The Daily Driver")
+    # --- DYNAMIC FLIGHT DIRECTOR LOGS BASED ON TIER ---
+    if "Level 1" in dash_tier:
+        st.markdown("### 🟢 Flight Briefing: Subsystem Overview")
         st.info(
-            "**The Vibe:** You're just rolling down the street in a stock Honda. It sips gas, it doesn't overheat, "
-            "and nobody's trying to race you. A standard query on a local model—clean, slow, and low impact."
+            "**Telemetry Readout:** Every time an AI query executes, physical hardware in a secure datacenter processes the request. "
+            "Because chips run at extreme temperatures, they require constant liquid cooling and massive electrical output. "
+            "This telemetry layer tracks the physical infrastructure keeping the digital network online."
         )
-    elif "Charger" in dash_tier:
-        st.markdown("### 🟡 Dom's 1970 Charger: Balanced Street Build")
+    elif "Level 2" in dash_tier:
+        st.markdown("### 🟡 Flight Briefing: Regional Grid Dynamics")
         st.warning(
-            "**The Family Bottleneck:** You've got a supercharger blower sticking out of the hood, burning massive amounts of fuel. "
-            "The local electrical grid is sweating trying to keep up with your horsepower, but you're holding it together because *nothing's stronger than family*."
+            "**Telemetry Readout:** Grid telemetry indicates severe bottlenecking across high-density clusters (PJM, ERCOT, Dublin). "
+            "Demand curves are scaling faster than utility transmission line approvals. "
+            "Hyperscale operators are deploying autonomous micro-grids and behind-the-meter energy storage to maintain operational uptime."
         )
     else:
-        st.markdown("### 🔴 F9 Space Charger: Absolute Insanity (Nitrous Purge)")
+        st.markdown("### 🔴 Flight Briefing: Critical Thermodynamic Analysis")
         st.error(
-            "**The Thermodynamic Apocalypse:** *Grab the roll cage, Tej.* We just bolted a rocket engine to a Dodge Charger and pointed it at a hyperscale cluster. "
-            "Public transmission lines completely vaporized under 80 GW of peak load. We are legally bypassing the power company, "
-            "injecting pure nuclear liquid-cooling NOS straight into the servers, and defying the laws of physics at 200 miles per hour!"
+            "**Telemetry Readout (CRITICAL):** Aggregate cluster load is approaching substation thermal saturation limits. "
+            "Voltage sags on regional transmission lines require immediate protocol overrides. "
+            "System transitioning to localized off-grid generation profiles (SMR nuclear / dedicated solar farms) "
+            "to prevent cascading regional brownouts and maintain cluster throughput integrity."
         )
 
     st.markdown("---")
 
-    # Telemetry with F&F flavor
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric(
-            label="Total Horsepower (Grid Draw)",
-            value="565 TWh",
-            delta="Nitrous pressure high",
-        )
-    with col2:
-        st.metric(
-            label="Transmission Drop (US Deficit)",
-            value="~50 - 80 GW",
-            delta="Brake failure imminent",
-            delta_color="inverse",
-        )
-    with col3:
-        st.metric(
-            label="Family Budget (CapEx Spend)",
-            value="$750+ Billion",
-            delta="More than enough to buy the race wars",
-        )
+    # --- LIVE METRICS GRID ---
+    m1, m2, m3 = st.columns(3)
+    with m1:
+        st.metric(label="Global Power Draw", value="565 TWh", delta="+26% YoY Acceleration")
+    with m2:
+        st.metric(label="US Grid Deficit", value="50 - 80 GW", delta="Projected Shortfall", delta_color="inverse")
+    with m3:
+        st.metric(label="Global CapEx Commitments", value="$750+ Billion", delta="Infrastructure Rush")
 
+    st.markdown("---")
+
+    # --- INTERACTIVE TELEMETRY CONTROLS (WHERE YOU CONTROL SOME PARAMETERS) ---
+    st.markdown("### 🎛️ Flight Deck: Live Simulation & Override Controls")
+    st.markdown("Adjust parameters below to simulate real-time cluster load adjustments and calculate projected footprint impacts:")
+
+    sim_col1, sim_col2 = st.columns(2)
+    
+    with sim_col1:
+        sim_cluster_size = st.slider("Active Hyperscale Clusters (Units)", min_value=10, max_value=500, value=120, step=10)
+        sim_cooling_efficiency = st.selectbox("Cooling Architecture", ["Legacy Evaporative Towers (PUE 1.55)", "Standard Closed-Loop (PUE 1.30)", "Advanced Liquid Immersion (PUE 1.12)"])
+
+    # Calculate real-time simulated telemetry output
+    pue_multiplier = 1.55 if "1.55" in sim_cooling_efficiency else (1.30 if "1.30" in sim_cooling_efficiency else 1.12)
+    simulated_power_gw = (sim_cluster_size * 0.45) * (pue_multiplier / 1.2)
+    simulated_water_ml = sim_cluster_size * 18500
+
+    with sim_col2:
+        st.markdown("#### **Simulated Flight Telemetry Output:**")
+        st.metric(label="Simulated Total Power Draw", value=f"{simulated_power_gw:.2f} GW", delta="Instantaneous Load")
+        st.metric(label="Estimated Daily Cooling Draw", value=f"{simulated_water_ml:,.0f} Liters", delta="Thermal Management")
+        
+    st.markdown("---")
+    st.markdown("> **Flight Director Note:** All telemetry streams auto-refresh on state change. Maintain cooling thresholds within nominal limits.")
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
 # ==============================================================================
