@@ -2306,7 +2306,7 @@ with tab2:
 # [SECTION 9: TAB 4 - GLOBAL AI RESOURCE & INFRASTRUCTURE DASHBOARD]
 # ==============================================================================
 with tab4:
-    st.markdown('<div class="app-title">Global AI Infrastructure Intelligence</div>', unsafe_allow_html=True)
+    st.markdown('<div class="app-title">Global AI Infrastructure and resource consumption</div>', unsafe_allow_html=True)
     st.markdown('<div class="app-subtitle">Real-Time Resource Footprint, Energy Demand, & Water Metrics</div>', unsafe_allow_html=True)
     st.markdown("---")
 
@@ -2365,6 +2365,39 @@ with tab4:
     st.markdown("---")
     st.markdown("> **Operational Insight:** As gigawatt-scale clusters expand, future AI developments rely heavily on localized micro-grid integration, sustainable off-grid renewable pairing, and advanced thermodynamic recapture systems.")
 
+	st.markdown("---")
+    st.markdown("### 🔄 Global Token Throughput & Inference Load")
+    st.markdown("Tracking aggregate global generation rates, foundation model query velocity, and computational intensity across public and private cloud endpoints.")
+
+    # Second row of metrics for Throughput & Scale
+    t_col1, t_col2, t_col3 = st.columns(3)
+    with t_col1:
+        st.metric(
+            label="Global Daily Token Output",
+            value="~55+ Trillion",
+            delta="Exponential MoM Growth",
+        )
+    with t_col2:
+        st.metric(
+            label="Estimated Peak Throughput",
+            value="~2.8M Tokens/sec",
+            delta="Global aggregate API load",
+        )
+    with t_col3:
+        st.metric(
+            label="Inference Energy Cost",
+            value="~0.25 Wh",
+            delta="Average per 1,000 tokens",
+        )
+
+    st.markdown("")
+    
+    # Scale comparison visual box
+    st.info(
+        "**Telemetry Note:** As reasoning models, multi-modal video generation, and autonomous agent loops scale, "
+        "token generation is shifting from simple text completions to dense, multi-step chain-of-thought outputs—multiplying "
+        "the effective electrical load per user prompt by 5x to 10x."
+    )
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
 # ==============================================================================
