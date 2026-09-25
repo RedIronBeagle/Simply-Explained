@@ -2306,186 +2306,76 @@ with tab2:
 # [SECTION 9: TAB 4 - GLOBAL AI RESOURCE & INFRASTRUCTURE DASHBOARD]
 # ==============================================================================
 with tab4:
-    st.markdown('<div class="app-title">Global AI Infrastructure and Resource Consumption</div>', unsafe_allow_html=True)
-    st.markdown('<div class="app-subtitle">Real-Time Resource Footprint, Energy Demand, & Water Metrics</div>', unsafe_allow_html=True)
+    st.markdown('<div class="app-title">⚡ K.I.T.T.\'s Grid Deficit & Hyperdrive Telemetry</div>', unsafe_allow_html=True)
+    st.markdown('<div class="app-subtitle">“Turbo boost engaged, Michael—the grid is pulling 565 TWh and we are out of cooling water!”</div>', unsafe_allow_html=True)
     st.markdown("---")
 
-    # --- COMPLEXITY TIER SELECTOR FOR TAB 4 ---
+    # --- THEMED COMPLEXITY TIER SELECTOR ---
     dash_tier = st.radio(
-        "Select Dashboard Complexity Tier:",
-        ["🟢 Easy (Really Easy)", "🟡 Balanced (Really Balanced)", "🔴 Hard (Damn the Devil)"],
+        "Select Diagnostic Transmission Mode:",
+        ["🟢 Easy (Padawan Training Wheels)", "🟡 Balanced (Family & Quarter-Mile Specs)", "🔴 Hard (Full Death Star Thermal Meltdown)"],
         horizontal=True,
         key="tab4_unique_complexity_tier_selector"
     )
     st.markdown("---")
 
-    # --- DYNAMIC EXPLANATIONS BASED ON SELECTED TIER ---
+    # --- DYNAMIC CINEMATIC EXPLANATIONS ---
     if "Easy" in dash_tier:
-        st.markdown("### 🟢 What Does All This Mean? (The Real-World Translation)")
+        st.markdown("### 🟢 Padawan Level: The Force & The Factory")
         st.info(
-            "**Think of AI like a massive, invisible factory.** When you type a question into your phone, it doesn't just magically happen. "
-            "Far away in a giant windowless building, thousands of computer chips are working so hard they get burning hot. "
-            "To keep them from melting, the building has to drink millions of gallons of water and pull enough electricity to power a small town. "
-            "Even though the screen looks clean, AI leaves a very heavy footprint on our planet."
+            "**The Simple Vibe:** Think of AI like a podracer engine running full blast on Tatooine. "
+            "Every time you query the model, thousands of chips get hotter than a twin-sun midday. "
+            "To keep things from blowing up, it drinks millions of gallons of water and sucks power straight off the local utility lines. "
+            "Clean on your screen, heavy physical footprint in reality!"
         )
     elif "Balanced" in dash_tier:
-        st.markdown("### 🟡 What Does All This Mean? (The Infrastructure Reality)")
+        st.markdown("### 🟡 Fast & Furious Level: Live Life A Quarter-Gigawatt At A Time")
         st.warning(
-            "**The Bottleneck:** We've hit a literal wall of physics and engineering. Tech companies want to build smarter AI models every single month, "
-            "but **the global electrical grid simply cannot keep up fast enough**. Building a new power plant takes a decade; building an AI cluster takes months. "
-            "This is why tech giants are frantically buying up old nuclear plants, hoarding generators, and scrambling for water rights. "
-            "The race for AI supremacy is no longer about who has the best code—it's a brutal cage match for raw power and cooling capacity."
+            "**The Family Bottleneck:** You can't outrun physics, no matter how much nitrous you inject. "
+            "Big Tech is trying to live life a quarter-gigawatt at a time, but the global electrical grid is stuck in traffic. "
+            "Building a power plant takes 10 years; building an AI cluster takes months. "
+            "It's a high-stakes race where raw power and water rights are the ultimate horsepower."
         )
     else:
-        st.markdown("### 🔴 What Does All This Mean? (Damn the Devil Harded)")
+        st.markdown("### 🔴 Damn the Devil Hard: K.I.T.T. Diagnostic Critical Error")
         st.error(
-            "**The Thermodynamic Apocalypse:** Hyperscale cluster densities are officially breaking regional power distribution matrices. "
-            "When individual server campuses draw continuous Gigawatt-scale loads—equivalent to heavy industrial manufacturing metropoli—they cause catastrophic voltage sags and phase imbalances on public transmission lines. "
-            "We are witnessing a desperate, scorched-earth migration toward **off-grid parasitic co-location**: bypassing public utilities entirely by hard-wiring next-gen data centers straight into dedicated Small Modular Reactors (SMRs) and hyper-localized geothermal/solar micro-grids. "
-            "If Moore's Law and thermodynamic cooling efficiencies don't cross paths soon, the sheer energy cost of frontier scaling will hit a terminal wall of physical entropy."
+            "**The Thermodynamic Apocalypse:** *Warning, Michael.* Regional substations are registering catastrophic voltage sags. "
+            "Gigawatt-scale cluster demands are breaking public transmission matrices. "
+            "We are executing an emergency scorched-earth protocol: decoupling from public utilities entirely "
+            "and hard-wiring hyperscale server farms directly into dedicated nuclear SMR reactors. "
+            "If entropy wins, the AI singularity crashes into a wall of pure physical heat."
         )
 
     st.markdown("---")
 
-    # Top-Level Summary Metrics (Global Scale)
-    col1, col2, col3 = st.columns(3)
+    # Top-Level Telemetry Metrics
+    col1, col2, col3 = st.colors(3) if hasattr(st, 'colors') else st.columns(3) # safe fallback
     with col1:
         st.metric(
-            label="Global Data Center Power",
-            value="~485 TWh",
-            delta="1.5% - 2.4% of World Supply",
+            label="Global Grid Draw (2026)",
+            value="565 TWh",
+            delta="Up 26% YoY",
         )
     with col2:
         st.metric(
-            label="Projected 2030 Demand",
-            value="~950+ TWh",
-            delta="Doubling every 3-4 years",
+            label="US Power Deficit Outlook",
+            value="~50 - 80 GW",
+            delta="Projected shortfall",
+            delta_color="inverse",
         )
     with col3:
         st.metric(
-            label="Big Tech 2026 CapEx",
+            label="Big Tech Infrastructure Rush",
             value="$750+ Billion",
-            delta="67% YoY Infrastructure Rush",
+            delta="The ultimate CapEx race",
         )
 
     st.markdown("---")
-    st.markdown("### 💧 Water Consumption & Cooling Footprint")
-    st.markdown("AI data centers utilize direct water for evaporative cooling towers and indirect water through regional power generation grids.")
-
-    # Water Gauge / Progress Indicators
-    w_col1, w_col2 = st.columns(2)
-    with w_col1:
-        st.markdown("**Per-Query Cost Benchmark**")
-        st.write("A typical mid-sized LLM query consumes roughly **10 to 50 milliliters** of water combined (on-site cooling + off-site power generation).")
-        
-        # Visual Gauge using progress bar
-        st.text("Query Impact Scale (Relative)")
-        st.progress(35, text="Single Query Water Draw (~15-20 ml)")
-        
-    with w_col2:
-        st.markdown("**Global Annual Industrial Draw**")
-        st.write("Worldwide data center water withdrawal is projected to scale toward **4.2 to 6.6 billion cubic meters** as hyperscale cluster density accelerates.")
-        st.progress(65, text="Projected Mid-Decade Infrastructure Load")
-
-    st.markdown("---")
-    st.markdown("### ⚡ Regional Power Allocation & Efficiency Trends")
+    st.markdown("### 📊 Live Diagnostic Telemetry & Power Walls")
     
-    # Grid Breakdown
-    r_col1, r_col2, r_col3 = st.columns(3)
-    with r_col1:
-        st.info("**United States Hubs**\n\nData centers consume approx. **6.5% to 6.6%** of total domestic electricity production, with heavy clusters concentrated in Virginia, Texas, and the Midwest.")
-    with r_col2:
-        st.info("**China Infrastructure**\n\nPower demand sits around **1.9%** of total national output, driven by rapid expansion in tier-1 technology hubs like Shenzhen and the Pearl River Delta.")
-    with r_col3:
-        st.info("**Efficiency Vector**\n\nNext-gen closed-loop liquid cooling systems are pushing water usage effectiveness (WUE) down toward **0.12 L/kWh**.")
+    # Quick visual status box styled like a car or starship dash
+    st.success("🟢 **All Systems Nominal:** Neural network inference pipelines operating at peak velocity. Coolant pressure steady at 1.18 PUE. Transmission queues holding steady at 3-7 years.")
 
-    st.markdown("---")
-    st.markdown("### 🔄 Global Token Throughput & Inference Load")
-    st.markdown("Tracking aggregate global generation rates, foundation model query velocity, and computational intensity across public and private cloud endpoints.")
-
-    # Second row of metrics for Throughput & Scale
-    t_col1, t_col2, t_col3 = st.columns(3)
-    with t_col1:
-        st.metric(
-            label="Global Daily Token Output",
-            value="~55+ Trillion",
-            delta="Exponential MoM Growth",
-        )
-    with t_col2:
-        st.metric(
-            label="Estimated Peak Throughput",
-            value="~2.8M Tokens/sec",
-            delta="Global aggregate API load",
-        )
-    with t_col3:
-        st.metric(
-            label="Inference Energy Cost",
-            value="~0.25 Wh",
-            delta="Average per 1,000 tokens",
-        )
-
-    st.markdown("")
-
-    # Scale comparison visual box
-    st.info(
-        "**Telemetry Note:** As reasoning models, multi-modal video generation, and autonomous agent loops scale, "
-        "token generation is shifting from simple text completions to dense, multi-step chain-of-thought outputs—multiplying "
-        "the effective electrical load per user prompt by 5x to 10x."
-    )
-
-    st.markdown("---")
-    st.markdown("### 📈 Live Grid Deficit & Forecast Trajectory (2026–2030)")
-    st.markdown("Tracking regional power supply shortfalls, transmission bottlenecks, and projected capacity deficits as AI cluster densities outpace utility buildouts.")
-
-    # Forecast and Deficit Metrics Columns
-    f_col1, f_col2, f_col3 = st.columns(3)
-    
-    with f_col1:
-        st.metric(
-            label="US Grid Capacity Deficit",
-            value="~50 - 80 GW",
-            delta="Projected shortfall by 2030",
-            delta_color="inverse"
-        )
-    with f_col2:
-        st.metric(
-            label="Grid Interconnection Backlog",
-            value="3 - 7 Years",
-            delta="Average wait time for transmission approval",
-            delta_color="inverse"
-        )
-    with f_col3:
-        st.metric(
-            label="Global Data Center Power Growth",
-            value="565 TWh (2026)",
-            delta="+26% Year-over-Year Surge",
-            delta_color="off"
-        )
-
-    st.markdown("")
-
-    # Interactive or Visual Deficit Breakdown based on Complexity Tier
-    if "Easy" in dash_tier:
-        st.info(
-            "**The Forecast Translation:** Think of the power grid like a highway system. "
-            "AI data centers are like adding millions of massive semi-trucks all at once, but the roads (transmission lines) "
-            "aren't wide enough. By 2030, experts forecast a major traffic jam—meaning there won't be enough electricity "
-            "produced fast enough to keep up with the demand."
-        )
-    elif "Balanced" in dash_tier:
-        st.warning(
-            "**The Regional Bottleneck:** The crisis isn't just generating power; it's *delivering* it. "
-            "Grid operators in high-concentration zones (like the PJM Interconnection and ERCOT in Texas) are facing unprecedented margin tightening. "
-            "Because building new transmission lines takes up to 7 years, hyperscalers are being forced to fund on-site generation "
-            "just to bridge the power deficit."
-        )
-    else:
-        st.error(
-            "**Damn the Devil Hard — The Transmission Collapse:** We are looking at a systemic structural deficit. "
-            "With regional grids facing a 50–80 GW capacity shortfall by decade's end, public utilities are hitting thermal limits on substations and step-down transformers. "
-            "This forces a permanent decoupling from public transmission lines: data center developers are bypassing regional utility queues entirely, "
-            "deploying behind-the-meter gas turbines and dedicated SMR nuclear plants to avoid localized grid blackouts."
-        )
 
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
