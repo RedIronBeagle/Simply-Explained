@@ -2364,8 +2364,7 @@ with tab4:
 
     st.markdown("---")
     st.markdown("> **Operational Insight:** As gigawatt-scale clusters expand, future AI developments rely heavily on localized micro-grid integration, sustainable off-grid renewable pairing, and advanced thermodynamic recapture systems.")
-
-	st.markdown("---")
+    st.markdown("---")
     st.markdown("### 🔄 Global Token Throughput & Inference Load")
     st.markdown("Tracking aggregate global generation rates, foundation model query velocity, and computational intensity across public and private cloud endpoints.")
 
