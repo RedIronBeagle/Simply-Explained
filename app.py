@@ -2036,45 +2036,47 @@ with tab1:
         )
 
 # ==============================================================================
-# [GLOBAL SECURITY & WATERMARK OVERLAY INJECTION]
+# [GLOBAL WATERMARK & PRINT LOCKDOWN]
 # ==============================================================================
 st.markdown("""
-	<style>
-		/* 1. DISABLE PRINTING ENTIRELY VIA CSS */
-		@media print {
-			body {
-				display: none !important;
-			}
-		}
+    <style>
+        /* 1. PERSISTENT GLOBAL SCREEN WATERMARK */
+        .global-watermark-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 5rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.025);
+            z-index: 999999;
+            pointer-events: none;
+            white-space: nowrap;
+            user-select: none;
+        }
 
-		/* 2. PERSISTENT GLOBAL SCREEN WATERMARK STYLING */
-		.global-watermark-overlay {
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%) rotate(-30deg);
-			font-size: 5rem;
-			font-weight: 900;
-			color: rgba(255, 255, 255, 0.025); /* Extremely faint, non-intrusive background mark */
-			z-index: 999999;
-			pointer-events: none; /* Allows users to click right through it normally */
-			white-space: nowrap;
-			user-select: none;
-		}
-	</style>
+        /* 2. BULLETPROOF PRINT / PREVIEW LOCKDOWN */
+        @media print {
+            /* Hide the entire Streamlit app container during print/preview */
+            .stApp {
+                display: none !important;
+            }
+            
+            /* Display a strict restriction notice on the printed page instead */
+            body::after {
+                content: "ACCESS DENIED: This telemetry dashboard is strictly confidential and prohibited from printing or offline export.";
+                display: block;
+                font-family: monospace;
+                font-size: 16px;
+                color: #000;
+                padding: 50px;
+                text-align: center;
+            }
+        }
+    </style>
 
-	<!-- Global Watermark Text Overlay -->
-	<div class="global-watermark-overlay">CONFIDENTIAL // SYSTEM TELEMETRY</div>
-
-	<script>
-		/* 3. BLOCK KEYBOARD PRINT SHORTCUTS GLOBALLY (Ctrl+P / Cmd+P) */
-		window.addEventListener('keydown', function(e) {
-			if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
-				e.preventDefault();
-				console.warn("Print action blocked by system security.");
-			}
-		});
-	</script>
+    <!-- Global Watermark Text Overlay -->
+    <div class="global-watermark-overlay">CONFIDENTIAL // SYSTEM TELEMETRY</div>
 """, unsafe_allow_html=True)
 
 # Audio Accessibility Feed
