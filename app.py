@@ -2303,79 +2303,66 @@ with tab2:
 	        st.error(f"An unexpected error occurred: {str(e)}")
 
 # ==============================================================================
-# [SECTION 9: TAB 4 - GLOBAL AI RESOURCE & INFRASTRUCTURE DASHBOARD]
+# [SECTION 9: TAB 4 - THE FAST & THE AI (GRID STREET WARS EDITION)]
 # ==============================================================================
 with tab4:
-    st.markdown('<div class="app-title">⚡ K.I.T.T.\'s Grid Deficit & Hyperdrive Telemetry</div>', unsafe_allow_html=True)
-    st.markdown('<div class="app-subtitle">“Turbo boost engaged, Michael—the grid is pulling 565 TWh and we are out of cooling water!”</div>', unsafe_allow_html=True)
+    st.markdown('<div class="app-title">🏁 The Fast & The AI: Grid Tokyo Drift</div>', unsafe_allow_html=True)
+    st.markdown('<div class="app-subtitle">“I live my life a quarter-gigawatt at a time. For those ten seconds or less, I’m free of utility queues.”</div>', unsafe_allow_html=True)
     st.markdown("---")
 
-    # --- THEMED COMPLEXITY TIER SELECTOR ---
+    # --- DOM TORETTO TIER SELECTOR ---
     dash_tier = st.radio(
-        "Select Diagnostic Transmission Mode:",
-        ["🟢 Easy (Padawan Training Wheels)", "🟡 Balanced (Family & Quarter-Mile Specs)", "🔴 Hard (Full Death Star Thermal Meltdown)"],
+        "Select Vehicle Tuning Spec:",
+        ["🟢 Stock Civic (Laptop Daily Driver)", "🟡 Dom's 70 Charger (Balanced Micro-Grid)", "🔴 F9 Space Charger (Damn the Devil / Nuclear NOS)"],
         horizontal=True,
-        key="tab4_unique_complexity_tier_selector"
+        key="ff_tuning_spec_selector"
     )
     st.markdown("---")
 
-    # --- DYNAMIC CINEMATIC EXPLANATIONS ---
-    if "Easy" in dash_tier:
-        st.markdown("### 🟢 Padawan Level: The Force & The Factory")
+    # --- DYNAMIC F&F EXPLANATIONS ---
+    if "Civic" in dash_tier:
+        st.markdown("### 🟢 Stock Civic Level: The Daily Driver")
         st.info(
-            "**The Simple Vibe:** Think of AI like a podracer engine running full blast on Tatooine. "
-            "Every time you query the model, thousands of chips get hotter than a twin-sun midday. "
-            "To keep things from blowing up, it drinks millions of gallons of water and sucks power straight off the local utility lines. "
-            "Clean on your screen, heavy physical footprint in reality!"
+            "**The Vibe:** You're just rolling down the street in a stock Honda. It sips gas, it doesn't overheat, "
+            "and nobody's trying to race you. A standard query on a local model—clean, slow, and low impact."
         )
-    elif "Balanced" in dash_tier:
-        st.markdown("### 🟡 Fast & Furious Level: Live Life A Quarter-Gigawatt At A Time")
+    elif "Charger" in dash_tier:
+        st.markdown("### 🟡 Dom's 1970 Charger: Balanced Street Build")
         st.warning(
-            "**The Family Bottleneck:** You can't outrun physics, no matter how much nitrous you inject. "
-            "Big Tech is trying to live life a quarter-gigawatt at a time, but the global electrical grid is stuck in traffic. "
-            "Building a power plant takes 10 years; building an AI cluster takes months. "
-            "It's a high-stakes race where raw power and water rights are the ultimate horsepower."
+            "**The Family Bottleneck:** You've got a supercharger blower sticking out of the hood, burning massive amounts of fuel. "
+            "The local electrical grid is sweating trying to keep up with your horsepower, but you're holding it together because *nothing's stronger than family*."
         )
     else:
-        st.markdown("### 🔴 Damn the Devil Hard: K.I.T.T. Diagnostic Critical Error")
+        st.markdown("### 🔴 F9 Space Charger: Absolute Insanity (Nitrous Purge)")
         st.error(
-            "**The Thermodynamic Apocalypse:** *Warning, Michael.* Regional substations are registering catastrophic voltage sags. "
-            "Gigawatt-scale cluster demands are breaking public transmission matrices. "
-            "We are executing an emergency scorched-earth protocol: decoupling from public utilities entirely "
-            "and hard-wiring hyperscale server farms directly into dedicated nuclear SMR reactors. "
-            "If entropy wins, the AI singularity crashes into a wall of pure physical heat."
+            "**The Thermodynamic Apocalypse:** *Grab the roll cage, Tej.* We just bolted a rocket engine to a Dodge Charger and pointed it at a hyperscale cluster. "
+            "Public transmission lines completely vaporized under 80 GW of peak load. We are legally bypassing the power company, "
+            "injecting pure nuclear liquid-cooling NOS straight into the servers, and defying the laws of physics at 200 miles per hour!"
         )
 
     st.markdown("---")
 
-    # Top-Level Telemetry Metrics
-    col1, col2, col3 = st.colors(3) if hasattr(st, 'colors') else st.columns(3) # safe fallback
+    # Telemetry with F&F flavor
+    col1, col2, col3 = st.columns(3)
     with col1:
         st.metric(
-            label="Global Grid Draw (2026)",
+            label="Total Horsepower (Grid Draw)",
             value="565 TWh",
-            delta="Up 26% YoY",
+            delta="Nitrous pressure high",
         )
     with col2:
         st.metric(
-            label="US Power Deficit Outlook",
+            label="Transmission Drop (US Deficit)",
             value="~50 - 80 GW",
-            delta="Projected shortfall",
+            delta="Brake failure imminent",
             delta_color="inverse",
         )
     with col3:
         st.metric(
-            label="Big Tech Infrastructure Rush",
+            label="Family Budget (CapEx Spend)",
             value="$750+ Billion",
-            delta="The ultimate CapEx race",
+            delta="More than enough to buy the race wars",
         )
-
-    st.markdown("---")
-    st.markdown("### 📊 Live Diagnostic Telemetry & Power Walls")
-    
-    # Quick visual status box styled like a car or starship dash
-    st.success("🟢 **All Systems Nominal:** Neural network inference pipelines operating at peak velocity. Coolant pressure steady at 1.18 PUE. Transmission queues holding steady at 3-7 years.")
-
 
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
