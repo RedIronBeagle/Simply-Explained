@@ -2035,50 +2035,6 @@ with tab1:
             key="download_topic_pdf",
         )
 
-# ==============================================================================
-# [GLOBAL WATERMARK & PRINT LOCKDOWN]
-# ==============================================================================
-st.markdown("""
-    <style>
-        /* 1. PERSISTENT GLOBAL SCREEN WATERMARK */
-        .global-watermark-overlay {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-30deg);
-            font-size: 5rem;
-            font-weight: 900;
-            color: rgba(255, 255, 255, 0.025);
-            z-index: 999999;
-            pointer-events: none;
-            white-space: nowrap;
-            user-select: none;
-        }
-
-        /* 2. BULLETPROOF PRINT / PREVIEW LOCKDOWN */
-        @media print {
-            /* Hide the entire Streamlit app container during print/preview */
-            .stApp {
-                display: none !important;
-            }
-            
-            /* Display a strict restriction notice on the printed page instead */
-            body::after {
-                content: "ACCESS DENIED: This telemetry dashboard is strictly confidential and prohibited from printing or offline export.";
-                display: block;
-                font-family: monospace;
-                font-size: 16px;
-                color: #000;
-                padding: 50px;
-                text-align: center;
-            }
-        }
-    </style>
-
-    <!-- Global Watermark Text Overlay -->
-    <div class="global-watermark-overlay">CONFIDENTIAL // SYSTEM TELEMETRY</div>
-""", unsafe_allow_html=True)
-
 # Audio Accessibility Feed
 if enable_audio_speech:
 	st.markdown("---")
