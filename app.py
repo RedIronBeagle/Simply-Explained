@@ -2370,7 +2370,9 @@ with tab4:
     st.markdown("---")
 
     # --- PLOTLY GAUGES & CALCULATOR REMAIN BELOW ---
-    # (Keep your existing Plotly code and Interactive Calculator code right here...)# ==============================================================================
+    # (Keep your existing Plotly code and Interactive Calculator code right here...)
+
+# ==============================================================================
 # [SECTION 9: TAB 4 - GLOBAL AI RESOURCE & INFRASTRUCTURE DASHBOARD]
 # ==============================================================================
 with tab4:
@@ -2465,6 +2467,41 @@ with tab4:
         "token generation is shifting from simple text completions to dense, multi-step chain-of-thought outputs—multiplying "
         "the effective electrical load per user prompt by 5x to 10x."
     )
+# --- UPGRADED: COMPLEXITY TIER SELECTOR FOR TAB 4 ---
+    dash_tier = st.radio(
+        "Select Dashboard Complexity Tier:",
+        ["🟢 Easy (Really Easy)", "🟡 Balanced (Well Balanced)", "🔴 Hard (Damn the Devil Hard)"],
+        horizontal=True,
+        key="tab4_complexity_tier"
+    )
+    st.markdown("---")
+
+    # --- DYNAMIC EXPLANATIONS BASED ON SELECTED TIER ---
+    if "Easy" in dash_tier:
+        st.markdown("### 🟢 What Does All This Mean? (The Real-World Translation)")
+        st.info(
+            "**Think of AI like a massive, invisible factory.** When you type a question into your phone, it doesn't just magically happen. "
+            "Far away in a giant windowless building, thousands of computer chips are working so hard they get burning hot. "
+            "To keep them from melting, the building has to drink millions of gallons of water and pull enough electricity to power a small town. "
+            "Even though the screen looks clean, AI leaves a very heavy footprint on our planet."
+        )
+    elif "Balanced" in dash_tier:
+        st.markdown("### 🟡 What Does All This Mean? (The Infrastructure Reality)")
+        st.warning(
+            "**The Bottleneck:** We've hit a literal wall of physics and engineering. Tech companies want to build smarter AI models every single month, "
+            "but **the global electrical grid simply cannot keep up fast enough**. Building a new power plant takes a decade; building an AI cluster takes months. "
+            "This is why tech giants are frantically buying up old nuclear plants, hoarding generators, and scrambling for water rights. "
+            "The race for AI supremacy is no longer about who has the best code—it's a brutal cage match for raw power and cooling capacity."
+        )
+    else:
+        st.markdown("### 🔴 What Does All This Mean? (Damn the Devil Hard)")
+        st.error(
+            "**The Thermodynamic Apocalypse:** Hyperscale cluster densities are officially breaking regional power distribution matrices. "
+            "When individual server campuses draw continuous Gigawatt-scale loads—equivalent to heavy industrial manufacturing metropoli—they cause catastrophic voltage sags and phase imbalances on public transmission lines. "
+            "We are witnessing a desperate, scorched-earth migration toward **off-grid parasitic co-location**: bypassing public utilities entirely by hard-wiring next-gen data centers straight into dedicated Small Modular Reactors (SMRs) and hyper-localized geothermal/solar micro-grids. "
+            "If Moore's Law and thermodynamic cooling efficiencies don't cross paths soon, the sheer energy cost of frontier scaling will hit a terminal wall of physical entropy."
+        )
+
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
 # ==============================================================================
