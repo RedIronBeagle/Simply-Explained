@@ -2035,72 +2035,72 @@ with tab1:
             key="download_topic_pdf",
         )
 
-	# ==============================================================================
-	# [GLOBAL SECURITY & WATERMARK OVERLAY INJECTION]
-	# ==============================================================================
-	st.markdown("""
-	    <style>
-	        /* 1. DISABLE PRINTING ENTIRELY VIA CSS */
-	        @media print {
-	            body {
-	                display: none !important;
-	            }
-	        }
-	
-	        /* 2. PERSISTENT GLOBAL SCREEN WATERMARK STYLING */
-	        .global-watermark-overlay {
-	            position: fixed;
-	            top: 50%;
-	            left: 50%;
-	            transform: translate(-50%, -50%) rotate(-30deg);
-	            font-size: 5rem;
-	            font-weight: 900;
-	            color: rgba(255, 255, 255, 0.025); /* Extremely faint, non-intrusive background mark */
-	            z-index: 999999;
-	            pointer-events: none; /* Allows users to click right through it normally */
-	            white-space: nowrap;
-	            user-select: none;
-	        }
-	    </style>
-	
-	    <!-- Global Watermark Text Overlay -->
-	    <div class="global-watermark-overlay">CONFIDENTIAL // SYSTEM TELEMETRY</div>
-	
-	    <script>
-	        /* 3. BLOCK KEYBOARD PRINT SHORTCUTS GLOBALLY (Ctrl+P / Cmd+P) */
-	        window.addEventListener('keydown', function(e) {
-	            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
-	                e.preventDefault();
-	                console.warn("Print action blocked by system security.");
-	            }
-	        });
-	    </script>
-	""", unsafe_allow_html=True)
+# ==============================================================================
+# [GLOBAL SECURITY & WATERMARK OVERLAY INJECTION]
+# ==============================================================================
+st.markdown("""
+	<style>
+		/* 1. DISABLE PRINTING ENTIRELY VIA CSS */
+		@media print {
+			body {
+				display: none !important;
+			}
+		}
 
-        # Audio Accessibility Feed
-        if enable_audio_speech:
-            st.markdown("---")
-            st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
-            try:
-                from gtts import gTTS
+		/* 2. PERSISTENT GLOBAL SCREEN WATERMARK STYLING */
+		.global-watermark-overlay {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%) rotate(-30deg);
+			font-size: 5rem;
+			font-weight: 900;
+			color: rgba(255, 255, 255, 0.025); /* Extremely faint, non-intrusive background mark */
+			z-index: 999999;
+			pointer-events: none; /* Allows users to click right through it normally */
+			white-space: nowrap;
+			user-select: none;
+		}
+	</style>
 
-                clean_text_for_speech = output_text
-                clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-                clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+	<!-- Global Watermark Text Overlay -->
+	<div class="global-watermark-overlay">CONFIDENTIAL // SYSTEM TELEMETRY</div>
 
-                tts = gTTS(
-                    text=clean_text_for_speech,
-                    lang=TTS_LANG_MAP.get(selected_lang, "en"),
-                    slow=False,
-                )
-                audio_bytes_obj = io.BytesIO()
-                tts.write_to_fp(audio_bytes_obj)
-                audio_bytes_obj.seek(0)
-                st.audio(audio_bytes_obj, format="audio/mp3")
-            except Exception as tts_err:
-                st.warning(
-                    f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
-                )
+	<script>
+		/* 3. BLOCK KEYBOARD PRINT SHORTCUTS GLOBALLY (Ctrl+P / Cmd+P) */
+		window.addEventListener('keydown', function(e) {
+			if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+				e.preventDefault();
+				console.warn("Print action blocked by system security.");
+			}
+		});
+	</script>
+""", unsafe_allow_html=True)
+
+	# Audio Accessibility Feed
+	if enable_audio_speech:
+		st.markdown("---")
+		st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
+		try:
+			from gtts import gTTS
+
+			clean_text_for_speech = output_text
+			clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+			clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+
+			tts = gTTS(
+				text=clean_text_for_speech,
+				lang=TTS_LANG_MAP.get(selected_lang, "en"),
+				slow=False,
+			)
+			audio_bytes_obj = io.BytesIO()
+			tts.write_to_fp(audio_bytes_obj)
+			audio_bytes_obj.seek(0)
+			st.audio(audio_bytes_obj, format="audio/mp3")
+		except Exception as tts_err:
+			st.warning(
+				f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
+			)
 
 
 # ==============================================================================
