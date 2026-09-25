@@ -2367,26 +2367,6 @@ with tab4:
             delta_color="inverse"
         )
 
-    st.markdown("---")
-    st.markdown("### 📊 Interactive Simulation & Resource Scaling")
-    st.markdown("Configure parameters to project live power and cooling loads based on current data center scaling trends:")
-
-    # Interactive Controls
-    sim_col1, sim_col2 = st.columns(2)
-    with sim_col1:
-        cluster_units = st.slider("Active Hyperscale Clusters", min_value=10, max_value=300, value=100, step=10, key="sim_clusters_v2")
-        pue_efficiency = st.selectbox("Facility PUE Efficiency Rating", ["Standard Air-Cooled (1.50 PUE)", "Closed-Loop Liquid (1.25 PUE)", "Advanced Immersion (1.12 PUE)"], key="sim_pue_v2")
-
-    # Real-time mathematical computation
-    pue_val = 1.50 if "1.50" in pue_efficiency else (1.25 if "1.25" in pue_efficiency else 1.12)
-    computed_power = (cluster_units * 0.4) * pue_val
-    computed_water = cluster_units * 15000
-
-    with sim_col2:
-        st.markdown("#### **Calculated Operational Output:**")
-        st.metric(label="Estimated Total Power Demand", value=f"{computed_power:.2f} GW", delta="Instantaneous Load")
-        st.metric(label="Estimated Daily Water Draw", value=f"{computed_water:,.0f} Liters", delta="Cooling Requirement")
-
 
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
