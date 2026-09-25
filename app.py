@@ -2472,7 +2472,7 @@ with tab4:
         "Select Dashboard Complexity Tier:",
         ["🟢 Easy (Really Easy)", "🟡 Balanced (Well Balanced)", "🔴 Hard (Damn the Devil Hard)"],
         horizontal=True,
-        key="tab4_unique_complexity_tier_selector"
+        key="tab4_unique_complexity_tier_selector:"
     )
     st.markdown("---")
 
