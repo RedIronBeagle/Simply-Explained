@@ -2382,9 +2382,7 @@ with tab4:
             "with interconnection queues stretching 3 to 7 years. Hyperscalers are bypassing public utility queues entirely, "
             "locking in direct contracts with nuclear SMRs and dedicated gas/solar micro-grids."
         )
-
     st.markdown("---")
-
     # --- REAL-TIME METRICS ROW ---
     col1, col2, col3 = st.columns(3)
     with col1:
