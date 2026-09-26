@@ -2383,29 +2383,6 @@ with tab4:
             "locking in direct contracts with nuclear SMRs and dedicated gas/solar micro-grids."
         )
     st.markdown("---")
-    # --- REAL-TIME METRICS ROW ---
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric(
-            label="Global Data Center Power",
-            value="565 TWh",
-            delta="2026 Projection (+26% YoY)",
-        )
-    with col2:
-        st.metric(
-            label="US Power Shortfall Gap",
-            value="50 - 57 GW",
-            delta="Projected Grid Deficit",
-            delta_color="inverse"
-        )
-    with col3:
-        st.metric(
-            label="Grid Interconnection Backlog",
-            value="3 - 7 Years",
-            delta="Average Utility Queue Wait",
-            delta_color="inverse"
-        )
-
 
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
