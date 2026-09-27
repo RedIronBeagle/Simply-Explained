@@ -2345,9 +2345,10 @@ with tab2:
 
 # ==============================================================================
 # [SECTION 9: TAB 4 - GLOBAL AI RESOURCE & INFRASTRUCTURE TELEMETRY]
-# ==============================================================================
-import streamlit as st
+# ========================================================================
+
 import random
+import streamlit as st
 import time
 import math
 from datetime import datetime
@@ -2379,7 +2380,7 @@ st.markdown("""
     .info-box { border-left-color: #3182ce; }
     .space-box { border-left-color: #805ad5; }
     </style>
-""", unsafe_html=True)
+""", unsafe_allow_html=True)
 
 # ==========================================
 # SIDEBAR CONTROLS & AUTO-RELOAD MECHANISM
@@ -2436,7 +2437,7 @@ with col_space:
             <li><b>Orbital Intersection Alert:</b> ISS conjunction hazard index calculated at <span style='color:{"#ff4444" if debris_proximity_chance > 0.06 else "#dd6b20"};'>{debris_proximity_chance}%</span></li>
         </ul>
     </div>
-    """, unsafe_html=True)
+    """, unsafe_allow_html=True)
     
     st.markdown("#### 📅 Next Major Launch Event & Live Streams")
     st.info("🚀 **Starship Flight 14** Scheduled Launch Window: September 28, 2026")
@@ -2450,7 +2451,7 @@ with col_health:
     <div class="metric-box health-box" style="border-left: 4px solid #d53f8c;">
         <p><b>🟢 Deep-Web Network Telemetry:</b> 5.42B Active Users Online | Worldwide Bandwidth Peak: 842.1 Tbps</p>
     </div>
-    """, unsafe_html=True)
+    """, unsafe_allow_html=True)
     
     if cross_border_vector:
         # Dynamic spillover logic simulating variable containment rates
@@ -2467,7 +2468,7 @@ with col_health:
             </ul>
             <p style='margin:5px 0;'><b>Emergency Countermeasures:</b> Vaccine supply pipelines activated across 12 targeted cross-border health outposts.</p>
         </div>
-        """, unsafe_html=True)
+        """, unsafe_allow_html=True)
 
 # ==========================================
 # FOOTER SYSTEM LOG ARCHIVE
@@ -2489,7 +2490,9 @@ st.text_area(
 if enable_refresh:
     time.sleep(refresh_rate)
     st.rerun()
-	
+
+
+
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
 # ==============================================================================
