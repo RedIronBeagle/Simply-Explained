@@ -2383,32 +2383,12 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# SIDEBAR CONTROLS & AUTO-RELOAD MECHANISM
-# ==========================================
-st.sidebar.title("🌐 Command Filters")
-st.sidebar.markdown("---")
-
-# Auto-Reload Integration Controller
-st.sidebar.subheader("🔄 Automated Live Telemetry Loop")
-enable_refresh = st.sidebar.toggle("Enable Live Telemetry Stream", value=True)
-refresh_rate = st.sidebar.slider("Refresh Rate Interval (Seconds)", min_value=1, max_value=10, value=1)
-
-# Toggle Overlays
-st.sidebar.subheader("⚠️ Active Risk Overlays")
-cross_border_vector = st.sidebar.checkbox("Cross-Border Bio-Threat Vector", value=True)
-
-# ==========================================
 # LIVE DATA GENERATOR (DETERMINISTIC SIMULATION)
 # ==========================================
 epoch = time.time()
 iss_lat = round(51.6 * math.sin(epoch / 5400), 2)
 iss_lon = round(180 * math.sin(epoch / 10800), 2)
 global_risk_index = min(max(74 + int(3 * math.sin(epoch / 100)), 1), 100)
-
-# ==========================================
-# TAB NAVIGATION STRUCTURE
-# ==========================================
-tab1, tab2, tab3, tab4 = st.tabs(["Tab 1: Overview", "Tab 2: Analytics", "Tab 3: Operational Intelligence Lab", "Tab 4: Global Telemetry & Space"])
 
 # --- TAB 3: OPERATIONAL INTELLIGENCE LAB ---
 with tab3:
@@ -2501,11 +2481,6 @@ st.text_area(
     ), 
     height=120
 )
-
-# Execution block handling browser loop ticks natively
-if enable_refresh:
-    time.sleep(refresh_rate)
-    st.rerun()
 
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
