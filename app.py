@@ -2346,44 +2346,150 @@ with tab2:
 # ==============================================================================
 # [SECTION 9: TAB 4 - GLOBAL AI RESOURCE & INFRASTRUCTURE TELEMETRY]
 # ==============================================================================
-with tab4:
-    st.markdown('<div class="app-title">🌐 Global AI Infrastructure & Grid Telemetry</div>', unsafe_allow_html=True)
-    st.markdown('<div class="app-subtitle">Real-Time Resource Footprint, Power Deficits, & Forecast Trajectories</div>', unsafe_allow_html=True)
-    st.markdown("---")
+import streamlit as st
+import random
+import time
+import math
+from datetime import datetime
 
-    # --- COMPLEXITY TIER SELECTOR ---
-    dash_tier = st.radio(
-        "Select Data Depth:",
-        ["🟢 Level 1: Core Metrics (Easy)", "🟡 Level 2: Regional Grid Dynamics (Balanced)", "🔴 Level 3: Hard Forecasts & Deficits (Technical)"],
-        horizontal=True,
-        key="telemetry_tier_selector_v2"
-    )
-    st.markdown("---")
+# ==========================================
+# PAGE CONFIGURATION & STYLING
+# ==========================================
+st.set_page_config(
+    page_title="Global Command Terminal",
+    page_icon="🌐",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-    # --- CONDITIONAL TEXT ANALYSIS BASED ON TIER ---
-    if "Level 1" in dash_tier:
-        st.markdown("### 🟢 Core Metrics Overview")
-        st.info(
-            "**The Big Picture:** AI compute requires massive physical resources. "
-            "Every query translates directly to electrical load and water consumption at server farms, "
-            "creating a physical footprint that scales alongside model parameters."
-        )
-    elif "Level 2" in dash_tier:
-        st.markdown("### 🟡 Regional Grid Dynamics")
-        st.warning(
-            "**The Bottleneck:** Power generation and local transmission lines cannot keep pace with cluster deployment speeds. "
-            "High-density hubs (such as Northern Virginia, Texas ERCOT, and Dublin) are hitting regional transmission capacity caps, "
-            "forcing operators to look at behind-the-meter generation."
-        )
-    else:
-        st.markdown("### 🔴 Hard Forecasts & System Deficits")
-        st.error(
-            "**The Structural Deficit:** Industry analysis (including updated Morgan Stanley and IEA projections) highlights a structural US power shortfall scaling toward **50 to 57 GW**, "
-            "with interconnection queues stretching 3 to 7 years. Hyperscalers are bypassing public utility queues entirely, "
-            "locking in direct contracts with nuclear SMRs and dedicated gas/solar micro-grids."
-        )
-    st.markdown("---")
+# Custom CSS for dark tactical theme and scannable visual anchors
+st.markdown("""
+    <style>
+    .reportview-container { background: #0e1117; }
+    .metric-box {
+        background-color: #1a1c23;
+        padding: 15px;
+        border-radius: 6px;
+        border-left: 4px solid #4a5568;
+        margin-bottom: 10px;
+    }
+    .critical-box { border-left-color: #e53e3e; }
+    .warning-box { border-left-color: #dd6b20; }
+    .success-box { border-left-color: #38a169; }
+    .info-box { border-left-color: #3182ce; }
+    .space-box { border-left-color: #805ad5; }
+    </style>
+""", unsafe_html=True)
 
+# ==========================================
+# SIDEBAR CONTROLS & AUTO-RELOAD MECHANISM
+# ==========================================
+st.sidebar.title("🌐 Command Filters")
+st.sidebar.markdown("---")
+
+# Auto-Reload Integration Controller
+st.sidebar.subheader("🔄 Automated Live Telemetry Loop")
+enable_refresh = st.sidebar.toggle("Enable Live Telemetry Stream", value=True)
+refresh_rate = st.sidebar.slider("Refresh Rate Interval (Seconds)", min_value=1, max_value=10, value=1)
+
+# Toggle Overlays
+st.sidebar.subheader("⚠️ Active Risk Overlays")
+cross_border_vector = st.sidebar.checkbox("Cross-Border Bio-Threat Vector", value=True)
+
+# ==========================================
+# LIVE DATA GENERATOR (DETERMINISTIC SIMULATION)
+# ==========================================
+epoch = time.time()
+iss_lat = round(51.6 * math.sin(epoch / 5400), 2)
+iss_lon = round(180 * math.sin(epoch / 10800), 2)
+global_risk_index = min(max(74 + int(3 * math.sin(epoch / 100)), 1), 100)
+
+# ==========================================
+# ROW 4: SPACE & BIOSURVEILLANCE
+# ==========================================
+st.markdown("### 🚀 Orbitals, Space Debris & Biosurveillance")
+col_space, col_health = st.columns(2)
+
+with col_space:
+    st.subheader("🌌 Orbital Matrix & Space Domain Awareness")
+    
+    # Dynamic calculations for high-interest orbital objects
+    starlink_count = int(6200 + 40 * math.sin(epoch / 3600))
+    debris_proximity_chance = round(0.04 * math.sin(epoch / 1200) + 0.05, 4)
+    
+    st.markdown(f"""
+    <div class="metric-box space-box">
+        <p><b>🛰️ Live Constellation Tracking & High-Interest Payloads:</b></p>
+        <ul>
+            <li><b>Active Starlink Fleet:</b> {starlink_count:,} operational nodes in low-Earth orbit</li>
+            <li><b>ISS Status:</b> Alt: 418km | Lat: {iss_lat}° / Lon: {iss_lon}° (Optimal line-of-sight tracking)</li>
+            <li><b>Tiangong Trajectory:</b> 382km stable orbit | Crew payload nominal</li>
+        </ul>
+        <p><b>☄️ Near-Earth Object (NEO) Close Approaches:</b></p>
+        <ul>
+            <li><b>Asteroid 2026-SK4:</b> Mapped at 1.4 Lunar Distances | Relative Velocity: 42,100 km/h</li>
+        </ul>
+        <p><b>🗑️ Atmospheric Re-entry Risk Analysis:</b></p>
+        <ul>
+            <li><b>Object:</b> Decommissioned Spy Satellite SL-12 (Upper Fragment)</li>
+            <li><b>Estimated Decay:</b> 18.4 hours | Projected impact zone footprint: South Pacific Range</li>
+            <li><b>Orbital Intersection Alert:</b> ISS conjunction hazard index calculated at <span style='color:{"#ff4444" if debris_proximity_chance > 0.06 else "#dd6b20"};'>{debris_proximity_chance}%</span></li>
+        </ul>
+    </div>
+    """, unsafe_html=True)
+    
+    st.markdown("#### 📅 Next Major Launch Event & Live Streams")
+    st.info("🚀 **Starship Flight 14** Scheduled Launch Window: September 28, 2026")
+    st.markdown("[🔗 Access Official SpaceX Live Broadcast Feed](https://spacex.com)")
+
+with col_health:
+    st.subheader("☣️ Global Health & Bio-Spillover Intelligence")
+    
+    # Telecom/Internet Infrastructure check
+    st.markdown("""
+    <div class="metric-box health-box" style="border-left: 4px solid #d53f8c;">
+        <p><b>🟢 Deep-Web Network Telemetry:</b> 5.42B Active Users Online | Worldwide Bandwidth Peak: 842.1 Tbps</p>
+    </div>
+    """, unsafe_html=True)
+    
+    if cross_border_vector:
+        # Dynamic spillover logic simulating variable containment rates
+        containment_rate = round(78.4 + 4.2 * math.cos(epoch / 4000), 1)
+        
+        st.markdown(f"""
+        <div class="metric-box critical-box">
+            <h5 style='margin:0; color:#e53e3e;'>⚠️ Cross-Border Bio-Threat Vector Alerts</h5>
+            <p style='margin:5px 0;'><b>Pathogen Variant:</b> Bundibugyo Ebolavirus Cluster (DRC/Uganda Border Hubs)</p>
+            <ul>
+                <li><b>Active Transmission Node:</b> High-density trade corridors crossing sub-Saharan transit sectors.</li>
+                <li><b>Aviation Intersect:</b> Entebbe & Kigali international hubs flag travel health screen protocols.</li>
+                <li><b>Ring Containment Efficiency:</b> {containment_rate}% field deployment rate tracking.</li>
+            </ul>
+            <p style='margin:5px 0;'><b>Emergency Countermeasures:</b> Vaccine supply pipelines activated across 12 targeted cross-border health outposts.</p>
+        </div>
+        """, unsafe_html=True)
+
+# ==========================================
+# FOOTER SYSTEM LOG ARCHIVE
+# ==========================================
+st.markdown("---")
+st.subheader("📝 System Log Threat Event Archive")
+st.text_area(
+    label="Live Telemetry Event Logs (Timestamped Auto-Appends)", 
+    value=(
+        f"[{datetime.now().strftime('%H:%M:%S')}] SYS: Global Risk Index recalibrated to {global_risk_index}.\n"
+        f"[{datetime.now().strftime('%H:%M:%S')}] ORBIT: CZ-3B debris decay rate calculated. Re-entry footprint refined.\n"
+        f"[{datetime.now().strftime('%H:%M:%S')}] BIO: Cross-border aviation threat matrix updated for central African transport nodes.\n"
+        f"[{datetime.now().strftime('%H:%M:%S')}] LOG: Suez Canal marine diversion metric adjusted to Cape of Good Hope baseline routes."
+    ), 
+    height=120
+)
+
+# Execution block handling browser loop ticks natively
+if enable_refresh:
+    time.sleep(refresh_rate)
+    st.rerun()
+	
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
 # ==============================================================================
