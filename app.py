@@ -2347,8 +2347,9 @@ with tab2:
 # [SECTION 9: TAB 4 - GLOBAL AI RESOURCE & INFRASTRUCTURE TELEMETRY]
 # ========================================================================
 
-import random
+
 import streamlit as st
+import random
 import time
 import math
 from datetime import datetime
@@ -2486,6 +2487,10 @@ st.text_area(
     height=120
 )
 
+# Execution block handling browser loop ticks natively
+if enable_refresh:
+    time.sleep(refresh_rate)
+    st.rerun()
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
 # ==============================================================================
