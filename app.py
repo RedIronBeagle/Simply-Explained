@@ -2486,13 +2486,6 @@ st.text_area(
     height=120
 )
 
-# Execution block handling browser loop ticks natively
-if enable_refresh:
-    time.sleep(refresh_rate)
-    st.rerun()
-
-
-
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
 # ==============================================================================
