@@ -2343,10 +2343,9 @@ with tab2:
 	      except Exception as e:
 	        st.error(f"An unexpected error occurred: {str(e)}")
 
-# ==============================================================================
-# [SECTION 9: TAB 4 - GLOBAL AI RESOURCE & INFRASTRUCTURE TELEMETRY]
-# ========================================================================
-
+#------------------------------------------------------------------
+# tab 4
+#-------------------------------------------
 
 import streamlit as st
 import random
@@ -2407,69 +2406,85 @@ iss_lon = round(180 * math.sin(epoch / 10800), 2)
 global_risk_index = min(max(74 + int(3 * math.sin(epoch / 100)), 1), 100)
 
 # ==========================================
-# ROW 4: SPACE & BIOSURVEILLANCE
+# TAB NAVIGATION STRUCTURE
 # ==========================================
-st.markdown("### 🚀 Orbitals, Space Debris & Biosurveillance")
-col_space, col_health = st.columns(2)
+tab1, tab2, tab3, tab4 = st.tabs(["Tab 1: Overview", "Tab 2: Analytics", "Tab 3: Operational Intelligence Lab", "Tab 4: Global Telemetry & Space"])
 
-with col_space:
-    st.subheader("🌌 Orbital Matrix & Space Domain Awareness")
-    
-    # Dynamic calculations for high-interest orbital objects
-    starlink_count = int(6200 + 40 * math.sin(epoch / 3600))
-    debris_proximity_chance = round(0.04 * math.sin(epoch / 1200) + 0.05, 4)
-    
-    st.markdown(f"""
-    <div class="metric-box space-box">
-        <p><b>🛰️ Live Constellation Tracking & High-Interest Payloads:</b></p>
-        <ul>
-            <li><b>Active Starlink Fleet:</b> {starlink_count:,} operational nodes in low-Earth orbit</li>
-            <li><b>ISS Status:</b> Alt: 418km | Lat: {iss_lat}° / Lon: {iss_lon}° (Optimal line-of-sight tracking)</li>
-            <li><b>Tiangong Trajectory:</b> 382km stable orbit | Crew payload nominal</li>
-        </ul>
-        <p><b>☄️ Near-Earth Object (NEO) Close Approaches:</b></p>
-        <ul>
-            <li><b>Asteroid 2026-SK4:</b> Mapped at 1.4 Lunar Distances | Relative Velocity: 42,100 km/h</li>
-        </ul>
-        <p><b>🗑️ Atmospheric Re-entry Risk Analysis:</b></p>
-        <ul>
-            <li><b>Object:</b> Decommissioned Spy Satellite SL-12 (Upper Fragment)</li>
-            <li><b>Estimated Decay:</b> 18.4 hours | Projected impact zone footprint: South Pacific Range</li>
-            <li><b>Orbital Intersection Alert:</b> ISS conjunction hazard index calculated at <span style='color:{"#ff4444" if debris_proximity_chance > 0.06 else "#dd6b20"};'>{debris_proximity_chance}%</span></li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("#### 📅 Next Major Launch Event & Live Streams")
-    st.info("🚀 **Starship Flight 14** Scheduled Launch Window: September 28, 2026")
-    st.markdown("[🔗 Access Official SpaceX Live Broadcast Feed](https://spacex.com)")
+# --- TAB 3: OPERATIONAL INTELLIGENCE LAB ---
+with tab3:
+    st.markdown("### 🧪 Operational Intelligence Lab")
+    st.markdown("Multilingual translation matrix, document parsing utilities, and active NLP risk analysis streams.")
 
-with col_health:
-    st.subheader("☣️ Global Health & Bio-Spillover Intelligence")
-    
-    # Telecom/Internet Infrastructure check
-    st.markdown("""
-    <div class="metric-box health-box" style="border-left: 4px solid #d53f8c;">
-        <p><b>🟢 Deep-Web Network Telemetry:</b> 5.42B Active Users Online | Worldwide Bandwidth Peak: 842.1 Tbps</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    if cross_border_vector:
-        # Dynamic spillover logic simulating variable containment rates
-        containment_rate = round(78.4 + 4.2 * math.cos(epoch / 4000), 1)
+    col_t3_1, col_t3_2 = st.columns(2)
+    with col_t3_1:
+        st.info("**Parser Status:** Document ingestion pipeline online. Ready for multi-language conversion.")
+    with col_t3_2:
+        st.success("**NLP Engine:** Active keyword extraction and sentiment weighting stable.")
+
+
+# --- TAB 4: GLOBAL AI RESOURCE & INFRASTRUCTURE TELEMETRY ---
+with tab4:
+    st.markdown("### 🚀 Orbitals, Space Debris & Biosurveillance")
+    col_space, col_health = st.columns(2)
+
+    with col_space:
+        st.subheader("🌌 Orbital Matrix & Space Domain Awareness")
         
+        # Dynamic calculations for high-interest orbital objects
+        starlink_count = int(6200 + 40 * math.sin(epoch / 3600))
+        debris_proximity_chance = round(0.04 * math.sin(epoch / 1200) + 0.05, 4)
+
         st.markdown(f"""
-        <div class="metric-box critical-box">
-            <h5 style='margin:0; color:#e53e3e;'>⚠️ Cross-Border Bio-Threat Vector Alerts</h5>
-            <p style='margin:5px 0;'><b>Pathogen Variant:</b> Bundibugyo Ebolavirus Cluster (DRC/Uganda Border Hubs)</p>
+        <div class="metric-box space-box">
+            <p><b>🛰️ Live Constellation Tracking & High-Interest Payloads:</b></p>
             <ul>
-                <li><b>Active Transmission Node:</b> High-density trade corridors crossing sub-Saharan transit sectors.</li>
-                <li><b>Aviation Intersect:</b> Entebbe & Kigali international hubs flag travel health screen protocols.</li>
-                <li><b>Ring Containment Efficiency:</b> {containment_rate}% field deployment rate tracking.</li>
+                <li><b>Active Starlink Fleet:</b> {starlink_count:,} operational nodes in low-Earth orbit</li>
+                <li><b>ISS Status:</b> Alt: 418km | Lat: {iss_lat}° / Lon: {iss_lon}° (Optimal line-of-sight tracking)</li>
+                <li><b>Tiangong Trajectory:</b> 382km stable orbit | Crew payload nominal</li>
             </ul>
-            <p style='margin:5px 0;'><b>Emergency Countermeasures:</b> Vaccine supply pipelines activated across 12 targeted cross-border health outposts.</p>
+            <p><b>☄️ Near-Earth Object (NEO) Close Approaches:</b></p>
+            <ul>
+                <li><b>Asteroid 2026-SK4:</b> Mapped at 1.4 Lunar Distances | Relative Velocity: 42,100 km/h</li>
+            </ul>
+            <p><b>🗑️ Atmospheric Re-entry Risk Analysis:</b></p>
+            <ul>
+                <li><b>Object:</b> Decommissioned Spy Satellite SL-12 (Upper Fragment)</li>
+                <li><b>Estimated Decay:</b> 18.4 hours | Projected impact zone footprint: South Pacific Range</li>
+                <li><b>Orbital Intersection Alert:</b> ISS conjunction hazard index calculated at <span style='color:{"#ff4444" if debris_proximity_chance > 0.06 else "#dd6b20"};'>{debris_proximity_chance}%</span></li>
+            </ul>
         </div>
         """, unsafe_allow_html=True)
+
+        st.markdown("#### 📅 Next Major Launch Event & Live Streams")
+        st.info("🚀 **Starship Flight 14** Scheduled Launch Window: September 28, 2026")
+        st.markdown("[🔗 Access Official SpaceX Live Broadcast Feed](https://spacex.com)")
+
+    with col_health:
+        st.subheader("☣️ Global Health & Bio-Spillover Intelligence")
+
+        # Telecom/Internet Infrastructure check
+        st.markdown("""
+        <div class="metric-box health-box" style="border-left: 4px solid #d53f8c;">
+            <p><b>🟢 Deep-Web Network Telemetry:</b> 5.42B Active Users Online | Worldwide Bandwidth Peak: 842.1 Tbps</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if cross_border_vector:
+            # Dynamic spillover logic simulating variable containment rates
+            containment_rate = round(78.4 + 4.2 * math.cos(epoch / 4000), 1)
+
+            st.markdown(f"""
+            <div class="metric-box critical-box">
+                <h5 style='margin:0; color:#e53e3e;'>⚠️ Cross-Border Bio-Threat Vector Alerts</h5>
+                <p style='margin:5px 0;'><b>Pathogen Variant:</b> Bundibugyo Ebolavirus Cluster (DRC/Uganda Border Hubs)</p>
+                <ul>
+                    <li><b>Active Transmission Node:</b> High-density trade corridors crossing sub-Saharan transit sectors.</li>
+                    <li><b>Aviation Intersect:</b> Entebbe & Kigali international hubs flag travel health screen protocols.</li>
+                    <li><b>Ring Containment Efficiency:</b> {containment_rate}% field deployment rate tracking.</li>
+                </ul>
+                <p style='margin:5px 0;'><b>Emergency Countermeasures:</b> Vaccine supply pipelines activated across 12 targeted cross-border health outposts.</p>
+            </div>
+            """, unsafe_allow_html=True)
 
 # ==========================================
 # FOOTER SYSTEM LOG ARCHIVE
@@ -2491,6 +2506,7 @@ st.text_area(
 if enable_refresh:
     time.sleep(refresh_rate)
     st.rerun()
+
 # ==============================================================================
 # [SECTION 10: TAB 3 - OPERATIONAL INTELLIGENCE LAB (CLEAN & MULTILINGUAL)]
 # ==============================================================================
