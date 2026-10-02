@@ -2767,6 +2767,33 @@ with tab3:
             mime="application/pdf",
             key="download_topic_pdf",
         )
+
+	# --- PERSISTENT RENDER BLOCK (Tab 1) ---
+    if "persistent_output_text" in st.session_state:
+        output_text = st.session_state["persistent_output_text"]
+        disp_title = st.session_state.get("persistent_display_title", "Report")
+
+        st.success(texts["ready"].get(depth_level, "Your response is ready"))
+        st.markdown("---")
+        st.markdown(output_text)
+
+        # Unique key download button placement
+        safe_title = ''.join(c for c in f"Topic ({depth_level}): {disp_title}" if ord(c) < 128)
+        safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
+        safe_key_suffix = "".join(c for c in disp_title if c.isalnum())[:10]
+
+        pdf_data = generate_pdf_bytes(
+            safe_title,
+            safe_output,
+            texts.get("footer_text", "The Report - Simply Explained"),
+        )
+        st.download_button(
+            label=texts.get("pdf_button", "📥 Press to Download PDF Report"),
+            data=pdf_data,
+            file_name=f"Simply_Explained_{disp_title.replace(' ', '_')}.pdf",
+            mime="application/pdf",
+            key=f"download_topic_pdf_{safe_key_suffix}",
+        )
     else:
         output_text = ""  # Safe fallback so undefined variables don't crash the script
 
