@@ -2076,30 +2076,30 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# Audio Accessibility Feed
-if enable_audio_speech:
-	st.markdown("---")
-	st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
-	try:
-		from gtts import gTTS
-	
-		clean_text_for_speech = output_text
-		clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-		clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
-	
-		tts = gTTS(
-			text=clean_text_for_speech,
-			lang=TTS_LANG_MAP.get(selected_lang, "en"),
-			slow=False,
-		)
-		audio_bytes_obj = io.BytesIO()
-		tts.write_to_fp(audio_bytes_obj)
-		audio_bytes_obj.seek(0)
-		st.audio(audio_bytes_obj, format="audio/mp3")
-	except Exception as tts_err:
-		st.warning(
-			f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
-		)
+# --- AUDIO ACCESSIBILITY FEED (SAFELY GUARDED) ---
+if enable_audio_speech and 'output_text' in locals() and output_text:
+    st.markdown("---")
+    st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
+    try:
+        from gtts import gTTS
+    
+        clean_text_for_speech = output_text
+        clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+        clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+    
+        tts = gTTS(
+            text=clean_text_for_speech,
+            lang=TTS_LANG_MAP.get(selected_lang, "en"),
+            slow=False,
+        )
+        audio_bytes_obj = io.BytesIO()
+        tts.write_to_fp(audio_bytes_obj)
+        audio_bytes_obj.seek(0)
+        st.audio(audio_bytes_obj, format="audio/mp3")
+    except Exception as tts_err:
+        st.warning(
+            f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
+        )
 
 
 # ==============================================================================
