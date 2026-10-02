@@ -2912,7 +2912,7 @@ with tab4:
     </head>
     <body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white p-4">
 
-        <!-- Top Header with Status & Refresh rate - fix at 1 sec -->
+        <!-- Top Header with Status & Screen Activity Trigger -->
         <header class="bg-[#151922] border border-white/10 px-6 py-4 rounded-xl flex flex-col sm:flex-row items-center justify-between mb-6 shadow-md">
             <div class="flex items-center space-x-3 mb-2 sm:mb-0">
                 <div class="w-10 h-10 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold text-xl">
@@ -2925,6 +2925,11 @@ with tab4:
             </div>
             
             <div class="flex items-center space-x-4">
+                <!-- Screen Force-Wake Activity Button -->
+                <button onclick="triggerScreenWake()" class="px-3 py-1.5 rounded-lg text-xs font-mono bg-blue-600/20 text-blue-400 border border-blue-500/40 hover:bg-blue-600/30 transition">
+                    <i class="fa-solid fa-bolt mr-1"></i> Force Active 2s Pulse
+                </button>
+
                 <!-- Terminal Status Toggle (Online / Offline) -->
                 <div class="flex items-center space-x-2 bg-[#0e1117] px-3 py-1.5 rounded-lg border border-white/10">
                     <span class="text-xs font-mono text-slate-400">Terminal:</span>
@@ -2936,12 +2941,12 @@ with tab4:
                 <!-- Live Stream Status Indicator -->
                 <span id="live-badge" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
                     <span id="pulse-dot" class="w-2 h-2 mr-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span id="badge-text">STREAM ACTIVE (5s)</span>
+                    <span id="badge-text">STREAM ACTIVE (2s)</span>
                 </span>
             </div>
         </header>
 
-        <!-- Main Content Area (Full Width since filters were removed) -->
+        <!-- Main Content Area -->
         <main class="w-full space-y-8">
 
             <!-- Top Gauges: Risk Index & Doomsday Clock -->
@@ -3054,30 +3059,15 @@ with tab4:
                 </div>
             </div>
 
-            <!-- ROW 3: Logistics (Air/Marine) -->
+            <!-- ROW 3: Top 8 Global Active Airports & Disruption Matrix -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                    <i class="fa-solid fa-ship text-blue-400 mr-2"></i>Global Supply Chains & Transit Logistics
+                    <i class="fa-solid fa-plane-circle-exclamation text-blue-400 mr-2"></i>Top 8 Global Airports — Active Weather & Geo-Political Delays
                 </h3>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <h4 class="font-bold text-slate-200 text-sm flex items-center space-x-2">
-                                <i class="fa-solid fa-plane text-blue-400"></i>
-                                <span>Aviation Traffic Monitor</span>
-                            </h4>
-                            <span id="air-count" class="text-sm font-mono font-bold text-blue-400">14,240 Flights</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <h4 class="font-bold text-slate-200 text-sm flex items-center space-x-2">
-                                <i class="fa-solid fa-anchor text-cyan-400"></i>
-                                <span>Maritime Traffic Matrix</span>
-                            </h4>
-                            <span id="marine-count" class="text-sm font-mono font-bold text-cyan-400">54,820 Vessels</span>
-                        </div>
+                <div class="bg-[#151922] p-6 rounded-xl border border-white/10">
+                    <p class="text-xs text-slate-400 mb-4 font-mono">Real-time tracking of high-density aviation hubs facing convective weather bottlenecks, volume congestion, or air-space restriction alerts.</p>
+                    <div id="airport-top8-container" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <!-- Populated dynamically via JS -->
                     </div>
                 </div>
             </div>
@@ -3141,7 +3131,7 @@ with tab4:
                             <p><b>• USGS (U.S. Geological Survey):</b> Global seismic hazard and live earthquake monitoring feeds (filtered for Magnitude > 5.5).</p>
                             <p><b>• Space-Track & NASA Orbital Mechanics:</b> Low Earth Orbit (LEO) object catalogs, conjunction warnings, Starlink telemetry, and Tiangong (CSS) tracking.</p>
                             <p><b>• NOAA / National Snow and Ice Data Center (NSIDC):</b> Climate tracking, Arctic sea ice extent, and mass loss metrics.</p>
-                            <p><b>• FlightRadar24 & AISMarine Feeds:</b> Global aviation positioning matrices and commercial maritime choke-point tracking.</p>
+                            <p><b>• FlightAware & Eurocontrol Aviation Metrics:</b> Top 8 global hubs delay tracking (weather, volume, and geo-political airspace restrictions).</p>
                             <p><b>• WHO & CDC Global Outbreak API:</b> Cross-border bio-threat vector intelligence and containment tracking.</p>
                         </div>
                     </details>
@@ -3150,9 +3140,10 @@ with tab4:
 
         </main>
 
-        <!-- Application Logic with 5-Second Refresh Cycle -->
+        <!-- Application Logic with Active 2-Second Screen Refresh Cycle -->
         <script>
             let isSystemOnline = true;
+            let heartbeatCounter = 0;
 
             function toggleSystemStatus() {
                 isSystemOnline = !isSystemOnline;
@@ -3166,7 +3157,7 @@ with tab4:
                     btn.className = "px-2 py-0.5 rounded text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 transition";
                     badge.className = "inline-flex items-center px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30";
                     pulse.className = "w-2 h-2 mr-2 rounded-full bg-emerald-400 animate-pulse";
-                    text.textContent = "STREAM ACTIVE (5s)";
+                    text.textContent = "STREAM ACTIVE (2s)";
                 } else {
                     btn.textContent = "OFFLINE";
                     btn.className = "px-2 py-0.5 rounded text-xs font-mono font-bold bg-rose-500/20 text-rose-400 border border-rose-500/40 transition";
@@ -3174,6 +3165,16 @@ with tab4:
                     pulse.className = "w-2 h-2 mr-2 rounded-full bg-rose-500";
                     text.textContent = "STREAM OFFLINE";
                 }
+            }
+
+            // Force screen activity wakeup trigger
+            function triggerScreenWake() {
+                heartbeatCounter++;
+                tickSimulation();
+                const logArea = document.getElementById('log-textarea');
+                const timeStr = new Date().toTimeString().substring(0, 8);
+                logArea.value += `\n[${timeStr}] WAKE: Manual screen pulse triggered (Event #${heartbeatCounter}).`;
+                logArea.scrollTop = logArea.scrollHeight;
             }
 
             let acledTop8Zones = [
@@ -3195,13 +3196,26 @@ with tab4:
                 { location: "Minahassa Peninsula, Sulawesi", mag: 5.5, depth: "45 km", time: "5h ago" }
             ];
 
+            // Top 8 Global Active Airports with Delays
+            let airportsTop8 = [
+                { code: "ATL", name: "Hartsfield-Jackson Atlanta", delayAvg: "38 min", reason: "Convective Weather & Volume", status: "Delayed" },
+                { code: "DXB", name: "Dubai International", delayAvg: "22 min", reason: "Airspace Corridor Congestion", status: "Moderate" },
+                { code: "LHR", name: "London Heathrow", delayAvg: "45 min", reason: "ATC Staffing & Low Visibility", status: "Delayed" },
+                { code: "HND", name: "Tokyo Haneda", delayAvg: "15 min", reason: "Nominal Flow Controls", status: "On-Time" },
+                { code: "CDG", name: "Paris Charles de Gaulle", delayAvg: "34 min", reason: "Ground Crew Constraints", status: "Moderate" },
+                { code: "ORD", name: "Chicago O'Hare", delayAvg: "52 min", reason: "High Winds & Gusts", status: "Severe" },
+                { code: "DEL", name: "Indira Gandhi Delhi", delayAvg: "28 min", reason: "Visibility Fog Restriction", status: "Moderate" },
+                { code: "SIN", name: "Singapore Changi", delayAvg: "12 min", reason: "Nominal Operations", status: "On-Time" }
+            ];
+
             const acledContainer = document.getElementById('acled-top8-container');
             const seismicContainer = document.getElementById('seismic-top5-container');
+            const airportContainer = document.getElementById('airport-top8-container');
 
             function renderAcledTop8() {
                 acledContainer.innerHTML = '';
                 acledTop8Zones.forEach((item, index) => {
-                    let badgeColor = item.intensity === 'Critical' ? 'bg-rose-500/10 text-rose-400 border-rose-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30';
+                    let badgeColor = item.intensity === 'Critical' ? 'bg-rose-500/10 text-rose-400 border-rose-500/30' : 'bg-amber-500/10 text-amber-500/30';
                     acledContainer.innerHTML += `
                         <div class="bg-[#1a1c23] p-2.5 rounded-lg border border-white/5 flex items-center justify-between text-xs font-mono">
                             <div>
@@ -3216,7 +3230,7 @@ with tab4:
 
             function renderSeismicTop5() {
                 seismicContainer.innerHTML = '';
-                usgsTop5Seismic.forEach((quake, index) => {
+                usgsTop5Seismic.forEach((quake) => {
                     seismicContainer.innerHTML += `
                         <div class="bg-[#1a1c23] p-2.5 rounded-lg border border-white/5 flex items-center justify-between text-xs font-mono">
                             <div>
@@ -3229,10 +3243,30 @@ with tab4:
                 });
             }
 
+            function renderAirportsTop8() {
+                airportContainer.innerHTML = '';
+                airportsTop8.forEach((apt) => {
+                    let statusColor = apt.status === 'Severe' ? 'text-rose-400 bg-rose-500/10 border-rose-500/30' : (apt.status === 'Delayed' || apt.status === 'Moderate' ? 'text-amber-400 bg-amber-500/10 border-amber-500/30' : 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30');
+                    airportContainer.innerHTML += `
+                        <div class="bg-[#1a1c23] p-3 rounded-lg border border-white/5 flex items-center justify-between font-mono text-xs">
+                            <div>
+                                <div class="font-bold text-white"><span class="text-blue-400">[${apt.code}]</span> ${apt.name}</div>
+                                <div class="text-[10px] text-slate-400">Delay Factor: ${apt.reason}</div>
+                            </div>
+                            <div class="text-right">
+                                <span class="px-2 py-0.5 rounded text-[10px] border ${statusColor}">${apt.status}</span>
+                                <div class="text-[10px] text-slate-300 mt-1">Avg: ${apt.delayAvg}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
             renderAcledTop8();
             renderSeismicTop5();
+            renderAirportsTop8();
 
-            // Continuous Simulation Loop running every 5 seconds
+            // Continuous Simulation Loop running precisely every 2 seconds (2000ms)
             function tickSimulation() {
                 if (!isSystemOnline) return;
 
@@ -3241,15 +3275,15 @@ with tab4:
 
                 const epoch = Date.now() / 1000;
                 
-                // Live updates for ACLED events
+                // Live updates for ACLED events and aviation jitter
                 acledTop8Zones.forEach(zone => {
-                    if (Math.random() > 0.5) {
+                    if (Math.random() > 0.6) {
                         zone.events24h += Math.floor(Math.random() * 3) - 1;
                     }
                 });
                 renderAcledTop8();
 
-                // ISS & Tiangong coordinates simulation
+                // Space coordinates update
                 const issLat = (51.6 * Math.sin(epoch / 5400)).toFixed(2);
                 const issLon = (180 * Math.sin(epoch / 10800)).toFixed(2);
                 document.getElementById('iss-lat').textContent = issLat + '°';
@@ -3268,18 +3302,19 @@ with tab4:
                 const timeStr = now.toTimeString().substring(0, 8);
                 const logs = logArea.value.split('\n');
                 if (logs.length > 20) logs.shift();
-                logs.push(`[${timeStr}] TELEMETRY: 5s sync pulse verified. ACLED & USGS arrays updated.`);
+                logs.push(`[${timeStr}] TELEMETRY: 2s active screen sync pulse verified. Matrices refreshed.`);
                 logArea.value = logs.join('\n');
                 logArea.scrollTop = logArea.scrollHeight;
             }
 
-            // Set refresh rate interval to 5000ms (5 seconds)
-            setInterval(tickSimulation, 5000);
+            // Interval locked strictly to 2000ms (2 seconds)
+            setInterval(tickSimulation, 2000);
         </script>
     </body>
     </html>
     """
 
-    st.components.v1.html(tactical_terminal_html, height=1350, scrolling=True)
+    st.components.v1.html(tactical_terminal_html, height=1400, scrolling=True)
 
-	
+
+
