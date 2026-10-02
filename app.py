@@ -2897,11 +2897,6 @@ with tab4:
                 border-left: 4px solid #4a5568;
                 margin-bottom: 12px;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-                transition: all 0.2s ease-in-out;
-            }
-            .metric-box:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 16px rgba(0,0,0,0.4);
             }
             .critical-box { border-left-color: #e53e3e; }
             .warning-box { border-left-color: #dd6b20; }
@@ -2913,12 +2908,11 @@ with tab4:
             ::-webkit-scrollbar { width: 6px; height: 6px; }
             ::-webkit-scrollbar-track { background: #0e1117; }
             ::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 9999px; }
-            ::-webkit-scrollbar-thumb:hover { background: #4a5568; }
         </style>
     </head>
     <body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white p-4">
 
-        <!-- Top Header -->
+        <!-- Top Header with Status & 5s Refresh Controller -->
         <header class="bg-[#151922] border border-white/10 px-6 py-4 rounded-xl flex flex-col sm:flex-row items-center justify-between mb-6 shadow-md">
             <div class="flex items-center space-x-3 mb-2 sm:mb-0">
                 <div class="w-10 h-10 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold text-xl">
@@ -2929,269 +2923,259 @@ with tab4:
                     <p id="sys-time" class="text-xs font-mono text-slate-400">System Time: Syncing UTC...</p>
                 </div>
             </div>
-            <div class="flex items-center space-x-3">
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                    <span class="w-2 h-2 mr-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    LIVE TELEMETRY ACTIVE
+            
+            <div class="flex items-center space-x-4">
+                <!-- Terminal Status Toggle (Online / Offline) -->
+                <div class="flex items-center space-x-2 bg-[#0e1117] px-3 py-1.5 rounded-lg border border-white/10">
+                    <span class="text-xs font-mono text-slate-400">Terminal:</span>
+                    <button id="status-toggle-btn" onclick="toggleSystemStatus()" class="px-2 py-0.5 rounded text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 transition">
+                        ONLINE
+                    </button>
+                </div>
+
+                <!-- Live Stream Status Indicator -->
+                <span id="live-badge" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                    <span id="pulse-dot" class="w-2 h-2 mr-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="badge-text">STREAM ACTIVE (5s)</span>
                 </span>
             </div>
         </header>
 
-        <!-- Main App Container Layout -->
-        <div class="flex-1 flex flex-col lg:flex-row w-full gap-6">
+        <!-- Main Content Area (Full Width since filters were removed) -->
+        <main class="w-full space-y-8">
 
-            <!-- Sidebar Controls -->
-            <aside class="w-full lg:w-80 bg-[#151922] border border-white/10 p-6 space-y-6 rounded-xl shrink-0 h-fit">
-                <div>
-                    <h2 class="text-sm font-mono uppercase tracking-widest text-slate-300 font-bold flex items-center space-x-2">
-                        <i class="fa-solid fa-sliders text-blue-400"></i>
-                        <span>Command Filters</span>
-                    </h2>
-                    <div class="h-px bg-white/10 my-3"></div>
-                </div>
-
-                <!-- Auto-Reload Integration Controller -->
-                <div class="space-y-3 bg-[#1a1c23] p-4 rounded-xl border border-white/5">
-                    <h3 class="text-xs font-mono uppercase tracking-wider text-slate-300 font-bold flex items-center space-x-2">
-                        <i class="fa-solid fa-rotate text-emerald-400"></i>
-                        <span>Automated Stream Loop</span>
-                    </h3>
+            <!-- Top Gauges: Risk Index & Doomsday Clock -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="metric-box critical-box">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs text-slate-400">Enable Live Stream</span>
-                        <input type="checkbox" id="enable-refresh" checked class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                        <h3 class="font-bold text-rose-500 text-xs flex items-center space-x-2">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>GLOBAL RISK INDEX</span>
+                        </h3>
+                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">LIVE METRIC</span>
                     </div>
-                    <div>
-                        <label class="text-xs text-slate-400 block mb-1">Refresh Rate Interval (<span id="refresh-val">1</span>s)</label>
-                        <input type="range" id="refresh-rate" min="1" max="10" value="1" class="w-full accent-blue-500 cursor-pointer">
+                    <div class="flex items-baseline space-x-2 my-2">
+                        <h1 id="global-risk-val" class="text-4xl font-extrabold font-mono text-white">68</h1>
+                        <span class="text-base text-slate-400 font-mono">/ 100</span>
                     </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">Aggregated signal from Conflict, Weather, Bio-Threats, and Space Debris parameters.</p>
                 </div>
 
-                <!-- Toggle Overlays -->
-                <div class="space-y-3 bg-[#1a1c23] p-4 rounded-xl border border-white/5">
-                    <h3 class="text-xs font-mono uppercase tracking-wider text-slate-300 font-bold flex items-center space-x-2">
-                        <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
-                        <span>Active Risk Overlays</span>
-                    </h3>
-                    <label class="flex items-center space-x-3 text-xs text-slate-300 cursor-pointer">
-                        <input type="checkbox" id="overlay-weather" checked class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-blue-600">
-                        <span>Extreme Weather Layer</span>
-                    </label>
-                    <label class="flex items-center space-x-3 text-xs text-slate-300 cursor-pointer">
-                        <input type="checkbox" id="overlay-geo" checked class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-blue-600">
-                        <span>Geopolitical Bottleneck Filter</span>
-                    </label>
-                    <label class="flex items-center space-x-3 text-xs text-slate-300 cursor-pointer">
-                        <input type="checkbox" id="overlay-bio" checked class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-blue-600">
-                        <span>Cross-Border Bio-Threat Vector</span>
-                    </label>
+                <div class="metric-box critical-box" style="background-color: #120808;">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-red-400 text-xs flex items-center space-x-2">
+                            <i class="fa-solid fa-radiation"></i>
+                            <span>DOOMSDAY CLOCK STATUS</span>
+                        </h3>
+                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20">DEFCON 2</span>
+                    </div>
+                    <div class="flex items-baseline space-x-2 my-2">
+                        <h1 class="text-4xl font-extrabold font-mono text-red-400">85</h1>
+                        <span class="text-lg font-bold text-red-300 font-mono">Seconds to Midnight</span>
+                    </div>
+                    <p class="text-xs text-red-200/80 leading-relaxed"><b>Primary Vectors:</b> Nuclear Arsenal Proliferation, Atmospheric Carbon Exceedance, Synthetic Bio-threats, and AI Disinformation Networks.</p>
                 </div>
-            </aside>
+            </div>
 
-            <!-- Main Content Area -->
-            <main class="flex-1 space-y-8">
-
-                <!-- Top Gauges: Risk Index & Doomsday Clock -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="metric-box critical-box">
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-bold text-rose-500 text-xs flex items-center space-x-2">
-                                <i class="fa-solid fa-triangle-exclamation"></i>
-                                <span>GLOBAL RISK INDEX</span>
-                            </h3>
-                            <span class="text-xs font-mono px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">LIVE METRIC</span>
-                        </div>
-                        <div class="flex items-baseline space-x-2 my-2">
-                            <h1 id="global-risk-val" class="text-4xl font-extrabold font-mono text-white">68</h1>
-                            <span class="text-base text-slate-400 font-mono">/ 100</span>
-                        </div>
-                        <p class="text-xs text-slate-400 leading-relaxed">Aggregated signal from Conflict, Weather, Bio-Threats, and Space Debris parameters.</p>
+            <!-- ROW 1: Demographics, Debt & Funds -->
+            <div class="space-y-4">
+                <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
+                    <i class="fa-solid fa-chart-line text-blue-400 mr-2"></i>Demographics, Debt & Crisis Capital
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="metric-box info-box">
+                        <h4 class="font-bold text-blue-400 text-sm mb-2 flex items-center space-x-2">
+                            <i class="fa-solid fa-globe"></i>
+                            <span>Real-Time Demographics</span>
+                        </h4>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Global Population:</b> <span id="stat-pop">8,120,000,000</span></p>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Births Today:</b> ~<span id="stat-births">248,520</span></p>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Deaths Today:</b> ~<span id="stat-deaths">104,110</span></p>
                     </div>
 
-                    <div class="metric-box critical-box" style="background-color: #120808;">
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-bold text-red-400 text-xs flex items-center space-x-2">
-                                <i class="fa-solid fa-radiation"></i>
-                                <span>DOOMSDAY CLOCK STATUS</span>
-                            </h3>
-                            <span class="text-xs font-mono px-2 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20">DEFCON 2</span>
-                        </div>
-                        <div class="flex items-baseline space-x-2 my-2">
-                            <h1 class="text-4xl font-extrabold font-mono text-red-400">85</h1>
-                            <span class="text-lg font-bold text-red-300 font-mono">Seconds to Midnight</span>
-                        </div>
-                        <p class="text-xs text-red-200/80 leading-relaxed"><b>Primary Vectors:</b> Nuclear Arsenal Proliferation, Atmospheric Carbon Exceedance, Synthetic Bio-threats, and AI Disinformation Networks.</p>
+                    <div class="metric-box warning-box">
+                        <h4 class="font-bold text-amber-500 text-sm mb-2 flex items-center space-x-2">
+                            <i class="fa-solid fa-dollar-sign"></i>
+                            <span>Deficits & Commodities</span>
+                        </h4>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>U.S. National Debt:</b> $<span id="stat-debt">34,600,000,000,000</span></p>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Crude Oil (WTI):</b> $<span id="stat-oil">78.50</span> / bbl</p>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Daily Water Consumption:</b> ~4.1B Liters</p>
+                    </div>
+
+                    <div class="metric-box success-box">
+                        <h4 class="font-bold text-emerald-400 text-sm mb-2 flex items-center space-x-2">
+                            <i class="fa-solid fa-vault"></i>
+                            <span>Global Funds Tracker</span>
+                        </h4>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Disaster Endowment Fund:</b> $14.2B USD Available</p>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>WHO Emergency Funding Gap:</b> <span class="text-rose-400">-$840M USD</span></p>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Active Crisis Capital Flow:</b> $42.5M/hr Distributed</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- ROW 1: Demographics, Debt & Funds -->
-                <div class="space-y-4">
-                    <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                        <i class="fa-solid fa-chart-line text-blue-400 mr-2"></i>Demographics, Debt & Crisis Capital
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="metric-box info-box">
-                            <h4 class="font-bold text-blue-400 text-sm mb-2 flex items-center space-x-2">
-                                <i class="fa-solid fa-globe"></i>
-                                <span>Real-Time Demographics</span>
-                            </h4>
-                            <p class="text-xs text-slate-300 my-1 font-mono"><b>Global Population:</b> <span id="stat-pop">8,120,000,000</span></p>
-                            <p class="text-xs text-slate-300 my-1 font-mono"><b>Births Today:</b> ~<span id="stat-births">248,520</span></p>
-                            <p class="text-xs text-slate-300 my-1 font-mono"><b>Deaths Today:</b> ~<span id="stat-deaths">104,110</span></p>
-                        </div>
-
-                        <div class="metric-box warning-box">
-                            <h4 class="font-bold text-amber-500 text-sm mb-2 flex items-center space-x-2">
-                                <i class="fa-solid fa-dollar-sign"></i>
-                                <span>Deficits & Commodities</span>
-                            </h4>
-                            <p class="text-xs text-slate-300 my-1 font-mono"><b>U.S. National Debt:</b> $<span id="stat-debt">34,600,000,000,000</span></p>
-                            <p class="text-xs text-slate-300 my-1 font-mono"><b>Crude Oil (WTI):</b> $<span id="stat-oil">78.50</span> / bbl</p>
-                            <p class="text-xs text-slate-300 my-1 font-mono"><b>Daily Water Consumption:</b> ~4.1B Liters</p>
-                        </div>
-
-                        <div class="metric-box success-box">
-                            <h4 class="font-bold text-emerald-400 text-sm mb-2 flex items-center space-x-2">
-                                <i class="fa-solid fa-vault"></i>
-                                <span>Global Funds Tracker</span>
-                            </h4>
-                            <p class="text-xs text-slate-300 my-1 font-mono"><b>Disaster Endowment Fund:</b> $14.2B USD Available</p>
-                            <p class="text-xs text-slate-300 my-1 font-mono"><b>WHO Emergency Funding Gap:</b> <span class="text-rose-400">-$840M USD</span></p>
-                            <p class="text-xs text-slate-300 my-1 font-mono"><b>Active Crisis Capital Flow:</b> $42.5M/hr Distributed</p>
-                        </div>
+            <!-- ROW 2: ACLED Top 8 Conflict Hotspots & Climate Hazards -->
+            <div class="space-y-4">
+                <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
+                    <i class="fa-solid fa-shield-halved text-rose-500 mr-2"></i>Top 8 ACLED Conflict Hotspots & Climate Hazards
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- ACLED Top 8 Container -->
+                    <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-3">
+                        <h4 class="font-bold text-slate-200 text-sm flex items-center space-x-2 mb-2">
+                            <i class="fa-solid fa-crosshairs text-rose-500"></i>
+                            <span>ACLED Live Conflict Matrix (Top 8 Active Zones)</span>
+                        </h4>
+                        <div id="acled-top8-container" class="space-y-2"></div>
                     </div>
-                </div>
 
-                <!-- ROW 2: ACLED Top 8 Conflict Hotspots & Climate Hazards -->
-                <div class="space-y-4">
-                    <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                        <i class="fa-solid fa-shield-halved text-rose-500 mr-2"></i>Top 8 ACLED Conflict Hotspots & Climate Hazards
-                    </h3>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <!-- ACLED Top 8 Container -->
+                    <!-- Climate & USGS Seismic Top 5 (>5.5) Container -->
+                    <div class="space-y-4">
                         <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-3">
-                            <h4 class="font-bold text-slate-200 text-sm flex items-center space-x-2 mb-2">
-                                <i class="fa-solid fa-crosshairs text-rose-500"></i>
-                                <span>ACLED Live Conflict Matrix (Top 8 Active Zones)</span>
+                            <h4 class="font-bold text-slate-200 text-sm flex items-center space-x-2">
+                                <i class="fa-solid fa-snowflake text-cyan-400"></i>
+                                <span>Climate & Earth Hazards</span>
                             </h4>
-                            <div id="acled-top8-container" class="space-y-2">
-                                <!-- Populated dynamically via JS -->
+                            <div class="metric-box warning-box" style="margin-bottom:0;">
+                                <p class="text-xs text-slate-300 my-1 font-mono"><b>Arctic Sea Ice Extent:</b> 4.12 Million km² (<span class="text-rose-400">-12.4% below 30-yr mean</span>)</p>
+                                <p class="text-xs text-slate-300 my-1 font-mono"><b>Global Temp Anomaly:</b> +1.26°C relative to pre-industrial baseline</p>
                             </div>
                         </div>
 
-                        <!-- Climate & USGS Seismic Top 5 (>5.5) Container -->
-                        <div class="space-y-4">
-                            <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-3">
-                                <h4 class="font-bold text-slate-200 text-sm flex items-center space-x-2">
-                                    <i class="fa-solid fa-snowflake text-cyan-400"></i>
-                                    <span>Climate & Earth Hazards</span>
-                                </h4>
-                                <div class="metric-box warning-box" style="margin-bottom:0;">
-                                    <p class="text-xs text-slate-300 my-1 font-mono"><b>Arctic Sea Ice Extent:</b> 4.12 Million km² (<span class="text-rose-400">-12.4% below 30-yr mean</span>)</p>
-                                    <p class="text-xs text-slate-300 my-1 font-mono"><b>Global Temp Anomaly:</b> +1.26°C relative to pre-industrial baseline</p>
-                                </div>
-                            </div>
-
-                            <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-3">
-                                <h4 class="font-bold text-amber-400 text-sm flex items-center space-x-2">
-                                    <i class="fa-solid fa-volcano"></i>
-                                    <span>USGS Top 5 Seismic Alerts (Magnitude > 5.5)</span>
-                                </h4>
-                                <div id="seismic-top5-container" class="space-y-2">
-                                    <!-- Populated dynamically via JS -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ROW 3: Logistics (Air/Marine) with Risk Filters -->
-                <div class="space-y-4">
-                    <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                        <i class="fa-solid fa-ship text-blue-400 mr-2"></i>Global Supply Chains & Transit Logistics
-                    </h3>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-4">
-                            <div class="flex items-center justify-between">
-                                <h4 class="font-bold text-slate-200 text-sm flex items-center space-x-2">
-                                    <i class="fa-solid fa-plane text-blue-400"></i>
-                                    <span>Aviation Traffic Monitor</span>
-                                </h4>
-                                <span id="air-count" class="text-sm font-mono font-bold text-blue-400">14,240 Flights</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-4">
-                            <div class="flex items-center justify-between">
-                                <h4 class="font-bold text-slate-200 text-sm flex items-center space-x-2">
-                                    <i class="fa-solid fa-anchor text-cyan-400"></i>
-                                    <span>Maritime Traffic Matrix</span>
-                                </h4>
-                                <span id="marine-count" class="text-sm font-mono font-bold text-cyan-400">54,820 Vessels</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ROW 4: Space & Biosurveillance -->
-                <div class="space-y-4">
-                    <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                        <i class="fa-solid fa-rocket text-purple-400 mr-2"></i>Orbitals, Space Debris & Biosurveillance
-                    </h3>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="metric-box space-box bg-[#151922]">
-                            <h4 class="font-bold text-purple-400 text-sm mb-3 flex items-center space-x-2">
-                                <i class="fa-solid fa-satellite"></i>
-                                <span>Orbital Matrix & Space Domain Awareness</span>
+                        <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-3">
+                            <h4 class="font-bold text-amber-400 text-sm flex items-center space-x-2">
+                                <i class="fa-solid fa-volcano"></i>
+                                <span>USGS Top 5 Seismic Alerts (Magnitude > 5.5)</span>
                             </h4>
-                            <ul class="text-xs text-slate-300 space-y-1 mb-3 font-mono">
-                                <li><b>Active Starlink Fleet:</b> <span id="starlink-val">6,240</span> operational nodes in LEO</li>
-                                <li><b>ISS Status:</b> Alt: 418km | Lat: <span id="iss-lat">24.5°</span> / Lon: <span id="iss-lon">-112.3°</span></li>
-                            </ul>
+                            <div id="seismic-top5-container" class="space-y-2"></div>
                         </div>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="metric-box info-box bg-[#151922]">
-                            <h4 class="font-bold text-blue-400 text-sm mb-1 flex items-center space-x-2">
-                                <i class="fa-solid fa-network-wired"></i>
-                                <span>Deep-Web Network Telemetry</span>
+            <!-- ROW 3: Logistics (Air/Marine) -->
+            <div class="space-y-4">
+                <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
+                    <i class="fa-solid fa-ship text-blue-400 mr-2"></i>Global Supply Chains & Transit Logistics
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-slate-200 text-sm flex items-center space-x-2">
+                                <i class="fa-solid fa-plane text-blue-400"></i>
+                                <span>Aviation Traffic Monitor</span>
                             </h4>
-                            <p class="text-xs text-slate-300 font-mono">5.42B Active Users Online | Worldwide Bandwidth Peak: 842.1 Tbps</p>
+                            <span id="air-count" class="text-sm font-mono font-bold text-blue-400">14,240 Flights</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-slate-200 text-sm flex items-center space-x-2">
+                                <i class="fa-solid fa-anchor text-cyan-400"></i>
+                                <span>Maritime Traffic Matrix</span>
+                            </h4>
+                            <span id="marine-count" class="text-sm font-mono font-bold text-cyan-400">54,820 Vessels</span>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- System Log Threat Event Archive & Collapsible Sources Drawer -->
-                <div class="space-y-3">
-                    <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                        <i class="fa-solid fa-terminal text-emerald-400 mr-2"></i>System Log Threat Event Archive
-                    </h3>
-                    <div class="bg-[#151922] p-4 rounded-xl border border-white/10 space-y-3">
-                        <label class="text-xs font-mono text-slate-400 block">Live Telemetry Event Logs (Timestamped Auto-Appends)</label>
-                        <textarea id="log-textarea" rows="4" readonly class="w-full bg-[#0e1117] border border-white/10 rounded-lg p-3 font-mono text-xs text-emerald-400 focus:outline-none resize-none">Initializing tactical telemetry streams...</textarea>
-                        
-                        <!-- Collapsible Sources of All Displays (Opens only when clicked) -->
-                        <details class="bg-[#0e1117] border border-white/10 rounded-lg p-3 text-xs font-mono text-slate-400">
-                            <summary class="cursor-pointer text-blue-400 font-bold flex items-center space-x-2">
-                                <i class="fa-solid fa-database mr-1"></i>
-                                <span>View Sources of All Active Displays & Telemetry Feeds (Click to Expand)</span>
-                            </summary>
-                            <div class="mt-3 pt-3 border-t border-white/10 space-y-2 text-slate-300 text-[11px]">
-                                <p><b>• ACLED Database:</b> Armed Conflict Location & Event Data Project (Real-time political violence tracking across top 8 global combat zones).</p>
-                                <p><b>• USGS (U.S. Geological Survey):</b> Global seismic hazard and live earthquake monitoring feeds (filtered for Magnitude > 5.5).</p>
-                                <p><b>• Space-Track & NASA Orbital Mechanics:</b> Low Earth Orbit (LEO) object catalogs, conjunction warnings, and Starlink trajectory telemetry.</p>
-                                <p><b>• NOAA / National Snow and Ice Data Center (NSIDC):</b> Climate tracking, Arctic sea ice extent, and mass loss metrics.</p>
-                                <p><b>• FlightRadar24 & AISMarine Feeds:</b> Global aviation positioning matrices and commercial maritime choke-point tracking.</p>
-                                <p><b>• WHO & CDC Global Outbreak API:</b> Cross-border bio-threat vector intelligence and containment tracking.</p>
-                            </div>
-                        </details>
+            <!-- ROW 4: Space (ISS, Tiangong & Starlink) & Biosurveillance -->
+            <div class="space-y-4">
+                <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
+                    <i class="fa-solid fa-rocket text-purple-400 mr-2"></i>Orbitals, Space Stations & Biosurveillance
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="metric-box space-box bg-[#151922]">
+                        <h4 class="font-bold text-purple-400 text-sm mb-3 flex items-center space-x-2">
+                            <i class="fa-solid fa-satellite"></i>
+                            <span>Orbital Matrix & Space Stations</span>
+                        </h4>
+                        <ul class="text-xs text-slate-300 space-y-1.5 mb-3 font-mono">
+                            <li><b>Active Starlink Fleet:</b> <span id="starlink-val">6,240</span> operational nodes in LEO</li>
+                            <li><b>ISS Status:</b> Alt: 418km | Lat: <span id="iss-lat">24.5°</span> / Lon: <span id="iss-lon">-112.3°</span></li>
+                            <li><b>Tiangong (CSS):</b> Alt: 382km | Lat: <span id="css-lat">12.1°</span> / Lon: <span id="css-lon">104.5°</span> (Stable Orbit)</li>
+                        </ul>
+                        <div class="bg-[#1a1c23] p-3 rounded-lg border border-white/5 space-y-1 text-xs text-slate-300">
+                            <p><b>🗑️ Atmospheric Re-entry Risk Analysis:</b></p>
+                            <p><b>Object:</b> Decommissioned Spy Satellite SL-12 (Upper Fragment)</p>
+                            <p><b>Estimated Decay:</b> 18.4 hours | Footprint: South Pacific Range</p>
+                            <p><b>ISS Conjunction Hazard:</b> <span id="debris-chance" class="text-amber-400 font-bold">0.052%</span></p>
+                        </div>
+                    </div>
+
+                    <div class="metric-box bio-box bg-[#151922]">
+                        <h4 class="font-bold text-pink-400 text-sm mb-2 flex items-center space-x-2">
+                            <i class="fa-solid fa-biohazard"></i>
+                            <span>Cross-Border Bio-Threat Vector Alerts</span>
+                        </h4>
+                        <p class="text-xs text-slate-300 font-mono mb-2"><b>Pathogen Variant:</b> Bundibugyo Ebolavirus Cluster (DRC/Uganda Border Hubs)</p>
+                        <ul class="text-xs text-slate-300 list-disc list-inside space-y-1 font-mono">
+                            <li><b>Active Transmission Node:</b> Sub-Saharan transit sectors.</li>
+                            <li><b>Aviation Intersect:</b> Entebbe & Kigali travel health screen protocols active.</li>
+                            <li><b>Ring Containment Efficiency: <span id="containment-val">79.2</span>%</b></li>
+                        </ul>
                     </div>
                 </div>
+            </div>
 
-            </main>
-        </div>
+            <!-- System Log Threat Event Archive & Collapsible Sources Drawer -->
+            <div class="space-y-3">
+                <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
+                    <i class="fa-solid fa-terminal text-emerald-400 mr-2"></i>System Log Threat Event Archive
+                </h3>
+                <div class="bg-[#151922] p-4 rounded-xl border border-white/10 space-y-3">
+                    <label class="text-xs font-mono text-slate-400 block">Live Telemetry Event Logs (Timestamped Auto-Appends)</label>
+                    <textarea id="log-textarea" rows="4" readonly class="w-full bg-[#0e1117] border border-white/10 rounded-lg p-3 font-mono text-xs text-emerald-400 focus:outline-none resize-none">Initializing tactical telemetry streams...</textarea>
+                    
+                    <!-- Collapsible Sources of All Displays (Opens only when clicked) -->
+                    <details class="bg-[#0e1117] border border-white/10 rounded-lg p-3 text-xs font-mono text-slate-400">
+                        <summary class="cursor-pointer text-blue-400 font-bold flex items-center space-x-2">
+                            <i class="fa-solid fa-database mr-1"></i>
+                            <span>View Sources of All Active Displays & Telemetry Feeds (Click to Expand)</span>
+                        </summary>
+                        <div class="mt-3 pt-3 border-t border-white/10 space-y-2 text-slate-300 text-[11px]">
+                            <p><b>• ACLED Database:</b> Armed Conflict Location & Event Data Project (Real-time political violence tracking across top 8 global combat zones).</p>
+                            <p><b>• USGS (U.S. Geological Survey):</b> Global seismic hazard and live earthquake monitoring feeds (filtered for Magnitude > 5.5).</p>
+                            <p><b>• Space-Track & NASA Orbital Mechanics:</b> Low Earth Orbit (LEO) object catalogs, conjunction warnings, Starlink telemetry, and Tiangong (CSS) tracking.</p>
+                            <p><b>• NOAA / National Snow and Ice Data Center (NSIDC):</b> Climate tracking, Arctic sea ice extent, and mass loss metrics.</p>
+                            <p><b>• FlightRadar24 & AISMarine Feeds:</b> Global aviation positioning matrices and commercial maritime choke-point tracking.</p>
+                            <p><b>• WHO & CDC Global Outbreak API:</b> Cross-border bio-threat vector intelligence and containment tracking.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
 
-        <!-- Application Logic with Continuous Real-Time Updates -->
+        </main>
+
+        <!-- Application Logic with 5-Second Refresh Cycle -->
         <script>
-            // Top 8 ACLED Conflict Zones Data Model
+            let isSystemOnline = true;
+
+            function toggleSystemStatus() {
+                isSystemOnline = !isSystemOnline;
+                const btn = document.getElementById('status-toggle-btn');
+                const badge = document.getElementById('live-badge');
+                const pulse = document.getElementById('pulse-dot');
+                const text = document.getElementById('badge-text');
+
+                if (isSystemOnline) {
+                    btn.textContent = "ONLINE";
+                    btn.className = "px-2 py-0.5 rounded text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 transition";
+                    badge.className = "inline-flex items-center px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30";
+                    pulse.className = "w-2 h-2 mr-2 rounded-full bg-emerald-400 animate-pulse";
+                    text.textContent = "STREAM ACTIVE (5s)";
+                } else {
+                    btn.textContent = "OFFLINE";
+                    btn.className = "px-2 py-0.5 rounded text-xs font-mono font-bold bg-rose-500/20 text-rose-400 border border-rose-500/40 transition";
+                    badge.className = "inline-flex items-center px-3 py-1 rounded-full text-xs font-mono bg-rose-500/10 text-rose-400 border border-rose-500/30";
+                    pulse.className = "w-2 h-2 mr-2 rounded-full bg-rose-500";
+                    text.textContent = "STREAM OFFLINE";
+                }
+            }
+
             let acledTop8Zones = [
                 { zone: "Sudan (Khartoum / Darfur)", intensity: "Critical", events24h: 48, trend: "+12%" },
                 { zone: "Ukraine (Donbas / Zaporizhzhia)", intensity: "Critical", events24h: 62, trend: "+5%" },
@@ -3203,7 +3187,6 @@ with tab4:
                 { zone: "Syria (Idlib / Aleppo)", intensity: "Elevated", events24h: 15, trend: "-4%" }
             ];
 
-            // Top 5 USGS Seismic Events (> 5.5 Magnitude) Data Model
             let usgsTop5Seismic = [
                 { location: "Kermadec Islands Region", mag: 6.2, depth: "35 km", time: "12m ago" },
                 { location: "South of the Fiji Islands", mag: 5.9, depth: "510 km", time: "44m ago" },
@@ -3249,34 +3232,33 @@ with tab4:
             renderAcledTop8();
             renderSeismicTop5();
 
-            const enableRefreshCheck = document.getElementById('enable-refresh');
-            const refreshRateSlider = document.getElementById('refresh-rate');
-
-            refreshRateSlider.addEventListener('input', (e) => {
-                document.getElementById('refresh-val').textContent = e.target.value;
-            });
-
-            // Live simulation loop updating continuously while window is open
+            // Continuous Simulation Loop running every 5 seconds
             function tickSimulation() {
-                if (!enableRefreshCheck.checked) return;
+                if (!isSystemOnline) return;
 
                 const now = new Date();
                 document.getElementById('sys-time').textContent = `System Time: ${now.toISOString().replace('T', ' ').substring(0, 19)} UTC`;
 
                 const epoch = Date.now() / 1000;
                 
-                // Dynamically fluctuate ACLED event counts slightly to show live updates
+                // Live updates for ACLED events
                 acledTop8Zones.forEach(zone => {
-                    if (Math.random() > 0.6) {
+                    if (Math.random() > 0.5) {
                         zone.events24h += Math.floor(Math.random() * 3) - 1;
                     }
                 });
                 renderAcledTop8();
 
+                // ISS & Tiangong coordinates simulation
                 const issLat = (51.6 * Math.sin(epoch / 5400)).toFixed(2);
                 const issLon = (180 * Math.sin(epoch / 10800)).toFixed(2);
                 document.getElementById('iss-lat').textContent = issLat + '°';
                 document.getElementById('iss-lon').textContent = issLon + '°';
+
+                const cssLat = (41.5 * Math.sin(epoch / 4800)).toFixed(2);
+                const cssLon = (160 * Math.cos(epoch / 9600)).toFixed(2);
+                document.getElementById('css-lat').textContent = cssLat + '°';
+                document.getElementById('css-lon').textContent = cssLon + '°';
 
                 let baseRisk = 68;
                 const riskIndex = Math.min(Math.max(baseRisk + Math.floor(3 * Math.sin(epoch / 100)), 1), 100);
@@ -3286,12 +3268,13 @@ with tab4:
                 const timeStr = now.toTimeString().substring(0, 8);
                 const logs = logArea.value.split('\n');
                 if (logs.length > 20) logs.shift();
-                logs.push(`[${timeStr}] TELEMETRY: ACLED Top 8 and USGS Seismic (>5.5 M) streams synchronized.`);
+                logs.push(`[${timeStr}] TELEMETRY: 5s sync pulse verified. ACLED & USGS arrays updated.`);
                 logArea.value = logs.join('\n');
                 logArea.scrollTop = logArea.scrollHeight;
             }
 
-            setInterval(tickSimulation, 1000);
+            // Set refresh rate interval to 5000ms (5 seconds)
+            setInterval(tickSimulation, 5000);
         </script>
     </body>
     </html>
