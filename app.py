@@ -2884,7 +2884,7 @@ if enable_audio_speech and output_text:
             color: #e2e8f0;
         }
         .metric-box {
-            background-color: #1a1c23;
+        background-color: #1a1c23;
             padding: 18px;
             border-radius: 8px;
             border-left: 4px solid #4a5568;
