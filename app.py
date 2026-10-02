@@ -2742,4 +2742,98 @@ with tab3:
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
 
+# --- PERSISTENT RENDER BLOCK ---
+    if "persistent_output_text" in st.session_state:
+        output_text = st.session_state["persistent_output_text"]
+        disp_title = st.session_state.get("persistent_display_title", "Report")
+
+        st.success(texts["ready"].get(depth_level, "Your response is ready"))
+        st.markdown("---")
+        st.markdown(output_text)
+
+        # PDF Download Button
+        safe_title = ''.join(c for c in f"Topic ({depth_level}): {disp_title}" if ord(c) < 128)
+        safe_output = output_text.encode('ascii', 'ignore').decode('ascii')
+
+        pdf_data = generate_pdf_bytes(
+            safe_title,
+            safe_output,
+            texts.get("footer_text", "The Report - Simply Explained"),
+        )
+        st.download_button(
+            label=texts.get("pdf_button", "📥 Press to Download PDF Report"),
+            data=pdf_data,
+            file_name=f"Simply_Explained_{disp_title.replace(' ', '_')}.pdf",
+            mime="application/pdf",
+            key="download_topic_pdf",
+        )
+    else:
+        output_text = ""  # Safe fallback so undefined variables don't crash the script
+
+# ==============================================================================
+# [GLOBAL PERMANENT WATERMARK & PRINT BURN-IN]
+# ==============================================================================
+st.markdown("""
+    <style>
+        /* 1. PERMANENT ON-SCREEN WATERMARK */
+        .corporate-watermark {
+            position: fixed;
+            top: 40%;
+            left: 20%;
+            transform: rotate(-25deg);
+            font-size: 4rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.035);
+            z-index: 999999;
+            pointer-events: none;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        /* 2. FORCE WATERMARK TO BURN INTO PRINT / PDF EXPORTS */
+        @media print {
+            .corporate-watermark {
+                display: block !important;
+                position: fixed !important;
+                top: 50% !important;
+                left: 15% !important;
+                font-size: 5rem !important;
+                color: rgba(200, 0, 0, 0.25) !important;
+                z-index: 999999 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+
+    <!-- Permanent Watermark Layer -->
+    <div class="corporate-watermark">CONFIDENTIAL // RESTRICTED TELEMETRY</div>
+""", unsafe_allow_html=True)
+
+# Audio Accessibility Feed
+if enable_audio_speech and output_text:
+    st.markdown("---")
+    st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
+    try:
+        from gtts import gTTS
+    
+        clean_text_for_speech = output_text
+        clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
+        clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
+    
+        tts = gTTS(
+            text=clean_text_for_speech,
+            lang=TTS_LANG_MAP.get(selected_lang, "en"),
+            slow=False,
+        )
+        audio_bytes_obj = io.BytesIO()
+        tts.write_to_fp(audio_bytes_obj)
+        audio_bytes_obj.seek(0)
+        st.audio(audio_bytes_obj, format="audio/mp3")
+    except Exception as tts_err:
+        st.warning(
+            f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
+        )
+
+
 
