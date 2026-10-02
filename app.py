@@ -2912,7 +2912,7 @@ with tab4:
     </head>
     <body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white p-4">
 
-        <!-- Top Header with Status & 5s Refresh Controller -->
+        <!-- Top Header with Status & Refresh rate - fix at 1 sec -->
         <header class="bg-[#151922] border border-white/10 px-6 py-4 rounded-xl flex flex-col sm:flex-row items-center justify-between mb-6 shadow-md">
             <div class="flex items-center space-x-3 mb-2 sm:mb-0">
                 <div class="w-10 h-10 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold text-xl">
