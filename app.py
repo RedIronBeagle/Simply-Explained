@@ -2835,6 +2835,7 @@ if enable_audio_speech and output_text:
         st.warning(
             f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
         )
+
 # ==============================================================================
 # [SECTION: TAB 4 - GLOBAL COMMAND TERMINAL & TELEMETRY]
 # ==============================================================================
@@ -2903,7 +2904,7 @@ with tab4:
             
             <div class="flex items-center space-x-4">
                 <button onclick="triggerScreenWake()" class="px-3 py-1.5 rounded-lg text-xs font-mono bg-blue-600/20 text-blue-400 border border-blue-500/40 hover:bg-blue-600/30 transition">
-                    <i class="fa-solid fa-bolt mr-1"></i> Force Active 2s Pulse
+                    <i class="fa-solid fa-bolt mr-1"></i> Force Active 1s Pulse
                 </button>
                 <div class="flex items-center space-x-2 bg-[#0e1117] px-3 py-1.5 rounded-lg border border-white/10">
                     <span class="text-xs font-mono text-slate-400">Terminal:</span>
@@ -2917,35 +2918,35 @@ with tab4:
         <!-- Main Content Area -->
         <main class="w-full space-y-8">
 
-            <!-- NEW TOP SECTION: AI Metrics with Pros & Cons -->
+            <!-- AI INFRASTRUCTURE & RESOURCE STRESS METRICS -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                    <i class="fa-solid fa-brain text-teal-400 mr-2"></i>Global AI Compute Metrics & Operational Assessment (Pros & Cons)
+                    <i class="fa-solid fa-brain text-teal-400 mr-2"></i>Global AI Infrastructure & Electrical/Water Resource Stress
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="metric-box ai-box">
-                        <h4 class="font-bold text-teal-400 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-microchip"></i><span>Active Compute Load</span></h4>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Global GPU Cluster Draw:</b> <span id="ai-power">42.8 GW</span></p>
+                        <h4 class="font-bold text-teal-400 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-microchip"></i><span>Compute Load & Power Grid</span></h4>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Global GPU Power Draw:</b> <span id="ai-power">42.8 GW</span></p>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Power Grid Stress Index:</b> <span id="ai-grid" class="text-amber-400">84.2% (High Strain)</span></p>
                         <p class="text-xs text-slate-300 my-1 font-mono"><b>Active LLM Inferences:</b> <span id="ai-inferences">1.42B</span> req/sec</p>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Autonomous Agent Index:</b> 84.2 Points</p>
                     </div>
 
-                    <div class="metric-box bg-[#151922] border-left-color: #38a169;">
-                        <h4 class="font-bold text-emerald-400 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-circle-check"></i><span>Strategic Pros (Benefits)</span></h4>
-                        <ul class="text-xs text-slate-300 space-y-1 font-mono list-disc list-inside">
-                            <li>Accelerated protein folding & drug discovery.</li>
-                            <li>Automated supply chain congestion routing.</li>
-                            <li>Real-time multi-lingual emergency translation.</li>
-                        </ul>
+                    <div class="metric-box ai-box">
+                        <h4 class="font-bold text-cyan-400 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-droplet"></i><span>Cooling Water & Thermal Load</span></h4>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Data Center Cooling Water:</b> <span id="ai-water">1.82M Liters/hr</span></p>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Thermal Exhaust Index:</b> Critical Near Hubs</p>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Electrical Substation Stress:</b> Elevated (Northern VA / Dublin)</p>
                     </div>
 
-                    <div class="metric-box bg-[#151922] border-left-color: #e53e3e;">
-                        <h4 class="font-bold text-rose-400 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-triangle-exclamation"><span>Strategic Cons (Risks)</span></h4>
-                        <ul class="text-xs text-slate-300 space-y-1 font-mono list-disc list-inside">
-                            <li>Intense grid energy & water cooling footprints.</li>
-                            <li>Automated deepfake & disinformation velocity.</li>
-                            <li>Critical infrastructure autonomous attack vectors.</li>
-                        </ul>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="metric-box bg-[#151922] border-left-color: #38a169; p-3">
+                            <h5 class="font-bold text-emerald-400 text-xs mb-1">Strategic Pros</h5>
+                            <p class="text-[10px] text-slate-300 font-mono">Accelerated drug discovery, smart grid optimization, emergency translation.</p>
+                        </div>
+                        <div class="metric-box bg-[#151922] border-left-color: #e53e3e; p-3">
+                            <h5 class="font-bold text-rose-400 text-xs mb-1">Strategic Cons</h5>
+                            <p class="text-[10px] text-slate-300 font-mono">Heavy grid strain, massive water depletion, disinformation velocity.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2983,31 +2984,29 @@ with tab4:
                 </div>
             </div>
 
-            <!-- ROW 1: Expanded Demographics & Deficits -->
+            <!-- ROW 1: Live Real-Time Demographics & Deficits -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
                     <i class="fa-solid fa-chart-line text-blue-400 mr-2"></i>{t_demographics}
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="metric-box info-box">
-                        <h4 class="font-bold text-blue-400 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-globe"></i><span>Expanded Real-Time Demographics Matrix</span></h4>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Global Population:</b> <span id="stat-pop">8,120,000,000</span></p>
+                        <h4 class="font-bold text-blue-400 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-globe"></i><span>Live Real-Time Demographics Ticker</span></h4>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Global Population:</b> <span id="stat-pop" class="text-white font-bold">8,120,000,000</span></p>
                         <p class="text-xs text-slate-300 my-1 font-mono"><b>Net Growth Rate:</b> +1.1% Annual | +2.3 People/sec</p>
                         <p class="text-xs text-slate-300 my-1 font-mono"><b>Births Today:</b> ~<span id="stat-births">248,520</span> | <b>Deaths Today:</b> ~<span id="stat-deaths">104,110</span></p>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Urban Population Ratio:</b> 57.4% Across Mega-Cities</p>
                     </div>
 
                     <div class="metric-box warning-box">
-                        <h4 class="font-bold text-amber-500 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-dollar-sign"></i><span>Expanded Deficits & Economic Stressors</span></h4>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>U.S. National Debt:</b> $<span id="stat-debt">34,600,000,000,000</span> (+ $3.2B/day)</p>
+                        <h4 class="font-bold text-amber-500 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-dollar-sign"></i><span>Live Economic Deficit Ticker</span></h4>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>U.S. National Debt:</b> $<span id="stat-debt" class="text-amber-400 font-bold">34,600,000,000,000</span></p>
                         <p class="text-xs text-slate-300 my-1 font-mono"><b>Global Sovereign Debt Burden:</b> $315 Trillion USD</p>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Crude Oil (WTI):</b> $<span id="stat-oil">78.50</span> / bbl | <b>Natural Gas Deficit:</b> High Demand</p>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Global Daily Water Consumption:</b> ~4.1B Liters (Critical Stress)</p>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Crude Oil (WTI):</b> $<span id="stat-oil">78.50</span> / bbl | <b>Daily Water Consumption:</b> ~4.1B Liters</p>
                     </div>
                 </div>
             </div>
 
-            <!-- ROW 2: ACLED Conflict (Highlighting Top 2 Highest Events) + USGS Seismic & Disasters -->
+            <!-- ROW 2: ACLED Conflict (Expanded Top 3 Events per Conflict) + USGS & Disasters -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
                     <i class="fa-solid fa-shield-halved text-rose-500 mr-2"></i>{t_conflict}
@@ -3016,9 +3015,8 @@ with tab4:
                     <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-3">
                         <h4 class="font-bold text-slate-200 text-sm flex items-center space-x-2">
                             <i class="fa-solid fa-crosshairs text-rose-500"></i>
-                            <span>ACLED Live Conflict Matrix (Top 8 Active Zones)</span>
+                            <span>ACLED Conflict Matrix (Top 8 Zones — Top 3 Sub-Events Expanded)</span>
                         </h4>
-                        <p class="text-[11px] text-slate-400"><i>Top 2 Highest Event Zones highlighted in glowing red tags.</i></p>
                         <div id="acled-top8-container" class="space-y-2"></div>
                     </div>
 
@@ -3042,18 +3040,17 @@ with tab4:
                 </div>
             </div>
 
-            <!-- ROW 3: Top 8 Global Airports with Inbound/Outbound Delays & Reason -->
+            <!-- ROW 3: Top 8 Global Airports with Inbound/Outbound Delays -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
                     <i class="fa-solid fa-plane-circle-exclamation text-blue-400 mr-2"></i>{t_airports}
                 </h3>
                 <div class="bg-[#151922] p-6 rounded-xl border border-white/10">
-                    <p class="text-xs text-slate-400 mb-4 font-mono">Real-time tracking of high-density aviation hubs showing inbound/outbound delayed aircraft counts and delay rationales.</p>
                     <div id="airport-top8-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
                 </div>
             </div>
 
-            <!-- ROW 4: Orbitals, Telescopes, Space Stations, NEOs with Spacing & Health Alerts -->
+            <!-- ROW 4: Orbitals, Space Stations, NEOs with Spacing & Health Alerts -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
                     <i class="fa-solid fa-rocket text-purple-400 mr-2"></i>{t_orbitals}
@@ -3067,7 +3064,7 @@ with tab4:
                         <ul class="text-xs text-slate-300 space-y-1.5 font-mono">
                             <li><b>Active Starlink Fleet:</b> 6,240 operational nodes in LEO</li>
                             <li><b>ISS Status:</b> Alt: 418km | Lat: <span id="iss-lat">24.5°</span> / Lon: <span id="iss-lon">-112.3°</span></li>
-                            <li><b>Tiangong (CSS):</b> Alt: 382km | Lat: <span id="css-lat">12.1°</span> / Lon: <span id="css-lon">104.5°</span> (Stable)</li>
+                            <li><b>Tiangong (CSS):</b> Alt: 382km | Lat: <span id="css-lat">12.1°</span> / Lon: <span id="css-lon">104.5°</span></li>
                             <li><b>Space Telescopes:</b> JWST (Lagrange Point L2) | Hubble (Alt: 535km)</li>
                         </ul>
 
@@ -3092,14 +3089,14 @@ with tab4:
                 </div>
             </div>
 
-            <!-- System Log Threat Event Archive & Collapsible Sources Drawer with Deep-Dive Links -->
+            <!-- System Log Threat Event Archive & Collapsible Sources Drawer -->
             <div class="space-y-3">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
                     <i class="fa-solid fa-terminal text-emerald-400 mr-2"></i>{t_logs}
                 </h3>
                 <div class="bg-[#151922] p-4 rounded-xl border border-white/10 space-y-3">
-                    <label class="text-xs font-mono text-slate-400 block">Live Telemetry Event Logs (Timestamped Auto-Appends)</label>
-                    <textarea id="log-textarea" rows="4" readonly class="w-full bg-[#0e1117] border border-white/10 rounded-lg p-3 font-mono text-xs text-emerald-400 focus:outline-none resize-none">Initializing tactical telemetry streams...</textarea>
+                    <label class="text-xs font-mono text-slate-400 block">Live Real-Time Telemetry Event Logs (1s Ticker)</label>
+                    <textarea id="log-textarea" rows="4" readonly class="w-full bg-[#0e1117] border border-white/10 rounded-lg p-3 font-mono text-xs text-emerald-400 focus:outline-none resize-none">Initializing 1-second live telemetry streams...</textarea>
                     
                     <details class="bg-[#0e1117] border border-white/10 rounded-lg p-3 text-xs font-mono text-slate-400">
                         <summary class="cursor-pointer text-blue-400 font-bold flex items-center space-x-2">
@@ -3119,125 +3116,135 @@ with tab4:
 
         </main>
 
-        <!-- Application Logic with Active 2-Second Screen Refresh -->
+        <!-- Application Logic with Active 1-Second Real-Time Refresh -->
         <script>
             let isSystemOnline = true;
             let heartbeatCounter = 0;
 
-            function toggleSystemStatus() {{
-                isSystemOnline = !isSystemOnline;
+            function toggleSystemStatus() {
+                isSystemOnline = (isSystemOnline === false);
                 const btn = document.getElementById('status-toggle-btn');
-                if (isSystemOnline) {{
+                if (isSystemOnline === true) {
                     btn.textContent = "ONLINE";
                     btn.className = "px-2 py-0.5 rounded text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 transition";
-                }} else {{
+                } else {
                     btn.textContent = "OFFLINE";
                     btn.className = "px-2 py-0.5 rounded text-xs font-mono font-bold bg-rose-500/20 text-rose-400 border border-rose-500/40 transition";
-                }}
-            }}
+                }
+            }
 
-            function triggerScreenWake() {{
+            function triggerScreenWake() {
                 heartbeatCounter++;
                 tickSimulation();
-            }}
+            }
 
+            // ACLED Hotspots expanded with top 3 sub-events
             let acledTop8Zones = [
-                {{ zone: "Ukraine (Donbas / Zaporizhzhia)", intensity: "Critical", events24h: 62, peak: true }},
-                {{ zone: "Sudan (Khartoum / Darfur)", intensity: "Critical", events24h: 48, peak: true }},
-                {{ zone: "Gaza / Israel Border Corridor", intensity: "Critical", events24h: 39, peak: false }},
-                {{ zone: "Democratic Republic of Congo (North Kivu)", intensity: "High", events24h: 31, peak: false }},
-                {{ zone: "Myanmar (Chin / Sagaing)", intensity: "High", events24h: 27, peak: false }},
-                {{ zone: "Nigeria (Borno / Kaduna)", intensity: "Elevated", events24h: 22, peak: false }},
-                {{ zone: "Yemen (Hodeidah / Sana'a)", intensity: "Elevated", events24h: 18, peak: false }},
-                {{ zone: "Syria (Idlib / Aleppo)", intensity: "Elevated", events24h: 15, peak: false }}
+                { zone: "Ukraine (Donbas / Zaporizhzhia)", intensity: "Critical", topEvents: ["Battles: 28", "Explosions: 24", "Civilians: 10"], peak: true },
+                { zone: "Sudan (Khartoum / Darfur)", intensity: "Critical", topEvents: ["Battles: 22", "Explosions: 16", "Civilians: 10"], peak: true },
+                { zone: "Gaza / Israel Border Corridor", intensity: "Critical", topEvents: ["Explosions: 19", "Battles: 14", "Civilians: 6"], peak: false },
+                { zone: "Democratic Republic of Congo (North Kivu)", intensity: "High", topEvents: ["Battles: 15", "Civilians: 11", "Explosions: 5"], peak: false },
+                { zone: "Myanmar (Chin / Sagaing)", intensity: "High", topEvents: ["Battles: 12", "Explosions: 10", "Civilians: 5"], peak: false },
+                { zone: "Nigeria (Borno / Kaduna)", intensity: "Elevated", topEvents: ["Battles: 10", "Civilians: 8", "Riots: 4"], peak: false },
+                { zone: "Yemen (Hodeidah / Sana'a)", intensity: "Elevated", topEvents: ["Explosions: 9", "Battles: 6", "Strategic: 3"], peak: false },
+                { zone: "Syria (Idlib / Aleppo)", intensity: "Elevated", topEvents: ["Explosions: 7", "Battles: 5", "Civilians: 3"], peak: false }
             ];
 
             let usgsTop5Seismic = [
-                {{ location: "Kermadec Islands Region", mag: 6.2, depth: "35 km", timeUTC: "14:22 UTC", timeLocal: "03:22 NZDT", tsunami: "Advisory Issued" }},
-                {{ location: "South of the Fiji Islands", mag: 5.9, depth: "510 km", timeUTC: "13:10 UTC", timeLocal: "01:10 FJT", tsunami: "No Threat" }},
-                {{ location: "Halmahera, Indonesia", mag: 5.7, depth: "62 km", timeUTC: "11:45 UTC", timeLocal: "19:45 WIT", tsunami: "Local Warning Active" }},
-                {{ location: "Off Coast of Central Chile", mag: 5.6, depth: "24 km", timeUTC: "09:12 UTC", timeLocal: "06:12 CLST", tsunami: "Monitoring" }},
-                {{ location: "Minahassa Peninsula, Sulawesi", mag: 5.5, depth: "45 km", timeUTC: "07:05 UTC", timeLocal: "15:05 WITA", tsunami: "No Threat" }}
+                { location: "Kermadec Islands Region", mag: 6.2, depth: "35 km", timeUTC: "14:22 UTC", timeLocal: "03:22 NZDT", tsunami: "Advisory Issued" },
+                { location: "South of the Fiji Islands", mag: 5.9, depth: "510 km", timeUTC: "13:10 UTC", timeLocal: "01:10 FJT", tsunami: "No Threat" },
+                { location: "Halmahera, Indonesia", mag: 5.7, depth: "62 km", timeUTC: "11:45 UTC", timeLocal: "19:45 WIT", tsunami: "Local Warning Active" },
+                { location: "Off Coast of Central Chile", mag: 5.6, depth: "24 km", timeUTC: "09:12 UTC", timeLocal: "06:12 CLST", tsunami: "Monitoring" },
+                { location: "Minahassa Peninsula, Sulawesi", mag: 5.5, depth: "45 km", timeUTC: "07:05 UTC", timeLocal: "15:05 WITA", tsunami: "No Threat" }
             ];
 
             let disasterTop5 = [
-                {{ hazard: "Cyclone Remal (Bay of Bengal)", impact: "Category 3 Landfall // Mass Evacuations" }},
-                {{ hazard: "East Africa Flash Floods (Kenya/Tanzania)", impact: "Critical Infrastructure Disruption" }},
-                {{ hazard: "Central European Heat Dome & Wildfire Risk", impact: "Elevated Alert (Level 4)" }},
-                {{ hazard: "Amazon Basin Severe Drought Index", impact: "River Transport Restricted" }},
-                {{ hazard: "Icelandic Reykjanes Volcanic Fissure", impact: "Active Lava Flow / Airspace Caution" }}
+                { hazard: "Cyclone Remal (Bay of Bengal)", impact: "Category 3 Landfall // Mass Evacuations" },
+                { hazard: "East Africa Flash Floods (Kenya/Tanzania)", impact: "Critical Infrastructure Disruption" },
+                { hazard: "Central European Heat Dome & Wildfire Risk", impact: "Elevated Alert (Level 4)" },
+                { hazard: "Amazon Basin Severe Drought Index", impact: "River Transport Restricted" },
+                { hazard: "Icelandic Reykjanes Volcanic Fissure", impact: "Active Lava Flow / Airspace Caution" }
             ];
 
             let airportsTop8 = [
-                {{ code: "ATL", name: "Atlanta Hartsfield", delayAvg: "38 min", inbound: 42, outbound: 55, reason: "Convective Weather & Thunderstorms" }},
-                {{ code: "DXB", name: "Dubai International", delayAvg: "22 min", inbound: 18, outbound: 24, reason: "Corridor Congestion & Volume" }},
-                {{ code: "LHR", name: "London Heathrow", delayAvg: "45 min", inbound: 35, outbound: 48, reason: "ATC Staffing & Low Cloud Base" }},
-                {{ code: "HND", name: "Tokyo Haneda", delayAvg: "15 min", inbound: 12, outbound: 15, reason: "Nominal Flow Controls" }},
-                {{ code: "CDG", name: "Paris CDG", delayAvg: "34 min", inbound: 29, outbound: 38, reason: "Ground Crew Strike Constraints" }},
-                {{ code: "ORD", name: "Chicago O'Hare", delayAvg: "52 min", inbound: 61, outbound: 74, reason: "High Crosswinds & Gusts" }},
-                {{ code: "DEL", name: "Delhi Indira Gandhi", delayAvg: "28 min", inbound: 22, outbound: 30, reason: "Visibility Fog Restriction" }},
-                {{ code: "SIN", name: "Singapore Changi", delayAvg: "12 min", inbound: 8, outbound: 11, reason: "Nominal Operations" }}
+                { code: "ATL", name: "Atlanta Hartsfield", delayAvg: "38 min", inbound: 42, outbound: 55, reason: "Convective Weather & Thunderstorms" },
+                { code: "DXB", name: "Dubai International", delayAvg: "22 min", inbound: 18, outbound: 24, reason: "Corridor Congestion & Volume" },
+                { code: "LHR", name: "London Heathrow", delayAvg: "45 min", inbound: 35, outbound: 48, reason: "ATC Staffing & Low Cloud Base" },
+                { code: "HND", name: "Tokyo Haneda", delayAvg: "15 min", inbound: 12, outbound: 15, reason: "Nominal Flow Controls" },
+                { code: "CDG", name: "Paris CDG", delayAvg: "34 min", inbound: 29, outbound: 38, reason: "Ground Crew Strike Constraints" },
+                { code: "ORD", name: "Chicago O'Hare", delayAvg: "52 min", inbound: 61, outbound: 74, reason: "High Crosswinds & Gusts" },
+                { code: "DEL", name: "Delhi Indira Gandhi", delayAvg: "28 min", inbound: 22, outbound: 30, reason: "Visibility Fog Restriction" },
+                { code: "SIN", name: "Singapore Changi", delayAvg: "12 min", inbound: 8, outbound: 11, reason: "Nominal Operations" }
             ];
 
             let healthTop5 = [
-                {{ outbreak: "Mpox Clade I Resurgence", region: "Central & East Africa Hubs", status: "WHO PHEIC Active" }},
-                {{ outbreak: "Avian Influenza (H5N1 Spillover)", region: "Global Agricultural Sectors", status: "Heightened Surveillance" }},
-                {{ outbreak: "Oropouche Virus Cluster", region: "South America / Travel Associated", status: "Advisory Issued" }},
-                {{ outbreak: "Cholera Outbreak Multi-Country", region: "Horn of Africa & Southern Africa", status: "Emergency Response" }},
-                {{ outbreak: "Dengue Fever Surge", region: "Latin America & Southeast Asia", status: "Vector Control Active" }}
+                { outbreak: "Mpox Clade I Resurgence", region: "Central & East Africa Hubs", status: "WHO PHEIC Active" },
+                { outbreak: "Avian Influenza (H5N1 Spillover)", region: "Global Agricultural Sectors", status: "Heightened Surveillance" },
+                { outbreak: "Oropouche Virus Cluster", region: "South America / Travel Associated", status: "Advisory Issued" },
+                { outbreak: "Cholera Outbreak Multi-Country", region: "Horn of Africa & Southern Africa", status: "Emergency Response" },
+                { outbreak: "Dengue Fever Surge", region: "Latin America & Southeast Asia", status: "Vector Control Active" }
             ];
 
-            function renderAcledTop8() {{
+            function renderAcledTop8() {
                 const c = document.getElementById('acled-top8-container');
                 c.innerHTML = '';
-                acledTop8Zones.forEach((item, index) => {{
+                acledTop8Zones.forEach((item, index) => {
                     let peakBadge = item.peak ? '<span class="px-1.5 py-0.2 bg-rose-600/30 text-rose-300 text-[9px] rounded border border-rose-500/40 ml-1">PEAK INTENSITY</span>' : '';
-                    c.innerHTML += `<div class="bg-[#1a1c23] p-2.5 rounded-lg border border-white/5 flex items-center justify-between text-xs font-mono"><span>#${{index + 1}}. ${{item.zone}} ${{peakBadge}}</span><span class="text-rose-400">${{item.events24h}} events</span></div>`;
-                }});
-            }}
+                    let eventsHtml = item.topEvents.map(e => `<span class="bg-[#0e1117] px-1.5 py-0.5 rounded text-[10px] text-slate-300 border border-white/5">${e}</span>`).join(' ');
+                    c.innerHTML += `
+                        <div class="bg-[#1a1c23] p-3 rounded-lg border border-white/5 space-y-1 font-mono text-xs">
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-100 font-bold">#${index + 1}. ${item.zone} ${peakBadge}</span>
+                                <span class="px-2 py-0.5 rounded text-[10px] bg-rose-500/10 text-rose-400 border border-rose-500/30">${item.intensity}</span>
+                            </div>
+                            <div class="flex flex-wrap gap-1 pt-1">${eventsHtml}</div>
+                        </div>
+                    `;
+                });
+            }
 
-            function renderSeismicTop5() {{
+            function renderSeismicTop5() {
                 const c = document.getElementById('seismic-top5-container');
                 c.innerHTML = '';
-                usgsTop5Seismic.forEach((quake) => {{
+                usgsTop5Seismic.forEach((quake) => {
                     let tsunamiColor = quake.tsunami.includes('Advisory') || quake.tsunami.includes('Active') ? 'text-rose-400' : 'text-slate-400';
-                    c.innerHTML += `<div class="bg-[#1a1c23] p-2.5 rounded-lg border border-white/5 flex items-center justify-between text-xs font-mono"><div><span class="text-amber-400 font-bold">M ${{quake.mag}} - ${{quake.location}}</span><span class="text-[10px] text-slate-400 block">UTC: ${{quake.timeUTC}} | Local: ${{quake.timeLocal}} | Tsunami: <span class="${{tsunamiColor}}">${{quake.tsunami}}</span></span></div><span class="px-1.5 py-0.5 rounded text-[10px] bg-red-500/10 text-red-400 border border-red-500/30">> 5.5 M</span></div>`;
-                }});
-            }}
+                    c.innerHTML += `<div class="bg-[#1a1c23] p-2.5 rounded-lg border border-white/5 flex items-center justify-between text-xs font-mono"><div><span class="text-amber-400 font-bold">M ${quake.mag} - ${quake.location}</span><span class="text-[10px] text-slate-400 block">UTC: ${quake.timeUTC} | Local: ${quake.timeLocal} | Tsunami: <span class="${tsunamiColor}">${quake.tsunami}</span></span></div><span class="px-1.5 py-0.5 rounded text-[10px] bg-red-500/10 text-red-400 border border-red-500/30">> 5.5 M</span></div>`;
+                });
+            }
 
-            function renderDisasterTop5() {{
+            function renderDisasterTop5() {
                 const c = document.getElementById('disaster-top5-container');
                 c.innerHTML = '';
-                disasterTop5.forEach((d, idx) => {{
-                    c.innerHTML += `<div class="bg-[#1a1c23] p-2 rounded-lg border border-white/5 text-xs font-mono"><b>#${{idx + 1}}. ${{d.hazard}}</b><span class="text-[10px] text-rose-400 block">${{d.impact}}</span></div>`;
-                }});
-            }}
+                disasterTop5.forEach((d, idx) => {
+                    c.innerHTML += `<div class="bg-[#1a1c23] p-2 rounded-lg border border-white/5 text-xs font-mono"><b>#${idx + 1}. ${d.hazard}</b><span class="text-[10px] text-rose-400 block">${d.impact}</span></div>`;
+                });
+            }
 
-            function renderAirportsTop8() {{
+            function renderAirportsTop8() {
                 const c = document.getElementById('airport-top8-container');
                 c.innerHTML = '';
-                airportsTop8.forEach((apt) => {{
+                airportsTop8.forEach((apt) => {
                     c.innerHTML += `
                         <div class="bg-[#1a1c23] p-3 rounded-lg border border-white/5 font-mono text-xs space-y-1">
-                            <div class="flex justify-between items-center"><b class="text-blue-400">[${{apt.code}}]</b><span class="text-amber-400">Delay: ${{apt.delayAvg}}</span></div>
-                            <div class="text-[11px] text-white truncate">${{apt.name}}</div>
-                            <div class="text-[10px] text-slate-400">Reason: <span class="text-slate-200">${{apt.reason}}</span></div>
+                            <div class="flex justify-between items-center"><b class="text-blue-400">[${apt.code}]</b><span class="text-amber-400">Delay: ${apt.delayAvg}</span></div>
+                            <div class="text-[11px] text-white truncate">${apt.name}</div>
+                            <div class="text-[10px] text-slate-400">Reason: <span class="text-slate-200">${apt.reason}</span></div>
                             <div class="flex justify-between text-[10px] text-slate-400 border-t border-white/5 pt-1">
-                                <span>Inbound Delayed: <strong class="text-rose-400">${{apt.inbound}}</strong></span>
-                                <span>Outbound Delayed: <strong class="text-rose-400">${{apt.outbound}}</strong></span>
+                                <span>Inbound Delayed: <strong class="text-rose-400">${apt.inbound}</strong></span>
+                                <span>Outbound Delayed: <strong class="text-rose-400">${apt.outbound}</strong></span>
                             </div>
                         </div>
                     `;
-                }});
-            }}
+                });
+            }
 
-            function renderHealthTop5() {{
+            function renderHealthTop5() {
                 const c = document.getElementById('health-top5-container');
                 c.innerHTML = '';
-                healthTop5.forEach((h, idx) => {{
-                    c.innerHTML += `<div class="bg-[#1a1c23] p-2 rounded-lg border border-white/5 text-xs font-mono"><b>#${{idx + 1}}. ${{h.outbreak}}</b><span class="text-[10px] text-pink-400 block">${{h.region}} — Status: ${{h.status}}</span></div>`;
-                }});
-            }}
+                healthTop5.forEach((h, idx) => {
+                    c.innerHTML += `<div class="bg-[#1a1c23] p-2 rounded-lg border border-white/5 text-xs font-mono"><b>#${idx + 1}. ${h.outbreak}</b><span class="text-[10px] text-pink-400 block">${h.region} — Status: ${h.status}</span></div>`;
+                });
+            }
 
             renderAcledTop8();
             renderSeismicTop5();
@@ -3245,29 +3252,39 @@ with tab4:
             renderAirportsTop8();
             renderHealthTop5();
 
-            function tickSimulation() {{
-                if (!isSystemOnline) return;
+            // 1-Second Real-Time Ticker Loop
+            function tickSimulation() {
+                if (isSystemOnline === false) return;
                 const now = new Date();
-                document.getElementById('sys-time').textContent = `System Time: ${{now.toISOString().replace('T', ' ').substring(0, 19)}} UTC`;
+                document.getElementById('sys-time').textContent = `System Time: ${now.toISOString().replace('T', ' ').substring(0, 19)} UTC`;
                 
                 const epoch = Date.now() / 1000;
+                
+                // Live ticking demographics population and national debt
+                let currentPop = 8120000000 + Math.floor((Date.now() - 1710000000000) / 400);
+                document.getElementById('stat-pop').textContent = currentPop.toLocaleString();
+
+                let currentDebt = 34600000000000 + Math.floor((Date.now() - 1710000000000) * 37000);
+                document.getElementById('stat-debt').textContent = currentDebt.toLocaleString();
+
                 document.getElementById('global-risk-val').textContent = Math.min(Math.max(68 + Math.floor(3 * Math.sin(epoch / 100)), 1), 100);
                 
                 const logArea = document.getElementById('log-textarea');
                 const timeStr = now.toTimeString().substring(0, 8);
                 const logs = logArea.value.split('\n');
                 if (logs.length > 15) logs.shift();
-                logs.push(`[${{timeStr}}] TELEMETRY: 2s active loop synchronized. All displays operational.`);
+                logs.push(`[${timeStr}] TELEMETRY: 1s active loop synchronized. Real-time tickers active.`);
                 logArea.value = logs.join('\n');
                 logArea.scrollTop = logArea.scrollHeight;
-            }}
+            }
 
-            setInterval(tickSimulation, 2000);
+            // Locked to 1000ms (1 second) interval
+            setInterval(tickSimulation, 1000);
         </script>
     </body>
     </html>
     """
 
-    st.components.v1.html(tactical_terminal_html, height=1750, scrolling=True)
+    st.components.v1.html(tactical_terminal_html, height=1850, scrolling=True)
 
-
+	
