@@ -2835,7 +2835,6 @@ if enable_audio_speech and output_text:
         st.warning(
             f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
         )
-
 # ==============================================================================
 # [SECTION: TAB 4 - GLOBAL COMMAND TERMINAL & TELEMETRY]
 # ==============================================================================
@@ -2881,6 +2880,7 @@ with tab4:
             .info-box {{ border-left-color: #3182ce; }}
             .space-box {{ border-left-color: #805ad5; }}
             .bio-box {{ border-left-color: #d53f8c; }}
+            .ai-box {{ border-left-color: #00ffcc; }}
             
             ::-webkit-scrollbar {{ width: 6px; height: 6px; }}
             ::-webkit-scrollbar-track {{ background: #0e1117; }}
@@ -2917,7 +2917,40 @@ with tab4:
         <!-- Main Content Area -->
         <main class="w-full space-y-8">
 
-            <!-- Top Gauges: Why the Risk & Doomsday Explanations -->
+            <!-- NEW TOP SECTION: AI Metrics with Pros & Cons -->
+            <div class="space-y-4">
+                <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
+                    <i class="fa-solid fa-brain text-teal-400 mr-2"></i>Global AI Compute Metrics & Operational Assessment (Pros & Cons)
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="metric-box ai-box">
+                        <h4 class="font-bold text-teal-400 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-microchip"></i><span>Active Compute Load</span></h4>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Global GPU Cluster Draw:</b> <span id="ai-power">42.8 GW</span></p>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Active LLM Inferences:</b> <span id="ai-inferences">1.42B</span> req/sec</p>
+                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Autonomous Agent Index:</b> 84.2 Points</p>
+                    </div>
+
+                    <div class="metric-box bg-[#151922] border-left-color: #38a169;">
+                        <h4 class="font-bold text-emerald-400 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-circle-check"></i><span>Strategic Pros (Benefits)</span></h4>
+                        <ul class="text-xs text-slate-300 space-y-1 font-mono list-disc list-inside">
+                            <li>Accelerated protein folding & drug discovery.</li>
+                            <li>Automated supply chain congestion routing.</li>
+                            <li>Real-time multi-lingual emergency translation.</li>
+                        </ul>
+                    </div>
+
+                    <div class="metric-box bg-[#151922] border-left-color: #e53e3e;">
+                        <h4 class="font-bold text-rose-400 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-triangle-exclamation"><span>Strategic Cons (Risks)</span></h4>
+                        <ul class="text-xs text-slate-300 space-y-1 font-mono list-disc list-inside">
+                            <li>Intense grid energy & water cooling footprints.</li>
+                            <li>Automated deepfake & disinformation velocity.</li>
+                            <li>Critical infrastructure autonomous attack vectors.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Gauges: Risk Index & Doomsday Clock -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="metric-box critical-box">
                     <div class="flex items-center justify-between">
@@ -2950,7 +2983,7 @@ with tab4:
                 </div>
             </div>
 
-            <!-- ROW 1: Expanded Real-Time Demographics & Deficits -->
+            <!-- ROW 1: Expanded Demographics & Deficits -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
                     <i class="fa-solid fa-chart-line text-blue-400 mr-2"></i>{t_demographics}
@@ -2974,7 +3007,7 @@ with tab4:
                 </div>
             </div>
 
-            <!-- ROW 2: ACLED Conflict & USGS Seismic + Tsunami + Top 5 Disasters -->
+            <!-- ROW 2: ACLED Conflict (Highlighting Top 2 Highest Events) + USGS Seismic & Disasters -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
                     <i class="fa-solid fa-shield-halved text-rose-500 mr-2"></i>{t_conflict}
@@ -2985,7 +3018,7 @@ with tab4:
                             <i class="fa-solid fa-crosshairs text-rose-500"></i>
                             <span>ACLED Live Conflict Matrix (Top 8 Active Zones)</span>
                         </h4>
-                        <p class="text-[11px] text-slate-400"><i>Note: ACLED "Events" track battles, explosions, protests, and strategic developments.</i></p>
+                        <p class="text-[11px] text-slate-400"><i>Top 2 Highest Event Zones highlighted in glowing red tags.</i></p>
                         <div id="acled-top8-container" class="space-y-2"></div>
                     </div>
 
@@ -3009,7 +3042,7 @@ with tab4:
                 </div>
             </div>
 
-            <!-- ROW 3: Top 8 Global Airports with Inbound/Outbound Delay Reasons -->
+            <!-- ROW 3: Top 8 Global Airports with Inbound/Outbound Delays & Reason -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
                     <i class="fa-solid fa-plane-circle-exclamation text-blue-400 mr-2"></i>{t_airports}
@@ -3020,24 +3053,33 @@ with tab4:
                 </div>
             </div>
 
-            <!-- ROW 4: Orbitals, Telescopes, Space Stations, NEOs & Global Health Alerts -->
+            <!-- ROW 4: Orbitals, Telescopes, Space Stations, NEOs with Spacing & Health Alerts -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
                     <i class="fa-solid fa-rocket text-purple-400 mr-2"></i>{t_orbitals}
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="metric-box space-box bg-[#151922]">
-                        <h4 class="font-bold text-purple-400 text-sm mb-3 flex items-center space-x-2">
+                    <div class="metric-box space-box bg-[#151922] space-y-4">
+                        <h4 class="font-bold text-purple-400 text-sm flex items-center space-x-2">
                             <i class="fa-solid fa-satellite"></i>
-                            <span>Orbital Matrix, Telescopes, Space Stations & NEOs</span>
+                            <span>Space Stations & Orbital Matrix</span>
                         </h4>
-                        <ul class="text-xs text-slate-300 space-y-1.5 mb-3 font-mono">
-                            <li><b>Active Starlink Fleet:</b> <span id="starlink-val">6,240</span> operational nodes in LEO</li>
+                        <ul class="text-xs text-slate-300 space-y-1.5 font-mono">
+                            <li><b>Active Starlink Fleet:</b> 6,240 operational nodes in LEO</li>
                             <li><b>ISS Status:</b> Alt: 418km | Lat: <span id="iss-lat">24.5°</span> / Lon: <span id="iss-lon">-112.3°</span></li>
-                            <li><b>Tiangong (CSS):</b> Alt: 382km | Lat: <span id="css-lat">12.1°</span> / Lon: <span id="css-lon">104.5°</span> (Stable Orbit)</li>
-                            <li><b>Space Telescopes:</b> JWST (Lagrange Point L2) | Hubble Space Telescope (Alt: 535km)</li>
-                            <li><b>Closest NEO Collision Object:</b> <span class="text-amber-400">Asteroid 2026-SK4</span> (1.4 Lunar Distances, 42,100 km/h)</li>
+                            <li><b>Tiangong (CSS):</b> Alt: 382km | Lat: <span id="css-lat">12.1°</span> / Lon: <span id="css-lon">104.5°</span> (Stable)</li>
+                            <li><b>Space Telescopes:</b> JWST (Lagrange Point L2) | Hubble (Alt: 535km)</li>
                         </ul>
+
+                        <!-- SPACER SEPARATION BETWEEN NEOs AND REST OF MATRIX -->
+                        <div class="pt-4 border-t border-purple-500/30 space-y-2">
+                            <h5 class="text-xs font-bold text-amber-400"><i class="fa-solid fa-meteor mr-1"></i> Near-Earth Collision Objects (NEOs — Top 3 Tracked)</h5>
+                            <div class="text-[11px] text-slate-300 font-mono space-y-1 bg-[#1a1c23] p-2.5 rounded border border-white/5">
+                                <p>1. <b class="text-amber-400">Asteroid 2026-SK4:</b> 1.4 Lunar Distances | 42,100 km/h</p>
+                                <p>2. <b class="text-amber-400">Asteroid 2026-TF2:</b> 0.85 Lunar Distances | 51,300 km/h</p>
+                                <p>3. <b class="text-amber-400">Asteroid 2025-YB8:</b> 2.1 Lunar Distances | 34,800 km/h</p>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-3">
@@ -3050,7 +3092,7 @@ with tab4:
                 </div>
             </div>
 
-            <!-- System Log Threat Event Archive & Collapsible Sources Drawer -->
+            <!-- System Log Threat Event Archive & Collapsible Sources Drawer with Deep-Dive Links -->
             <div class="space-y-3">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
                     <i class="fa-solid fa-terminal text-emerald-400 mr-2"></i>{t_logs}
@@ -3062,15 +3104,14 @@ with tab4:
                     <details class="bg-[#0e1117] border border-white/10 rounded-lg p-3 text-xs font-mono text-slate-400">
                         <summary class="cursor-pointer text-blue-400 font-bold flex items-center space-x-2">
                             <i class="fa-solid fa-database mr-1"></i>
-                            <span>View Sources of All Active Displays & Telemetry Feeds (Click to Expand)</span>
+                            <span>View Sources & Hyperlinked Deep-Dive Feeds (Click to Expand)</span>
                         </summary>
                         <div class="mt-3 pt-3 border-t border-white/10 space-y-2 text-slate-300 text-[11px]">
-                            <p><b>• ACLED Database:</b> Armed Conflict Location & Event Data Project (Political violence events tracking across top 8 zones).</p>
-                            <p><b>• USGS & NOAA Tsunami Warning Center:</b> Global seismic monitors (>5.5 Magnitude) with UTC/local event times and tsunami advisories.</p>
-                            <p><b>• Space-Track, NASA & ESA:</b> LEO catalogs, Space Telescopes (JWST/Hubble), Tiangong CSS, ISS, and Near-Earth Objects (NEOs).</p>
-                            <p><b>• NOAA / NSIDC:</b> Climate tracking, Arctic sea ice extent, and mass loss metrics.</p>
-                            <p><b>• FlightAware & Eurocontrol:</b> Top 8 global hubs inbound/outbound delayed aircraft matrices.</p>
-                            <p><b>• WHO & CDC Global Outbreak API:</b> Top 5 international health alert tracking and outbreak surveillance.</p>
+                            <p><b>• ACLED Database:</b> <a href="https://acleddata.com" target="_blank" class="text-blue-400 underline">ACLED Conflict Portal</a> (Political violence events tracking).</p>
+                            <p><b>• USGS & NOAA Tsunami Center:</b> <a href="https://earthquake.usgs.gov" target="_blank" class="text-blue-400 underline">USGS Earthquake Hazards</a> (>5.5 Magnitude + UTC/Local times & Tsunami advisories).</p>
+                            <p><b>• NASA / ESA Orbital Feeds:</b> <a href="https://cneos.jpl.nasa.gov" target="_blank" class="text-blue-400 underline">NASA CNEOS NEO Program</a> (Near-Earth Objects & Space Telescope tracking).</p>
+                            <p><b>• FlightAware / Eurocontrol:</b> <a href="https://flightaware.com" target="_blank" class="text-blue-400 underline">Global Aviation Center</a> (Inbound/Outbound delay matrices).</p>
+                            <p><b>• WHO Outbreak Surveillance:</b> <a href="https://www.who.int" target="_blank" class="text-blue-400 underline">WHO Disease Outbreak News</a> (Top 5 health alerts).</p>
                         </div>
                     </details>
                 </div>
@@ -3101,14 +3142,14 @@ with tab4:
             }}
 
             let acledTop8Zones = [
-                {{ zone: "Sudan (Khartoum / Darfur)", intensity: "Critical", events24h: 48 }},
-                {{ zone: "Ukraine (Donbas / Zaporizhzhia)", intensity: "Critical", events24h: 62 }},
-                {{ zone: "Gaza / Israel Border Corridor", intensity: "Critical", events24h: 39 }},
-                {{ zone: "Myanmar (Chin / Sagaing)", intensity: "High", events24h: 27 }},
-                {{ zone: "Democratic Republic of Congo (North Kivu)", intensity: "High", events24h: 31 }},
-                {{ zone: "Yemen (Hodeidah / Sana'a)", intensity: "Elevated", events24h: 18 }},
-                {{ zone: "Nigeria (Borno / Kaduna)", intensity: "Elevated", events24h: 22 }},
-                {{ zone: "Syria (Idlib / Aleppo)", intensity: "Elevated", events24h: 15 }}
+                {{ zone: "Ukraine (Donbas / Zaporizhzhia)", intensity: "Critical", events24h: 62, peak: true }},
+                {{ zone: "Sudan (Khartoum / Darfur)", intensity: "Critical", events24h: 48, peak: true }},
+                {{ zone: "Gaza / Israel Border Corridor", intensity: "Critical", events24h: 39, peak: false }},
+                {{ zone: "Democratic Republic of Congo (North Kivu)", intensity: "High", events24h: 31, peak: false }},
+                {{ zone: "Myanmar (Chin / Sagaing)", intensity: "High", events24h: 27, peak: false }},
+                {{ zone: "Nigeria (Borno / Kaduna)", intensity: "Elevated", events24h: 22, peak: false }},
+                {{ zone: "Yemen (Hodeidah / Sana'a)", intensity: "Elevated", events24h: 18, peak: false }},
+                {{ zone: "Syria (Idlib / Aleppo)", intensity: "Elevated", events24h: 15, peak: false }}
             ];
 
             let usgsTop5Seismic = [
@@ -3150,7 +3191,8 @@ with tab4:
                 const c = document.getElementById('acled-top8-container');
                 c.innerHTML = '';
                 acledTop8Zones.forEach((item, index) => {{
-                    c.innerHTML += `<div class="bg-[#1a1c23] p-2.5 rounded-lg border border-white/5 flex items-center justify-between text-xs font-mono"><span>#${{index + 1}}. ${{item.zone}}</span><span class="text-rose-400">${{item.events24h}} events</span></div>`;
+                    let peakBadge = item.peak ? '<span class="px-1.5 py-0.2 bg-rose-600/30 text-rose-300 text-[9px] rounded border border-rose-500/40 ml-1">PEAK INTENSITY</span>' : '';
+                    c.innerHTML += `<div class="bg-[#1a1c23] p-2.5 rounded-lg border border-white/5 flex items-center justify-between text-xs font-mono"><span>#${{index + 1}}. ${{item.zone}} ${{peakBadge}}</span><span class="text-rose-400">${{item.events24h}} events</span></div>`;
                 }});
             }}
 
@@ -3226,7 +3268,6 @@ with tab4:
     </html>
     """
 
-    st.components.v1.html(tactical_terminal_html, height=1600, scrolling=True)
-
+    st.components.v1.html(tactical_terminal_html, height=1750, scrolling=True)
 
 
