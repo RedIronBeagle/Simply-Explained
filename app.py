@@ -2772,84 +2772,10 @@ with tab3:
         output_text = ""  # Safe fallback so undefined variables don't crash the script
 
 # ==============================================================================
-# [GLOBAL PERMANENT WATERMARK & PRINT BURN-IN]
-# ==============================================================================
-st.markdown("""
-    <style>
-        /* 1. PERMANENT ON-SCREEN WATERMARK */
-        .corporate-watermark {
-            position: fixed;
-            top: 40%;
-            left: 20%;
-            transform: rotate(-25deg);
-            font-size: 4rem;
-            font-weight: 900;
-            color: rgba(255, 255, 255, 0.035);
-            z-index: 999999;
-            pointer-events: none;
-            white-space: nowrap;
-            user-select: none;
-        }
-
-        /* 2. FORCE WATERMARK TO BURN INTO PRINT / PDF EXPORTS */
-        @media print {
-            .corporate-watermark {
-                display: block !important;
-                position: fixed !important;
-                top: 50% !important;
-                left: 15% !important;
-                font-size: 5rem !important;
-                color: rgba(200, 0, 0, 0.25) !important;
-                z-index: 999999 !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-        }
-    </style>
-
-    <!-- Permanent Watermark Layer -->
-    <div class="corporate-watermark">CONFIDENTIAL // RESTRICTED TELEMETRY</div>
-""", unsafe_allow_html=True)
-
-# Audio Accessibility Feed
-if enable_audio_speech and output_text:
-    st.markdown("---")
-    st.markdown(f"### {texts.get('audio_feed_header', '🔊 Audio Accessibility Feed')}")
-    try:
-        from gtts import gTTS
-    
-        clean_text_for_speech = output_text
-        clean_text_for_speech = re.sub(r'[#*`_-]', ' ', clean_text_for_speech)
-        clean_text_for_speech = re.sub(r'\s+', ' ', clean_text_for_speech).strip()
-    
-        tts = gTTS(
-            text=clean_text_for_speech,
-            lang=TTS_LANG_MAP.get(selected_lang, "en"),
-            slow=False,
-        )
-        audio_bytes_obj = io.BytesIO()
-        tts.write_to_fp(audio_bytes_obj)
-        audio_bytes_obj.seek(0)
-        st.audio(audio_bytes_obj, format="audio/mp3")
-    except Exception as tts_err:
-        st.warning(
-            f"{texts.get('audio_stream_error', 'Could not generate audio stream: ')}{str(tts_err)}"
-        )
-
-# ==============================================================================
 # [SECTION: TAB 4 - GLOBAL COMMAND TERMINAL & TELEMETRY]
 # ==============================================================================
 with tab4:
-    t_title = texts.get("tab4_title", "Global Command Terminal // Tactical Telemetry Matrix")
-    t_risk = texts.get("global_risk_label", "GLOBAL RISK INDEX")
-    t_doomsday = texts.get("doomsday_label", "DOOMSDAY CLOCK STATUS")
-    t_demographics = texts.get("demographics_label", "Demographics, Deficits & Economic Metrics")
-    t_conflict = texts.get("conflict_label", "Top 8 ACLED Conflict Hotspots & Climate Hazards")
-    t_airports = texts.get("airports_label", "Top 8 Global Airports — Inbound/Outbound Delays & Disruption Matrix")
-    t_orbitals = texts.get("orbitals_label", "Orbitals, Telescopes, Space Stations & NEOs")
-    t_logs = texts.get("logs_label", "System Log Threat Event Archive")
-
-    st.markdown(f"### 🌐 {t_title}")
+    st.markdown("### 🌐 Global Command Terminal // Tactical Telemetry Matrix")
     
     tactical_terminal_html = r"""
     <!DOCTYPE html>
@@ -2897,7 +2823,7 @@ with tab4:
                     🌐
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold tracking-wider text-white">GLOBAL COMMAND TERMINAL [{selected_lang}]</h1>
+                    <h1 class="text-lg font-bold tracking-wider text-white">GLOBAL COMMAND TERMINAL</h1>
                     <p id="sys-time" class="text-xs font-mono text-slate-400">System Time: Syncing UTC...</p>
                 </div>
             </div>
@@ -2924,7 +2850,6 @@ with tab4:
                     <i class="fa-solid fa-brain text-teal-400 mr-2"></i>Global AI Infrastructure & Electrical/Water Resource Stress
                 </h3>
                 
-                <!-- Top Row: Compute Load & Cooling Water Metrics -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="metric-box ai-box">
                         <h4 class="font-bold text-teal-400 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-microchip"></i><span>Compute Load & Power Grid</span></h4>
@@ -2941,7 +2866,6 @@ with tab4:
                     </div>
                 </div>
 
-                <!-- Bottom Row: Strategic Pros & Cons directly underneath -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="metric-box bg-[#151922] border-left-color: #38a169; p-4">
                         <h5 class="font-bold text-emerald-400 text-xs mb-1 flex items-center space-x-2"><i class="fa-solid fa-circle-check"></i><span>Strategic Pros (Benefits)</span></h5>
@@ -2960,7 +2884,7 @@ with tab4:
                     <div class="flex items-center justify-between">
                         <h3 class="font-bold text-rose-500 text-xs flex items-center space-x-2">
                             <i class="fa-solid fa-triangle-exclamation"></i>
-                            <span>{t_risk}</span>
+                            <span>GLOBAL RISK INDEX</span>
                         </h3>
                         <span class="text-xs font-mono px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">LIVE METRIC</span>
                     </div>
@@ -2975,7 +2899,7 @@ with tab4:
                     <div class="flex items-center justify-between">
                         <h3 class="font-bold text-red-400 text-xs flex items-center space-x-2">
                             <i class="fa-solid fa-radiation"></i>
-                            <span>{t_doomsday}</span>
+                            <span>DOOMSDAY CLOCK STATUS</span>
                         </h3>
                         <span class="text-xs font-mono px-2 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20">DEFCON 2</span>
                     </div>
@@ -2990,7 +2914,7 @@ with tab4:
             <!-- ROW 1: Live Real-Time Demographics & Deficits -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                    <i class="fa-solid fa-chart-line text-blue-400 mr-2"></i>{t_demographics}
+                    <i class="fa-solid fa-chart-line text-blue-400 mr-2"></i>Demographics, Deficits & Economic Metrics
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="metric-box info-box">
@@ -3009,10 +2933,10 @@ with tab4:
                 </div>
             </div>
 
-            <!-- ROW 2: ACLED Conflict + USGS & Disasters (Live Polling & Filtered to Past 36 Hrs) -->
+            <!-- ROW 2: ACLED Conflict + USGS & Disasters -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                    <i class="fa-solid fa-shield-halved text-rose-500 mr-2"></i>{t_conflict}
+                    <i class="fa-solid fa-shield-halved text-rose-500 mr-2"></i>Top 8 ACLED Conflict Hotspots & Climate Hazards
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-3">
@@ -3043,20 +2967,20 @@ with tab4:
                 </div>
             </div>
 
-            <!-- ROW 3: Top 8 Global Airports with Inbound/Outbound Delays -->
+            <!-- ROW 3: Top 8 Global Airports -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                    <i class="fa-solid fa-plane-circle-exclamation text-blue-400 mr-2"></i>{t_airports}
+                    <i class="fa-solid fa-plane-circle-exclamation text-blue-400 mr-2"></i>Top 8 Global Airports — Inbound/Outbound Delays & Disruption Matrix
                 </h3>
                 <div class="bg-[#151922] p-6 rounded-xl border border-white/10">
                     <div id="airport-top8-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
                 </div>
             </div>
 
-            <!-- ROW 4: Orbitals, Space Stations, NEOs with Spacing & Health Alerts -->
+            <!-- ROW 4: Orbitals, Space Stations, NEOs -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                    <i class="fa-solid fa-rocket text-purple-400 mr-2"></i>{t_orbitals}
+                    <i class="fa-solid fa-rocket text-purple-400 mr-2"></i>Orbitals, Telescopes, Space Stations & NEOs
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="metric-box space-box bg-[#151922] space-y-4">
@@ -3091,10 +3015,10 @@ with tab4:
                 </div>
             </div>
 
-            <!-- System Log Threat Event Archive & Collapsible Sources Drawer -->
+            <!-- System Log Threat Event Archive -->
             <div class="space-y-3">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                    <i class="fa-solid fa-terminal text-emerald-400 mr-2"></i>{t_logs}
+                    <i class="fa-solid fa-terminal text-emerald-400 mr-2"></i>System Log Threat Event Archive
                 </h3>
                 <div class="bg-[#151922] p-4 rounded-xl border border-white/10 space-y-3">
                     <label class="text-xs font-mono text-slate-400 block">Live Real-Time Telemetry Event Logs (1s Ticker & Live API Polls)</label>
@@ -3118,7 +3042,7 @@ with tab4:
 
         </main>
 
-        <!-- Application Logic with Active 1-Second Real-Time Refresh & Live API Polling -->
+        <!-- Application Logic -->
         <script>
             let isSystemOnline = true;
             let heartbeatCounter = 0;
@@ -3155,7 +3079,6 @@ with tab4:
                 { zone: "Syria (Idlib / Aleppo)", intensity: "Elevated", topEvents: ["Explosions: 7", "Battles: 5", "Civilians: 3"], peak: false }
             ];
 
-            // Live USGS Fetcher for Past 36h (>5.5M)
             let usgsTop5Seismic = [
                 { location: "Kermadec Islands Region", mag: 6.2, depth: "35 km", timeUTC: "04:12 UTC", timeLocal: "17:12 NZDT", tsunami: "Advisory Issued", window: "Past 12h" },
                 { location: "South of the Fiji Islands", mag: 5.9, depth: "510 km", timeUTC: "22:10 UTC", timeLocal: "10:10 FJT", tsunami: "No Threat", window: "Past 21h" },
@@ -3291,10 +3214,8 @@ with tab4:
             renderAirportsTop8();
             renderHealthTop5();
             
-            // Initial Live API pull
             fetchLiveUSGS();
 
-            // 1-Second Real-Time Ticker Loop & Background API Polling
             function tickSimulation() {
                 if (isSystemOnline === false) return;
                 const now = new Date();
@@ -3302,7 +3223,6 @@ with tab4:
                 
                 const epoch = Date.now() / 1000;
                 
-                // Live ticking demographics population and national debt
                 let currentPop = 8120000000 + Math.floor((Date.now() - 1710000000000) / 400);
                 document.getElementById('stat-pop').textContent = currentPop.toLocaleString();
 
@@ -3316,7 +3236,6 @@ with tab4:
                 const logs = logArea.value.split('\n');
                 if (logs.length > 15) logs.shift();
                 
-                // Poll live USGS endpoint every 30 seconds automatically
                 if (Math.floor(epoch) % 30 === 0) {
                     fetchLiveUSGS();
                     logs.push(`[${timeStr}] TELEMETRY: Live USGS & Telemetry feeds polled and synchronized.`);
@@ -3328,7 +3247,6 @@ with tab4:
                 logArea.scrollTop = logArea.scrollHeight;
             }
 
-            // Locked to 1000ms (1 second) interval
             setInterval(tickSimulation, 1000);
         </script>
     </body>
