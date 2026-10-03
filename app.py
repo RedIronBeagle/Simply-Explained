@@ -3027,7 +3027,7 @@ with tab4:
                         <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-3">
                             <h4 class="font-bold text-amber-400 text-sm flex items-center space-x-2">
                                 <i class="fa-solid fa-volcano"></i>
-                                <span>USGS Top 5 Seismic Alerts (> 5.5 M — Past 36 Hrs Live Feed)[cite: 1]</span>
+                                <span>USGS Top 5 Seismic Alerts (> 5.5 M — Past 36 Hrs Live Feed)</span>
                             </h4>
                             <div id="seismic-top5-container" class="space-y-2"></div>
                         </div>
@@ -3107,7 +3107,7 @@ with tab4:
                         </summary>
                         <div class="mt-3 pt-3 border-t border-white/10 space-y-2 text-slate-300 text-[11px]">
                             <p><b>• ACLED Database:</b> <a href="https://acleddata.com" target="_blank" class="text-blue-400 underline">ACLED Conflict Portal</a> (Political violence events tracking).</p>
-                            <p><b>• USGS & NOAA Tsunami Center:</b> <a href="https://earthquake.usgs.gov" target="_blank" class="text-blue-400 underline">USGS Earthquake Hazards</a> (>5.5 Magnitude, past 36 hrs live feed + UTC/Local times & Tsunami advisories)[cite: 1].</p>
+                            <p><b>• USGS & NOAA Tsunami Center:</b> <a href="https://earthquake.usgs.gov" target="_blank" class="text-blue-400 underline">USGS Earthquake Hazards</a> (>5.5 Magnitude, past 36 hrs live feed + UTC/Local times & Tsunami advisories).</p>
                             <p><b>• NASA / ESA Orbital Feeds:</b> <a href="https://cneos.jpl.nasa.gov" target="_blank" class="text-blue-400 underline">NASA CNEOS NEO Program</a> (Near-Earth Objects & Space Telescope tracking).</p>
                             <p><b>• FlightAware / Eurocontrol:</b> <a href="https://flightaware.com" target="_blank" class="text-blue-400 underline">Global Aviation Center</a> (Inbound/Outbound delay matrices).</p>
                             <p><b>• WHO Outbreak Surveillance:</b> <a href="https://www.who.int" target="_blank" class="text-blue-400 underline">WHO Disease Outbreak News</a> (Top 5 health alerts).</p>
@@ -3155,7 +3155,7 @@ with tab4:
                 { zone: "Syria (Idlib / Aleppo)", intensity: "Elevated", topEvents: ["Explosions: 7", "Battles: 5", "Civilians: 3"], peak: false }
             ];
 
-            // Live USGS Fetcher for Past 36h (>5.5M)[cite: 1]
+            // Live USGS Fetcher for Past 36h (>5.5M)
             let usgsTop5Seismic = [
                 { location: "Kermadec Islands Region", mag: 6.2, depth: "35 km", timeUTC: "04:12 UTC", timeLocal: "17:12 NZDT", tsunami: "Advisory Issued", window: "Past 12h" },
                 { location: "South of the Fiji Islands", mag: 5.9, depth: "510 km", timeUTC: "22:10 UTC", timeLocal: "10:10 FJT", tsunami: "No Threat", window: "Past 21h" },
@@ -3336,5 +3336,5 @@ with tab4:
     """
 
     st.components.v1.html(tactical_terminal_html, height=1950, scrolling=True)
-```[cite: 1]
+
 
