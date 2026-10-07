@@ -43,6 +43,14 @@ api_key = st.secrets["GEMINI_API_KEY"]
 # Initialize the client securely
 client = genai.Client(api_key=api_key)
 
+# --- TAB 2: UNDER CONSTRUCTION ---
+with tab2:
+    st.info("🚧 **Under Construction:** Advanced multi-page document scanning and deep-dive analysis are currently being built in the workshop. Check back soon!")
+
+# --- TAB 3: UNDER CONSTRUCTION ---
+with tab3:
+    st.info("🚧 **Coming Soon:** The Escape Clause risk lab is currently locked while we upgrade the decoder engine.")
+
 # ==============================================================================
 # [SECTION 2: LEGAL & TERMS OF SERVICE (EULA) TEXT CONTENT (LOCALIZED)]
 # ==============================================================================
