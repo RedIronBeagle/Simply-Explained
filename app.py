@@ -3033,5 +3033,3 @@ with tab4:
     </html>
     """
     st.components.v1.html(tactical_terminal_html, height=1550, scrolling=True)
-
-	
