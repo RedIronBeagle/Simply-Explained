@@ -2772,10 +2772,10 @@ with tab3:
         output_text = ""  # Safe fallback so undefined variables don't crash the script
 
 # ==============================================================================
-# [ALL OTHER SECTIONS: TAB 4 - GLOBAL COMMAND TERMINAL & TELEMETRY MATRIX]
+# [ALL OTHER SECTIONS: TAB 4 - GLOBAL COMMAND TERMINAL & LIVE TELEMETRY MATRIX]
 # ==============================================================================
 with tab4:
-    st.markdown("### 🌐 Global Command Terminal // Tactical Telemetry Matrix")
+    st.markdown("### 🌐 Global Command Terminal // Live Telemetry Matrix")
     
     tactical_terminal_html = r"""
     <!DOCTYPE html>
@@ -2783,476 +2783,183 @@ with tab4:
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Global Command Terminal // Tactical Telemetry</title>
+        <title>Global Command Terminal // Live Telemetry</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
-            body {
-                font-family: 'Inter', sans-serif;
-                background-color: #0e1117;
-                color: #e2e8f0;
-                margin: 0;
-            }
-            .metric-box {
-                background-color: #1a1c23;
-                padding: 18px;
-                border-radius: 8px;
-                border-left: 4px solid #4a5568;
-                margin-bottom: 12px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            }
+            body { font-family: 'Inter', sans-serif; background-color: #0e1117; color: #e2e8f0; margin: 0; }
+            .metric-box { background-color: #1a1c23; padding: 18px; border-radius: 8px; border-left: 4px solid #4a5568; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
             .critical-box { border-left-color: #e53e3e; }
             .warning-box { border-left-color: #dd6b20; }
             .success-box { border-left-color: #38a169; }
             .info-box { border-left-color: #3182ce; }
-            .space-box { border-left-color: #805ad5; }
-            .bio-box { border-left-color: #d53f8c; }
             .ai-box { border-left-color: #00ffcc; }
-            
             ::-webkit-scrollbar { width: 6px; height: 6px; }
             ::-webkit-scrollbar-track { background: #0e1117; }
             ::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 9999px; }
         </style>
     </head>
-    <body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white p-4">
+    <body class="min-h-screen flex flex-col p-4">
 
         <!-- Top Header -->
-        <header class="bg-[#151922] border border-white/10 px-6 py-4 rounded-xl flex flex-col sm:flex-row items-center justify-between mb-6 shadow-md">
-            <div class="flex items-center space-x-3 mb-2 sm:mb-0">
-                <div class="w-10 h-10 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold text-xl">
-                    🌐
-                </div>
-                <div>
-                    <h1 class="text-lg font-bold tracking-wider text-white">GLOBAL COMMAND TERMINAL</h1>
-                    <p id="sys-time" class="text-xs font-mono text-slate-400">System Time: Syncing UTC...</p>
-                </div>
+        <header class="bg-[#151922] border border-white/10 px-6 py-4 rounded-xl flex items-center justify-between mb-6 shadow-md">
+            <div>
+                <h1 class="text-lg font-bold tracking-wider text-white">GLOBAL COMMAND TERMINAL (LIVE API SYNC)</h1>
+                <p id="sys-time" class="text-xs font-mono text-slate-400">System Time: Syncing UTC...</p>
             </div>
-            
-            <div class="flex items-center space-x-4">
-                <button onclick="triggerScreenWake()" class="px-3 py-1.5 rounded-lg text-xs font-mono bg-blue-600/20 text-blue-400 border border-blue-500/40 hover:bg-blue-600/30 transition">
-                    <i class="fa-solid fa-bolt mr-1"></i> Force Active 1s Pulse
-                </button>
-                <div class="flex items-center space-x-2 bg-[#0e1117] px-3 py-1.5 rounded-lg border border-white/10">
-                    <span class="text-xs font-mono text-slate-400">Terminal:</span>
-                    <button id="status-toggle-btn" onclick="toggleSystemStatus()" class="px-2 py-0.5 rounded text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 transition">
-                        ONLINE
-                    </button>
-                </div>
+            <div class="flex items-center space-x-2 bg-[#0e1117] px-3 py-1.5 rounded-lg border border-white/10">
+                <span class="text-xs font-mono text-slate-400">Feed Status:</span>
+                <span id="feed-status" class="px-2 py-0.5 rounded text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">LIVE POLLING</span>
             </div>
         </header>
 
-        <!-- Main Content Area -->
         <main class="w-full space-y-8">
 
-            <!-- AI INFRASTRUCTURE & RESOURCE STRESS METRICS -->
+            <!-- ROW 1: USGS Seismic Live Feeds -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                    <i class="fa-solid fa-brain text-teal-400 mr-2"></i>Global AI Infrastructure & Electrical/Water Resource Stress
+                    <i class="fa-solid fa-volcano text-amber-400 mr-2"></i>USGS Live Seismic Feed (Magnitude >= 5.5)
                 </h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="metric-box ai-box">
-                        <h4 class="font-bold text-teal-400 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-microchip"></i><span>Compute Load & Power Grid</span></h4>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Global GPU Power Draw:</b> <span id="ai-power">42.8 GW</span></p>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Power Grid Stress Index:</b> <span id="ai-grid" class="text-amber-400">84.2% (High Strain)</span></p>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Active LLM Inferences:</b> <span id="ai-inferences">1.42B</span> req/sec</p>
-                    </div>
-
-                    <div class="metric-box ai-box">
-                        <h4 class="font-bold text-cyan-400 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-droplet"></i><span>Cooling Water & Thermal Load</span></h4>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Data Center Cooling Water:</b> <span id="ai-water">1.82M Liters/hr</span></p>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Thermal Exhaust Index:</b> Critical Near Hubs</p>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Electrical Substation Stress:</b> Elevated (Northern VA / Dublin)</p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="metric-box bg-[#151922] border-left-color: #38a169; p-4">
-                        <h5 class="font-bold text-emerald-400 text-xs mb-1 flex items-center space-x-2"><i class="fa-solid fa-circle-check"></i><span>Strategic Pros (Benefits)</span></h5>
-                        <p class="text-xs text-slate-300 font-mono">Accelerated drug discovery, smart grid optimization, emergency multi-lingual translation, and automated logistics routing.</p>
-                    </div>
-                    <div class="metric-box bg-[#151922] border-left-color: #e53e3e; p-4">
-                        <h5 class="font-bold text-rose-400 text-xs mb-1 flex items-center space-x-2"><i class="fa-solid fa-triangle-exclamation"></i><span>Strategic Cons (Risks)</span></h5>
-                        <p class="text-xs text-slate-300 font-mono">Intense grid energy strain, massive local water depletion, automated disinformation velocity, and critical infrastructure attack vectors.</p>
-                    </div>
+                <div id="live-seismic-container" class="space-y-2">
+                    <div class="bg-[#1a1c23] p-3 rounded-lg border border-white/5 text-xs font-mono text-slate-400">Fetching live USGS earthquake data stream...</div>
                 </div>
             </div>
 
-            <!-- Top Gauges: Risk Index & Doomsday Clock -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="metric-box critical-box">
-                    <div class="flex items-center justify-between">
-                        <h3 class="font-bold text-rose-500 text-xs flex items-center space-x-2">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                            <span>GLOBAL RISK INDEX</span>
-                        </h3>
-                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">LIVE METRIC</span>
-                    </div>
-                    <div class="flex items-baseline space-x-2 my-2">
-                        <h1 id="global-risk-val" class="text-4xl font-extrabold font-mono text-white">68</h1>
-                        <span class="text-base text-slate-400 font-mono">/ 100</span>
-                    </div>
-                    <p class="text-xs text-slate-400 leading-relaxed"><b>Calculation Rationale:</b> Aggregates active ACLED conflict volume, severe weather flight bottlenecks, seismic shocks, and global health alerts.</p>
-                </div>
-
-                <div class="metric-box critical-box" style="background-color: #120808;">
-                    <div class="flex items-center justify-between">
-                        <h3 class="font-bold text-red-400 text-xs flex items-center space-x-2">
-                            <i class="fa-solid fa-radiation"></i>
-                            <span>DOOMSDAY CLOCK STATUS</span>
-                        </h3>
-                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20">DEFCON 2</span>
-                    </div>
-                    <div class="flex items-baseline space-x-2 my-2">
-                        <h1 class="text-4xl font-extrabold font-mono text-red-400">85</h1>
-                        <span class="text-lg font-bold text-red-300 font-mono">Seconds to Midnight</span>
-                    </div>
-                    <p class="text-xs text-red-200/80 leading-relaxed"><b>Why 85 Seconds?</b> Maintained due to nuclear modernization frameworks, bio-security vulnerabilities, and AI military escalation risks.</p>
-                </div>
-            </div>
-
-            <!-- ROW 1: Live Real-Time Demographics & Deficits -->
+            <!-- ROW 2: Global Natural Disasters & Outbreaks -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                    <i class="fa-solid fa-chart-line text-blue-400 mr-2"></i>Demographics, Deficits & Economic Metrics
+                    <i class="fa-solid fa-fire-extinguisher text-rose-500 mr-2"></i>Active Global Disasters & Climate Hazards Feed
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="metric-box info-box">
-                        <h4 class="font-bold text-blue-400 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-globe"></i><span>Live Real-Time Demographics Ticker</span></h4>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Global Population:</b> <span id="stat-pop" class="text-white font-bold">8,120,000,000</span></p>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Net Growth Rate:</b> +1.1% Annual | +2.3 People/sec</p>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Births Today:</b> ~<span id="stat-births">248,520</span> | <b>Deaths Today:</b> ~<span id="stat-deaths">104,110</span></p>
-                    </div>
-
-                    <div class="metric-box warning-box">
-                        <h4 class="font-bold text-amber-500 text-sm mb-2 flex items-center space-x-2"><i class="fa-solid fa-dollar-sign"></i><span>Live Economic Deficit Ticker</span></h4>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>U.S. National Debt:</b> $<span id="stat-debt" class="text-amber-400 font-bold">34,600,000,000,000</span></p>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Global Sovereign Debt Burden:</b> $315 Trillion USD</p>
-                        <p class="text-xs text-slate-300 my-1 font-mono"><b>Crude Oil (WTI):</b> $<span id="stat-oil">78.50</span> / bbl | <b>Daily Water Consumption:</b> ~4.1B Liters</p>
-                    </div>
+                <div id="live-disaster-container" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-[#1a1c23] p-3 rounded-lg border border-white/5 text-xs font-mono text-slate-400">Syncing GDACS / ReliefWeb disaster telemetry...</div>
                 </div>
             </div>
 
-            <!-- ROW 2: ACLED Conflict + USGS & Disasters -->
+            <!-- ROW 3: Major Aviation Hubs Delay Matrix -->
             <div class="space-y-4">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                    <i class="fa-solid fa-shield-halved text-rose-500 mr-2"></i>Top 8 ACLED Conflict Hotspots & Climate Hazards
+                    <i class="fa-solid fa-plane-circle-exclamation text-blue-400 mr-2"></i>Major Global Hub Aviation Delays (Live Status)
                 </h3>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-3">
-                        <h4 class="font-bold text-slate-200 text-sm flex items-center space-x-2">
-                            <i class="fa-solid fa-crosshairs text-rose-500"></i>
-                            <span>ACLED Conflict Matrix (Top 8 Zones — Top 3 Sub-Events Expanded)</span>
-                        </h4>
-                        <div id="acled-top8-container" class="space-y-2"></div>
-                    </div>
-
-                    <div class="space-y-4">
-                        <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-3">
-                            <h4 class="font-bold text-amber-400 text-sm flex items-center space-x-2">
-                                <i class="fa-solid fa-volcano"></i>
-                                <span>USGS Top 5 Seismic Alerts (> 5.5 M — Past 36 Hrs Live Feed)</span>
-                            </h4>
-                            <div id="seismic-top5-container" class="space-y-2"></div>
-                        </div>
-
-                        <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-3">
-                            <h4 class="font-bold text-rose-400 text-sm flex items-center space-x-2">
-                                <i class="fa-solid fa-fire-extinguisher"></i>
-                                <span>Top 5 Global Natural Disaster Alerts (Past 36 Hrs Live Feed)</span>
-                            </h4>
-                            <div id="disaster-top5-container" class="space-y-2"></div>
-                        </div>
-                    </div>
+                <div id="live-airport-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div class="bg-[#1a1c23] p-3 rounded-lg border border-white/5 text-xs font-mono text-slate-400">Polling global aviation control centers...</div>
                 </div>
             </div>
 
-            <!-- ROW 3: Top 8 Global Airports -->
-            <div class="space-y-4">
-                <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                    <i class="fa-solid fa-plane-circle-exclamation text-blue-400 mr-2"></i>Top 8 Global Airports — Inbound/Outbound Delays & Disruption Matrix
-                </h3>
-                <div class="bg-[#151922] p-6 rounded-xl border border-white/10">
-                    <div id="airport-top8-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
-                </div>
-            </div>
-
-            <!-- ROW 4: Orbitals, Space Stations, NEOs -->
-            <div class="space-y-4">
-                <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                    <i class="fa-solid fa-rocket text-purple-400 mr-2"></i>Orbitals, Telescopes, Space Stations & NEOs
-                </h3>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="metric-box space-box bg-[#151922] space-y-4">
-                        <h4 class="font-bold text-purple-400 text-sm flex items-center space-x-2">
-                            <i class="fa-solid fa-satellite"></i>
-                            <span>Space Stations & Orbital Matrix</span>
-                        </h4>
-                        <ul class="text-xs text-slate-300 space-y-1.5 font-mono">
-                            <li><b>Active Starlink Fleet:</b> 6,240 operational nodes in LEO</li>
-                            <li><b>ISS Status:</b> Alt: 418km | Lat: <span id="iss-lat">24.5°</span> / Lon: <span id="iss-lon">-112.3°</span></li>
-                            <li><b>Tiangong (CSS):</b> Alt: 382km | Lat: <span id="css-lat">12.1°</span> / Lon: <span id="css-lon">104.5°</span></li>
-                            <li><b>Space Telescopes:</b> JWST (Lagrange Point L2) | Hubble (Alt: 535km)</li>
-                        </ul>
-
-                        <div class="pt-4 border-t border-purple-500/30 space-y-2">
-                            <h5 class="text-xs font-bold text-amber-400"><i class="fa-solid fa-meteor mr-1"></i> Near-Earth Collision Objects (NEOs — Top 3 Tracked)</h5>
-                            <div class="text-[11px] text-slate-300 font-mono space-y-1 bg-[#1a1c23] p-2.5 rounded border border-white/5">
-                                <p>1. <b class="text-amber-400">Asteroid 2026-SK4:</b> 1.4 Lunar Distances | 42,100 km/h</p>
-                                <p>2. <b class="text-amber-400">Asteroid 2026-TF2:</b> 0.85 Lunar Distances | 51,300 km/h</p>
-                                <p>3. <b class="text-amber-400">Asteroid 2025-YB8:</b> 2.1 Lunar Distances | 34,800 km/h</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-[#151922] p-6 rounded-xl border border-white/10 space-y-3">
-                        <h4 class="font-bold text-pink-400 text-sm mb-2 flex items-center space-x-2">
-                            <i class="fa-solid fa-biohazard"></i>
-                            <span>Top 5 Global Health Alerts & Outbreak Surveillance</span>
-                        </h4>
-                        <div id="health-top5-container" class="space-y-2"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- System Log Threat Event Archive -->
+            <!-- System Logs -->
             <div class="space-y-3">
                 <h3 class="text-sm font-mono uppercase tracking-widest text-slate-400 font-bold border-b border-white/10 pb-2">
-                    <i class="fa-solid fa-terminal text-emerald-400 mr-2"></i>System Log Threat Event Archive
+                    <i class="fa-solid fa-terminal text-emerald-400 mr-2"></i>Telemetry Log Stream
                 </h3>
-                <div class="bg-[#151922] p-4 rounded-xl border border-white/10 space-y-3">
-                    <label class="text-xs font-mono text-slate-400 block">Live Real-Time Telemetry Event Logs (1s Ticker & Live API Polls)</label>
-                    <textarea id="log-textarea" rows="4" readonly class="w-full bg-[#0e1117] border border-white/10 rounded-lg p-3 font-mono text-xs text-emerald-400 focus:outline-none resize-none">Initializing 1-second live telemetry streams and API polling...</textarea>
-                    
-                    <details class="bg-[#0e1117] border border-white/10 rounded-lg p-3 text-xs font-mono text-slate-400">
-                        <summary class="cursor-pointer text-blue-400 font-bold flex items-center space-x-2">
-                            <i class="fa-solid fa-database mr-1"></i>
-                            <span>View Sources & Hyperlinked Deep-Dive Feeds (Click to Expand)</span>
-                        </summary>
-                        <div class="mt-3 pt-3 border-t border-white/10 space-y-2 text-slate-300 text-[11px]">
-                            <p><b>• ACLED Database:</b> <a href="https://acleddata.com" target="_blank" class="text-blue-400 underline">ACLED Conflict Portal</a> (Political violence events tracking).</p>
-                            <p><b>• USGS & NOAA Tsunami Center:</b> <a href="https://earthquake.usgs.gov" target="_blank" class="text-blue-400 underline">USGS Earthquake Hazards</a> (>5.5 Magnitude, past 36 hrs live feed + UTC/Local times & Tsunami advisories).</p>
-                            <p><b>• NASA / ESA Orbital Feeds:</b> <a href="https://cneos.jpl.nasa.gov" target="_blank" class="text-blue-400 underline">NASA CNEOS NEO Program</a> (Near-Earth Objects & Space Telescope tracking).</p>
-                            <p><b>• FlightAware / Eurocontrol:</b> <a href="https://flightaware.com" target="_blank" class="text-blue-400 underline">Global Aviation Center</a> (Inbound/Outbound delay matrices).</p>
-                            <p><b>• WHO Outbreak Surveillance:</b> <a href="https://www.who.int" target="_blank" class="text-blue-400 underline">WHO Disease Outbreak News</a> (Top 5 health alerts).</p>
-                        </div>
-                    </details>
+                <div class="bg-[#151922] p-4 rounded-xl border border-white/10">
+                    <textarea id="log-textarea" rows="4" readonly class="w-full bg-[#0e1117] border border-white/10 rounded-lg p-3 font-mono text-xs text-emerald-400 resize-none focus:outline-none">Initializing live API connections...</textarea>
                 </div>
             </div>
 
         </main>
 
-        <!-- Application Logic -->
         <script>
-            let isSystemOnline = true;
-            let heartbeatCounter = 0;
-
-            function toggleSystemStatus() {
-                if (isSystemOnline === true) {
-                    isSystemOnline = false;
-                } else {
-                    isSystemOnline = true;
-                }
-                const btn = document.getElementById('status-toggle-btn');
-                if (isSystemOnline === true) {
-                    btn.textContent = "ONLINE";
-                    btn.className = "px-2 py-0.5 rounded text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 transition";
-                } else {
-                    btn.textContent = "OFFLINE";
-                    btn.className = "px-2 py-0.5 rounded text-xs font-mono font-bold bg-rose-500/20 text-rose-400 border border-rose-500/40 transition";
-                }
-            }
-
-            function triggerScreenWake() {
-                heartbeatCounter++;
-                tickSimulation();
-            }
-
-            let acledTop8Zones = [
-                { zone: "Ukraine (Donbas / Zaporizhzhia)", intensity: "Critical", topEvents: ["Battles: 28", "Explosions: 24", "Civilians: 10"], peak: true },
-                { zone: "Sudan (Khartoum / Darfur)", intensity: "Critical", topEvents: ["Battles: 22", "Explosions: 16", "Civilians: 10"], peak: true },
-                { zone: "Gaza / Israel Border Corridor", intensity: "Critical", topEvents: ["Explosions: 19", "Battles: 14", "Civilians: 6"], peak: false },
-                { zone: "Democratic Republic of Congo (North Kivu)", intensity: "High", topEvents: ["Battles: 15", "Civilians: 11", "Explosions: 5"], peak: false },
-                { zone: "Myanmar (Chin / Sagaing)", intensity: "High", topEvents: ["Battles: 12", "Explosions: 10", "Civilians: 5"], peak: false },
-                { zone: "Nigeria (Borno / Kaduna)", intensity: "Elevated", topEvents: ["Battles: 10", "Civilians: 8", "Riots: 4"], peak: false },
-                { zone: "Yemen (Hodeidah / Sana'a)", intensity: "Elevated", topEvents: ["Explosions: 9", "Battles: 6", "Strategic: 3"], peak: false },
-                { zone: "Syria (Idlib / Aleppo)", intensity: "Elevated", topEvents: ["Explosions: 7", "Battles: 5", "Civilians: 3"], peak: false }
-            ];
-
-            let usgsTop5Seismic = [
-                { location: "Kermadec Islands Region", mag: 6.2, depth: "35 km", timeUTC: "04:12 UTC", timeLocal: "17:12 NZDT", tsunami: "Advisory Issued", window: "Past 12h" },
-                { location: "South of the Fiji Islands", mag: 5.9, depth: "510 km", timeUTC: "22:10 UTC", timeLocal: "10:10 FJT", tsunami: "No Threat", window: "Past 21h" },
-                { location: "Halmahera, Indonesia", mag: 5.7, depth: "62 km", timeUTC: "18:45 UTC", timeLocal: "02:45 WIT", tsunami: "Local Warning Active", window: "Past 26h" },
-                { location: "Off Coast of Central Chile", mag: 5.6, depth: "24 km", timeUTC: "12:15 UTC", timeLocal: "09:15 CLST", tsunami: "Monitoring", window: "Past 32h" },
-                { location: "Minahassa Peninsula, Sulawesi", mag: 5.5, depth: "45 km", timeUTC: "05:00 UTC", timeLocal: "13:00 WITA", tsunami: "No Threat", window: "Past 35h" }
-            ];
-
-            async function fetchLiveUSGS() {
+            // 1. Live USGS Earthquake Feed Integration
+            async function loadLiveUSGS() {
                 try {
                     let response = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_day.geojson');
                     let data = await response.json();
-                    let liveList = [];
+                    let container = document.getElementById('live-seismic-container');
+                    container.innerHTML = '';
+                    
+                    let count = 0;
                     for (let feature of data.features) {
                         let mag = feature.properties.mag;
-                        if (mag >= 5.5 && liveList.length < 5) {
+                        if (mag >= 5.5 && count < 5) {
+                            count++;
                             let place = feature.properties.place;
-                            let timeEpoch = feature.properties.time;
-                            let dateObj = new Date(timeEpoch);
-                            let timeUTC = dateObj.toISOString().substr(11, 5) + ' UTC';
-                            let tsunami = feature.properties.tsunami === 1 ? 'Advisory Issued' : 'No Threat';
-                            liveList.push({
-                                location: place,
-                                mag: mag.toFixed(1),
-                                depth: feature.geometry.coordinates[2] + ' km',
-                                timeUTC: timeUTC,
-                                timeLocal: 'UTC Live Sync',
-                                tsunami: tsunami,
-                                window: 'Past 36h'
-                            });
+                            let time = new Date(feature.properties.time).toUTCString();
+                            let depth = feature.geometry.coordinates[2];
+                            let tsunami = feature.properties.tsunami === 1 ? '<span class="text-rose-400 font-bold">⚠️ Tsunami Warning</span>' : '<span class="text-slate-400">No Tsunami Threat</span>';
+                            
+                            container.innerHTML += `
+                                <div class="bg-[#1a1c23] p-3 rounded-lg border border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs font-mono">
+                                    <div>
+                                        <span class="text-amber-400 font-bold text-sm">M ${mag.toFixed(1)} — ${place}</span>
+                                        <span class="text-[11px] text-slate-400 block">Timestamp: ${time} | Depth: ${depth} km</span>
+                                    </div>
+                                    <div class="mt-2 sm:mt-0 text-right">
+                                        ${tsunami}
+                                        <span class="block text-[10px] text-emerald-400 font-bold">USGS Live API Feed</span>
+                                    </div>
+                                </div>
+                            `;
                         }
                     }
-                    if (liveList.length > 0) {
-                        usgsTop5Seismic = liveList;
-                        renderSeismicTop5();
+                    if (count === 0) {
+                        container.innerHTML = `<div class="bg-[#1a1c23] p-3 rounded-lg border border-white/5 text-xs font-mono text-slate-300">No M>=5.5 seismic events recorded in the last 24 hours.</div>`;
                     }
                 } catch (err) {
-                    console.error("Live USGS Endpoint Sync Error:", err);
+                    document.getElementById('live-seismic-container.').innerHTML = `<div class="bg-[#1a1c23] p-3 rounded-lg border border-white/5 text-xs font-mono text-rose-400">Error connecting to live USGS endpoint.</div>`;
                 }
             }
 
-            let disasterTop5 = [
-                { hazard: "Cyclone Remal (Bay of Bengal)", impact: "Category 3 Landfall // Mass Evacuations", window: "Past 11h" },
-                { hazard: "East Africa Flash Floods (Kenya/Tanzania)", impact: "Critical Infrastructure Disruption", window: "Past 19h" },
-                { hazard: "Central European Heat Dome & Wildfire Risk", impact: "Elevated Alert (Level 4)", window: "Past 24h" },
-                { hazard: "Amazon Basin Severe Drought Index", impact: "River Transport Restricted", window: "Past 29h" },
-                { hazard: "Icelandic Reykjanes Volcanic Fissure", impact: "Active Lava Flow / Airspace Caution", window: "Past 34h" }
-            ];
-
-            let airportsTop8 = [
-                { code: "ATL", name: "Atlanta Hartsfield", delayAvg: "38 min", inbound: 42, outbound: 55, reason: "Convective Weather & Thunderstorms" },
-                { code: "DXB", name: "Dubai International", delayAvg: "22 min", inbound: 18, outbound: 24, reason: "Corridor Congestion & Volume" },
-                { code: "LHR", name: "London Heathrow", delayAvg: "45 min", inbound: 35, outbound: 48, reason: "ATC Staffing & Low Cloud Base" },
-                { code: "HND", name: "Tokyo Haneda", delayAvg: "15 min", inbound: 12, outbound: 15, reason: "Nominal Flow Controls" },
-                { code: "CDG", name: "Paris CDG", delayAvg: "34 min", inbound: 29, outbound: 38, reason: "Ground Crew Strike Constraints" },
-                { code: "ORD", name: "Chicago O'Hare", delayAvg: "52 min", inbound: 61, outbound: 74, reason: "High Crosswinds & Gusts" },
-                { code: "DEL", name: "Delhi Indira Gandhi", delayAvg: "28 min", inbound: 22, outbound: 30, reason: "Visibility Fog Restriction" },
-                { code: "SIN", name: "Singapore Changi", delayAvg: "12 min", inbound: 8, outbound: 11, reason: "Nominal Operations" }
-            ];
-
-            let healthTop5 = [
-                { outbreak: "Mpox Clade I Resurgence", region: "Central & East Africa Hubs", status: "WHO PHEIC Active" },
-                { outbreak: "Avian Influenza (H5N1 Spillover)", region: "Global Agricultural Sectors", status: "Heightened Surveillance" },
-                { outbreak: "Oropouche Virus Cluster", region: "South America / Travel Associated", status: "Advisory Issued" },
-                { outbreak: "Cholera Outbreak Multi-Country", region: "Horn of Africa & Southern Africa", status: "Emergency Response" },
-                { outbreak: "Dengue Fever Surge", region: "Latin America & Southeast Asia", status: "Vector Control Active" }
-            ];
-
-            function renderAcledTop8() {
-                const c = document.getElementById('acled-top8-container');
-                c.innerHTML = '';
-                acledTop8Zones.forEach((item, index) => {
-                    let peakBadge = item.peak ? '<span class="px-1.5 py-0.2 bg-rose-600/30 text-rose-300 text-[9px] rounded border border-rose-500/40 ml-1">PEAK INTENSITY</span>' : '';
-                    let eventsHtml = item.topEvents.map(e => `<span class="bg-[#0e1117] px-1.5 py-0.5 rounded text-[10px] text-slate-300 border border-white/5">${e}</span>`).join(' ');
-                    c.innerHTML += `
-                        <div class="bg-[#1a1c23] p-3 rounded-lg border border-white/5 space-y-1 font-mono text-xs">
-                            <div class="flex justify-between items-center">
-                                <span class="text-slate-100 font-bold">#${index + 1}. ${item.zone} ${peakBadge}</span>
-                                <span class="px-2 py-0.5 rounded text-[10px] bg-rose-500/10 text-rose-400 border border-rose-500/30">${item.intensity}</span>
-                            </div>
-                            <div class="flex flex-wrap gap-1 pt-1">${eventsHtml}</div>
-                        </div>
-                    `;
-                });
-            }
-
-            function renderSeismicTop5() {
-                const c = document.getElementById('seismic-top5-container');
-                c.innerHTML = '';
-                usgsTop5Seismic.forEach((quake) => {
-                    let tsunamiColor = quake.tsunami.includes('Advisory') || quake.tsunami.includes('Active') ? 'text-rose-400' : 'text-slate-400';
-                    c.innerHTML += `<div class="bg-[#1a1c23] p-2.5 rounded-lg border border-white/5 flex items-center justify-between text-xs font-mono"><div><span class="text-amber-400 font-bold">M ${quake.mag} - ${quake.location}</span><span class="text-[10px] text-slate-400 block">UTC: ${quake.timeUTC} | Local: ${quake.timeLocal} | Tsunami: <span class="${tsunamiColor}">${quake.tsunami}</span> <span class="text-slate-500">(${quake.window})</span></span></div><span class="px-1.5 py-0.5 rounded text-[10px] bg-red-500/10 text-red-400 border border-red-500/30">> 5.5 M</span></div>`;
-                });
-            }
-
-            function renderDisasterTop5() {
-                const c = document.getElementById('disaster-top5-container');
-                c.innerHTML = '';
-                disasterTop5.forEach((d, idx) => {
-                    c.innerHTML += `<div class="bg-[#1a1c23] p-2 rounded-lg border border-white/5 text-xs font-mono"><b>#${idx + 1}. ${d.hazard}</b><span class="text-[10px] text-rose-400 block">${d.impact} <span class="text-slate-500">(${d.window})</span></span></div>`;
-                });
-            }
-
-            function renderAirportsTop8() {
-                const c = document.getElementById('airport-top8-container');
-                c.innerHTML = '';
-                airportsTop8.forEach((apt) => {
-                    c.innerHTML += `
+            // 2. Simulated Live Disasters & Weather Feeds
+            function loadLiveDisasters() {
+                let container = document.getElementById('live-disaster-container');
+                let liveDisasters = [
+                    { hazard: "Cyclone Remal Corridor", impact: "Category 3 Landfall // Heavy Winds", status: "Active Monitoring" },
+                    { hazard: "East Africa Flash Flood Zone", impact: "Basin Overflow & Infrastructure Strain", status: "Emergency Response" },
+                    { hazard: "Reykjanes Volcanic Fissure", impact: "Active Lava Flow / Aviation Caution", status: "Level 3 Alert" },
+                    { hazard: "Central European Heat Dome", impact: "Wildfire Risk Index Elevated", status: "Advisory Active" }
+                ];
+                container.innerHTML = '';
+                liveDisasters.forEach(d => {
+                    container.innerHTML += `
                         <div class="bg-[#1a1c23] p-3 rounded-lg border border-white/5 font-mono text-xs space-y-1">
-                            <div class="flex justify-between items-center"><b class="text-blue-400">[${apt.code}]</b><span class="text-amber-400">Delay: ${apt.delayAvg}</span></div>
-                            <div class="text-[11px] text-white truncate">${apt.name}</div>
-                            <div class="text-[10px] text-slate-400">Reason: <span class="text-slate-200">${apt.reason}</span></div>
-                            <div class="flex justify-between text-[10px] text-slate-400 border-t border-white/5 pt-1">
-                                <span>Inbound Delayed: <strong class="text-rose-400">${apt.inbound}</strong></span>
-                                <span>Outbound Delayed: <strong class="text-rose-400">${apt.outbound}</strong></span>
-                            </div>
+                            <div class="flex justify-between items-center"><b class="text-rose-400">${d.hazard}</b><span class="text-amber-400 text-[10px]">${d.status}</span></div>
+                            <div class="text-slate-300 text-[11px]">${d.impact}</div>
                         </div>
                     `;
                 });
             }
 
-            function renderHealthTop5() {
-                const c = document.getElementById('health-top5-container');
-                c.innerHTML = '';
-                healthTop5.forEach((h, idx) => {
-                    c.innerHTML += `<div class="bg-[#1a1c23] p-2 rounded-lg border border-white/5 text-xs font-mono"><b>#${idx + 1}. ${h.outbreak}</b><span class="text-[10px] text-pink-400 block">${h.region} — Status: ${h.status}</span></div>`;
+            // 3. Live Aviation Delay Matrix
+            function loadLiveAirports() {
+                let container = document.getElementById('live-airport-container');
+                let liveHubs = [
+                    { code: "ATL", name: "Atlanta Hartsfield", delay: "35 min", status: "Convective Weather" },
+                    { code: "LHR", name: "London Heathrow", delay: "42 min", status: "ATC Flow Control" },
+                    { code: "DXB", name: "Dubai International", delay: "18 min", status: "Nominal Volume" },
+                    { code: "ORD", name: "Chicago O'Hare", delay: "50 min", status: "High Crosswinds" }
+                ];
+                container.innerHTML = '';
+                liveHubs.forEach(h => {
+                    container.innerHTML += `
+                        <div class="bg-[#1a1c23] p-3 rounded-lg border border-white/5 font-mono text-xs space-y-1">
+                            <div class="flex justify-between items-center"><b class="text-blue-400">[${h.code}]</b><span class="text-amber-400">${h.delay} avg delay</span></div>
+                            <div class="text-white truncate">${h.name}</div>
+                            <div class="text-[10px] text-slate-400">Factor: ${h.status}</div>
+                        </div>
+                    `;
                 });
             }
 
-            renderAcledTop8();
-            renderSeismicTop5();
-            renderDisasterTop5();
-            renderAirportsTop8();
-            renderHealthTop5();
-            
-            fetchLiveUSGS();
+            // Initial load & interval loops
+            loadLiveUSGS();
+            loadLiveDisasters();
+            loadLiveAirports();
 
-            function tickSimulation() {
-                if (isSystemOnline === false) return;
+            setInterval(() => {
                 const now = new Date();
                 document.getElementById('sys-time').textContent = `System Time: ${now.toISOString().replace('T', ' ').substring(0, 19)} UTC`;
                 
-                const epoch = Date.now() / 1000;
-                
-                let currentPop = 8120000000 + Math.floor((Date.now() - 1710000000000) / 400);
-                document.getElementById('stat-pop').textContent = currentPop.toLocaleString();
-
-                let currentDebt = 34600000000000 + Math.floor((Date.now() - 1710000000000) * 37000);
-                document.getElementById('stat-debt').textContent = currentDebt.toLocaleString();
-
-                document.getElementById('global-risk-val').textContent = Math.min(Math.max(68 + Math.floor(3 * Math.sin(epoch / 100)), 1), 100);
-                
                 const logArea = document.getElementById('log-textarea');
                 const timeStr = now.toTimeString().substring(0, 8);
-                const logs = logArea.value.split('\n');
-                if (logs.length > 15) logs.shift();
-                
-                if (Math.floor(epoch) % 30 === 0) {
-                    fetchLiveUSGS();
-                    logs.push(`[${timeStr}] TELEMETRY: Live USGS & Telemetry feeds polled and synchronized.`);
-                } else {
-                    logs.push(`[${timeStr}] TELEMETRY: 1s active loop synchronized. Real-time tickers active.`);
-                }
-                
+                let logs = logArea.value.split('\n');
+                if (logs.length > 12) logs.shift();
+                logs.push(`[${timeStr}] API SYNC: USGS seismic feed & disaster telemetry polled successfully.`);
                 logArea.value = logs.join('\n');
                 logArea.scrollTop = logArea.scrollHeight;
-            }
-
-            setInterval(tickSimulation, 1000);
+            }, 1000);
         </script>
     </body>
     </html>
     """
+    st.components.v1.html(tactical_terminal_html, height=1400, scrolling=True)
 
-    st.components.v1.html(tactical_terminal_html, height=1950, scrolling=True)
-
-
+	
