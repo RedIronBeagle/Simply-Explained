@@ -1706,7 +1706,7 @@ if st.sidebar.button("🔄 Start Over (Reset All)", use_container_width=True, ke
     st.session_state["audio_reset_counter"] = audio_counter
     st.rerun()
 
-#st.sidebar.markdown("---")
+st.sidebar.markdown("---")
 
 # --- CUSTOM CSS FOR THINNER, CENTERED SIDEBAR BUTTONS ---
 st.markdown("""
