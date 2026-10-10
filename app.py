@@ -1781,7 +1781,7 @@ client = genai.Client(
 # ==============================================================================
 # [BUY ME A COFFEE / TIPPING SECTION - MARKED]
 # ==============================================================================
-st.sidebar.markdown("---")
+#st.sidebar.markdown("---")
 st.sidebar.markdown("### Support the Project ☕")
 st.sidebar.markdown("If this saved you a headache, consider fueling the coffee/retirement fund!")
 st.sidebar.markdown("[☕ Buy Me a Coffee](https://buymeacoffee.com/simplyexplained)")
