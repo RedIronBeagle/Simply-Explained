@@ -1706,7 +1706,7 @@ if st.sidebar.button("🔄 Start Over (Reset All)", use_container_width=True, ke
     st.session_state["audio_reset_counter"] = audio_counter
     st.rerun()
 
-st.sidebar.markdown("---")
+#st.sidebar.markdown("---")
 
 # --- CUSTOM CSS FOR THINNER, CENTERED SIDEBAR BUTTONS ---
 st.markdown("""
@@ -1765,7 +1765,7 @@ help_button_label = texts.get("help_title", "💡 How to Use This App")
 if st.sidebar.button(help_button_label, use_container_width=True, key="help_button_sidebar_unique"):
     show_help_dialog()
 
-st.sidebar.markdown("---")
+#st.sidebar.markdown("---")
 # --- INITIALIZE THE GOOGLE GENAI CLIENT ---
 from google import genai
 from google.genai import types
